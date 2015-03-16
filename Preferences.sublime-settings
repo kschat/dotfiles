@@ -4,13 +4,14 @@
 	"color_scheme": "Packages/Theme - Afterglow/Afterglow.tmTheme",
 	"fade_fold_buttons": false,
 	"font_face": "Source Code Pro",
-	"font_size": 12,
+	"font_size": 14,
 	"highlight_line": true,
 	"highlight_modified_tabs": true,
 	"ignored_packages":
 	[
-		"JavaScript",
-		"Vintage"
+		"Theme - Soda SolarizedDark",
+		"Vintage",
+		"JavaScript"
 	],
 	"inverse_caret_state": true,
 	"line_padding_bottom": 1,
@@ -32,5 +33,6 @@
 	"translate_tabs_to_spaces": true,
 	"trim_trailing_white_space_on_save": true,
 	"vintageous_use_sys_clipboard": true,
-	"wide_caret": true
+	"wide_caret": true,
+	"scroll_past_end": true
 }
