@@ -1,0 +1,15 @@
+alias zcp='zmv -C'
+alias zln='zmv -L'
+alias dockphp="docker run -d \
+-p 80:80 -p 8880:8880 -p 443:443 \
+-i -v '$WORKSPACE/php-links/:/var/www' \
+--add-host='mem.dev.0.americasbiotech.biz:54.211.181.158' \
+--add-host='mem.dev.1.americasbiotech.biz:107.21.151.191' \
+--add-host='dev.master.americasbiotech.biz:107.22.40.241' \
+--add-host='master1.americasbiotech.biz:23.22.41.159' \
+--add-host='master2.americasbiotech.biz:54.224.69.111' \
+--add-host='sephora.americasbiotech.biz:54.242.122.177' \
+-e 'PORT=80' \
+-e 'BB_MEMCACHE_ARRAY=mem.dev.1.americasbiotech.biz,mem.dev.0.americasbiotech.biz' \
+-t php_core_dev \
+"

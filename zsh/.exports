@@ -1,0 +1,22 @@
+# Remove duplicate entries from the `path` array
+typeset -U path
+
+path=(
+  $HOME/bin
+  /usr/local/bin
+  /usr/local/heroku/bin
+  $HOME/.rvm/bin
+  /Users/brandingbrand/Workspace/scripts
+  /Users/brandingbrand/Workspace/scripts/tmux-scripts
+  $HOME/Library/Haskell/bin
+  $path
+)
+
+export PATH
+
+export WORKSPACE="$HOME/Workspace"
+
+# set vim as default editor
+export EDITOR='vim'
+
+export NVM_DIR="$HOME/.nvm"

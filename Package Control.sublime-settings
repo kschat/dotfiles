@@ -6,6 +6,8 @@
 	[
 		"Better JavaScript",
 		"BracketHighlighter",
+		"DashDoc",
+		"Dotfiles Syntax Highlighting",
 		"Emmet",
 		"Git",
 		"GitGutter",
@@ -19,6 +21,7 @@
 		"SideBarEnhancements",
 		"Stylus",
 		"SublimeLinter",
+		"Sublimerge Pro",
 		"Theme - Afterglow",
 		"Theme - Minimal",
 		"Theme - Numix",
