@@ -1,0 +1,46 @@
+# Load dependencies.
+pmodload 'helper'
+
+function prompt_kyle_precmd {
+  setopt LOCAL_OPTIONS
+  unsetopt XTRACE KSH_ARRAYS
+
+  # get Git repository information
+  if (( $+functions[git-info] )); then
+    git-info
+  fi
+
+  # get Node version information
+  if (( $+functions[node-info] )); then
+    node-info
+  fi
+}
+
+function prompt_kyle_setup {
+  setopt LOCAL_OPTIONS
+  unsetopt XTRACE KSH_ARRAYS
+  prompt_opts=(cr percent subst)
+
+  # Load required functions.
+  autoload -Uz add-zsh-hook
+
+  # Add hook for calling git-info before each command.
+  add-zsh-hook precmd prompt_kyle_precmd
+
+  # git info
+  zstyle ':prezto:module:git:info' verbose 'yes'
+  zstyle ':prezto:module:git:info:branch' format '%F{cyan}%b%f'
+  zstyle ':prezto:module:git:info:clean' format ' %F{green}✔%f'
+  zstyle ':prezto:module:git:info:dirty' format ' %F{red}✗%f'
+  zstyle ':prezto:module:git:info:keys' format \
+    'prompt' 'on %F{white}%f%b%C%D' \
+    'rprompt' '%b'
+
+  # node info
+  zstyle ':prezto:module:node:info:version' format '%F{blue}[node:%v]%f'
+
+  PROMPT=$'\nλ %F{cyan}%n%f in %F{green}%~%f ${(e)git_info[prompt]} \n%F{white}❯%f '
+  RPROMPT='${(e)node_info[version]}'
+}
+
+prompt_kyle_setup "$@"
