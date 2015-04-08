@@ -15,6 +15,16 @@ export VISUAL='vim'
 export PAGER='less'
 
 #
+# Terminal emulators
+#
+
+# fixes bug in terminator that doesn't set the TERM environment variable
+# correctly and results in tmux not using 256 colors
+if [[ $COLORTERM = gnome-terminal && ! $TERM = screen-256color ]]; then
+ export TERM=xterm-256color
+fi
+
+#
 # Language
 #
 
@@ -30,7 +40,6 @@ fi
 typeset -gU cdpath fpath mailpath path
 
 export WORKSPACE="$HOME"/Workspace
-
 export NVM_DIR="$HOME"/.nvm
 
 # Set the the list of directories that cd searches.
