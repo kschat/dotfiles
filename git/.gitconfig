@@ -14,3 +14,5 @@
 
 	lg = !git lg1
 	st = status
+[push]
+	default = simple
