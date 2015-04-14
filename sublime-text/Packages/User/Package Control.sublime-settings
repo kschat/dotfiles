@@ -4,7 +4,6 @@
 	],
 	"installed_packages":
 	[
-		"Better JavaScript",
 		"BracketHighlighter",
 		"DashDoc",
 		"Dotfiles Syntax Highlighting",
@@ -23,9 +22,6 @@
 		"SublimeLinter",
 		"Sublimerge Pro",
 		"Theme - Afterglow",
-		"Theme - Minimal",
-		"Theme - Numix",
-		"Theme - Piatto",
 		"Theme - Spacegray",
 		"Tomorrow Color Schemes",
 		"Vintageous"
