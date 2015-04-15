@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-echo 'TESTING'
-
 branch_name="$(git rev-parse --abbrev-ref HEAD 2> /dev/null || echo Detacted HEAD)"
 
 echo "$branch_name - $(cat $1)" > $1
