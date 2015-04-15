@@ -1,6 +1,10 @@
 [global_config]
+  always_split_with_profile = True
   focus = system
 [keybindings]
+  new_tab = <Primary>t
+  close_term = <Primary>w
+  close_window = <Primary>q
 [profiles]
   [[default]]
     background_darkness = 0.8
