@@ -16,7 +16,7 @@ package_manager_arguments=''
 
 log_level=1
 force=false
-default_directory="$HOME"
+default_directory="./temp-dir"
 
 #
 # configuration variables
@@ -37,7 +37,6 @@ arch_dependencies=(
 )
 
 osx_dependencies=(
-  brew
   caskroom/cask/brew-cask
 )
 
@@ -48,11 +47,9 @@ git_dependencies=(
   "https://github.com/gmarik/Vundle.vim.git $default_directory/.vim/bundle/Vundle.vim"
 )
 
-typeset -A packages
-
 # dotfiles to symlink
 # utility_name -> target_directory
-packages=(
+typeset -A packages; packages=(
   git "$default_directory"
   vim "$default_directory"
   terminator "$default_directory"
@@ -63,10 +60,11 @@ packages=(
 #
 
 reset_color="$(tput sgr0)"
+bold="$(tput bold)"
 
 typeset -A log_colors; log_colors=(
   error   "$(tput setaf 1)"
-  normal  "$(tput setaf 7)"
+  normal  "${bold}$(tput setaf 7)"
   warn    "$(tput setaf 3)"
   info    "$(tput setaf 6)"
 )
@@ -96,16 +94,18 @@ function fatal_error {
   local status_code="${1:-1}"
   local msg="${2:-Fatal error occured}"
 
-  log 1 $msg
+  log error "$msg"
   exit status_code
 }
 
 function install_package_manager {
   case "$1" in
-    osx)  ;;
+    osx)  ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)";;
     arch) ;;
-    *)    return 1;;
+    *)    false;;
   esac
+
+  echo $?
 }
 
 function construct_dependency_arguments {
@@ -188,6 +188,7 @@ fi
 
 # prompt user before we install dependencies with package manager
 read -q "test?About to install dependencies with $package_manager"$'. Continue? [y/N]\n' || exit 3
+echo
 
 #
 # install dependencies with package manager
@@ -227,5 +228,5 @@ done
 
 # prompt user if installs failed
 if [[ "$?" -ne 0 ]]; then
-  read -q $'continue?An error occured while symlinking files.\n'
+  log error $'An error occured while symlinking files.\n'
 fi
