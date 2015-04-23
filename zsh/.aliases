@@ -1,6 +1,3 @@
-# sublime-text-dev on arch exports command as `subl3` instead of `subl`
-alias subl=subl3
-
 alias dockphp="docker run -d \
 -p 80:80 -p 8880:8880 -p 443:443 \
 -i -v '$WORKSPACE/php-links/:/var/www' \
@@ -14,3 +11,8 @@ alias dockphp="docker run -d \
 -e 'BB_MEMCACHE_ARRAY=mem.dev.1.americasbiotech.biz,mem.dev.0.americasbiotech.biz' \
 -t php_core_dev \
 "
+
+if [[ "$OSTYPE" == linux* ]]; then
+  # sublime-text-dev on arch exports command as `subl3` instead of `subl`
+  alias subl=subl3
+fi

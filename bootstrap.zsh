@@ -10,6 +10,49 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 # variable declarations
 #
 
+# set -x
+
+function prompt {
+  local message="$1"
+  # Split second argument by '/' and remove square brackets
+  local -a options; options=("${(@s|/|)2//[\[\]]/}")
+  local options_length="$(( $#options + 1 ))"
+  local export_variable="$3"
+  local default=''
+  local response=''
+  local response_index=1
+
+  # extract the default value by finding the first uppercase option
+  for index in {1..$#options}; do
+    local option="${options[$index]}"
+
+    [[ $option =~ '[A-Z]' ]] && default="$option"
+
+    options[$index]="${option:l}"
+  done
+
+  unset option
+
+  vared -p "$message $2 " response
+
+  # get the first character and lowercase it
+  response="${response:0:1:l}"
+
+  # check if the response is one of the provided options
+  response_index="${options[(i)$response]}"
+
+  # set to default if response isn't found in options
+  [[ "$response_index" -eq "$options_length" ]] && response="$default"
+
+  # export the response if an export variable was provided
+  if [[ -n "$export_variable" ]]; then
+    typeset -g "$3"="$response"
+    return 0
+  fi
+
+  echo "$response"
+}
+
 platform=''
 package_manager=''
 package_manager_arguments=''
