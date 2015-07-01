@@ -2,14 +2,14 @@ set nocompatible              " be iMproved, required
 filetype off                  " required
 
 let vundle_installed=1
-let vundle_readme=expand('~/.vim/bundle/vundle/README.md')
+let vundle_readme=expand('~/.vim/bundle/Vundle.vim/README.md')
 
 if !filereadable(vundle_readme)
   echo "Installing Vundle..."
   echo ""
 
-  slient !mkdir -p ~/.vim/bundle
-  slient !git clone https://github.com/gmarik/vundle ~/.vim/bundle/vundle
+  silent !mkdir -p ~/.vim/bundle
+  silent !git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 
   let vundle_installed=0
 endif
@@ -23,6 +23,11 @@ Plugin 'gmarik/Vundle.vim'
 
 " Plugins
 Plugin 'altercation/vim-colors-solarized'
+Plugin 'scrooloose/nerdtree'
+Plugin 'kien/ctrlp.vim'
+Plugin 'airblade/vim-gitgutter'
+Plugin 'jelera/vim-javascript-syntax'
+Plugin 'bling/vim-airline'
 
 " Required. All of your Plugins must be added before the following line
 call vundle#end()
@@ -47,15 +52,23 @@ filetype plugin indent on
 
 " http://dougblack.io/words/a-good-vimrc.html
 
-" enable syntax highlighting
+"
+" Syntax highlighting
+"
+
 syntax enable
 set background=dark
 colorscheme solarized
 
-" spacing
+"
+" Spacing
+"
+
 set tabstop=2       " number of visual spaces per TAB
 set softtabstop=2   " number of spaces in tab when editing
 set expandtab       " tabs are spaces
+
+autocmd BufWritePre * :%s/\s\+$//e " remove trailing whitespace
 
 "
 " UI configuration
@@ -67,6 +80,8 @@ set cursorline      " highlight current line
 filetype indent on  " load filetype-specific indent files
 set lazyredraw      " redraw only when we need to
 set showmatch       " highlight matching [{()}]
+set colorcolumn=80  " adds 80 character vertical line
+set laststatus=2    " always show vim-airline
 
 "
 " Search
@@ -74,3 +89,18 @@ set showmatch       " highlight matching [{()}]
 
 set incsearch           " search as characters are entered
 set hlsearch            " highlight matches
+
+"
+" Key mappings
+"
+
+" set space to clear out search highlighting
+nnoremap <space> :noh<return><esc>
+
+
+"
+" Misc
+"
+
+set autoread        " reload files when changed outside of vim
+
