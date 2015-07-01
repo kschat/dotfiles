@@ -1,6 +1,19 @@
 set nocompatible              " be iMproved, required
 filetype off                  " required
 
+let vundle_installed=1
+let vundle_readme=expand('~/.vim/bundle/vundle/README.md')
+
+if !filereadable(vundle_readme)
+  echo "Installing Vundle..."
+  echo ""
+
+  slient !mkdir -p ~/.vim/bundle
+  slient !git clone https://github.com/gmarik/vundle ~/.vim/bundle/vundle
+
+  let vundle_installed=0
+endif
+
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
@@ -13,6 +26,14 @@ Plugin 'altercation/vim-colors-solarized'
 
 " Required. All of your Plugins must be added before the following line
 call vundle#end()
+
+if vundle_installed == 0
+  echo "Installing plugins"
+  echo ""
+  :PluginInstall
+  :qa
+endif
+
 filetype plugin indent on
 
 "
