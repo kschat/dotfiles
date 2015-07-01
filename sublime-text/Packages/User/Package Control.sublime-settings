@@ -4,6 +4,7 @@
 	],
 	"installed_packages":
 	[
+		"Babel",
 		"BracketHighlighter",
 		"DashDoc",
 		"Dotfiles Syntax Highlighting",
@@ -17,6 +18,7 @@
 		"Markdown Extended",
 		"Package Control",
 		"Sass",
+		"SCSS",
 		"SFTP",
 		"SideBarEnhancements",
 		"Stylus",
