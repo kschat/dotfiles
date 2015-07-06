@@ -58,6 +58,7 @@ colorscheme solarized
 
 set tabstop=2       " number of visual spaces per TAB
 set softtabstop=2   " number of spaces in tab when editing
+set shiftwidth=2    " number of spaces per tab
 set expandtab       " tabs are spaces
 
 autocmd BufWritePre * :%s/\s\+$//e " remove trailing whitespace
@@ -76,6 +77,7 @@ set colorcolumn=80  " adds 80 character vertical line
 set laststatus=2    " always show vim-airline
 set timeoutlen=50   " decrease timeout to update mode UI
 set noshowmode      " remove default mode infavor of airline
+set wildmenu        " visual autocomplete for command menu
 
 "
 " Search
