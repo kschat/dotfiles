@@ -2,7 +2,7 @@
 	name = kschat
 	email = kyleschattler@gmail.com
 [credential]
-	helper = osxkeychain
+	helper = cache
 [filter "media"]
 	clean = git media clean %f
 	smudge = git media smudge %f
