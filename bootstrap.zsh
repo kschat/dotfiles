@@ -287,6 +287,10 @@ if [[ "$symlink_dotfiles" == 'y' ]];then
   # prompt user if install failed
   if [[ "$?" -ne 0 ]]; then
     log warn $'An error occured while symlinking files.\n'
+    exit 6
   fi
+
+  # if we're on OS X, use keychain for credentials instead
+  [[ "$platform" == "osx" ]] && git config --global credential.helper 'osxkeychain'
 fi
 
