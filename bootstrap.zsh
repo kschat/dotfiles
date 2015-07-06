@@ -54,6 +54,7 @@ typeset -A packages; packages=(
   git "$default_directory"
   vim "$default_directory"
   terminator "$default_directory"
+  tf2 "$default_directory/.steam/steam/steamapps/common/Team Fortress 2/tf/custom"
 )
 
 #
