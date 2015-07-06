@@ -16,9 +16,43 @@ package_manager_arguments=''
 
 log_level=1
 force=false
-default_directory="./temp-dir"
+default_directory="$HOME"
 
 #
+# parse command arguments
+#
+
+while test $# -gt 0; do
+  case "$1" in
+    -f|--force)
+      force=true
+      shift
+      ;;
+    -v|--verbose)
+      log_level=3
+      shift
+      ;;
+    -vv)
+      log_level=4
+      shift
+      ;;
+    -d|--debug)
+      log_level=4
+      set -x
+      default_directory="./temp-dir"
+      shift
+      ;;
+    *)
+      break
+      ;;
+  esac
+done
+
+# set default_directory to the last argument as long as were not in debug mode
+if [[ -n "${@: -1}" && "$default_directory" != "./temp-dir" ]]; then
+  default_directory="${@: -1}"
+fi
+
 # configuration variables
 #
 
@@ -159,35 +193,6 @@ function construct_dependency_arguments {
     *)        return 1;;
   esac
 }
-
-#
-# parse command arguments
-#
-
-while test $# -gt 0; do
-  case "$1" in
-    -f|--force)
-      force=true
-      shift
-      ;;
-    -v|--verbose)
-      log_level=3
-      shift
-      ;;
-    -vv)
-      log_level=4
-      shift
-      ;;
-    -vvv)
-      log_level=4
-      set -x
-      shift
-      ;;
-    *)
-      exit 0
-      ;;
-  esac
-done
 
 #
 # detect platform and package manager
