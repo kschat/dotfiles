@@ -91,6 +91,14 @@ typeset -A packages; packages=(
   tf2 "$default_directory/.steam/steam/steamapps/common/Team Fortress 2/tf/custom"
 )
 
+exit_codes=(
+  unsupported_system
+  pm_install_failed
+  pm_depends_failed
+  git_depends_failed
+  symlink_failed
+)
+
 #
 # color codes
 #
@@ -172,7 +180,7 @@ function fatal_error {
   local msg="${2:-Fatal error occured}"
 
   log error "$msg"
-  exit status_code
+  exit $status_code
 }
 
 function install_package_manager {
@@ -253,7 +261,7 @@ fi
 log info "Package manager: [$package_manager]"
 
 if [[ "$platform" == 'unknown' && "$package_manager" == 'unknown' ]]; then
-  fatal_error 1 'Unsupported system'
+  fatal_error $exit_codes[(i)unsupported_system] 'Unsupported system'
 fi
 
 #
@@ -264,7 +272,7 @@ if [[ "$package_manager" == 'unknown' ]]; then
   log info 'Installing missing package manager'
 
   if ! install_package_manager "$platform"; then
-    fatal_error 2 'Failed installing package manager'
+    fatal_error $exit_codes[(i)pm_install_failed] 'Failed installing package manager'
   fi
 fi
 
@@ -283,7 +291,7 @@ if [[ "$install_dependencies" == 'y' ]]; then
   if [[ "$?" -ne 0 ]]; then
     prompt "$(log warn 'An error occured while install dependencies. Continue?')" '[y/N]' continue_install
 
-    [[ "$continue_install" == 'n' ]] && exit 4
+    [[ "$continue_install" == 'n' ]] && exit $exit_codes[(i)pm_depends_failed]
   fi
 fi
 
@@ -304,7 +312,7 @@ if [[ "$install_git_dependencies" == 'y' ]]; then
   if [[ "$?" -ne 0 ]]; then
     prompt "$(log warn 'An error occured while installing with git. Continue?')" '[y/N]' continue_install
 
-    [[ "$continue_install" == 'n' ]] && exit 5
+    [[ "$continue_install" == 'n' ]] && exit $exit_codes[(i)git_depends_failed]
   fi
 fi
 
@@ -326,7 +334,7 @@ if [[ "$symlink_dotfiles" == 'y' ]];then
   # prompt user if install failed
   if [[ "$?" -ne 0 ]]; then
     log warn $'An error occured while symlinking files.\n'
-    exit 6
+    exit $exit_codes[(i)symlink_failed]
   fi
 
   # if we're on OS X, use keychain for credentials instead
