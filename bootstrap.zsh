@@ -50,6 +50,7 @@ git_dependencies=(
 # dotfiles to symlink
 # utility_name -> target_directory
 typeset -A packages; packages=(
+  zsh "$default_directory"
   git "$default_directory"
   vim "$default_directory"
   terminator "$default_directory"
@@ -87,7 +88,7 @@ function prompt {
   for index in {1..$#options}; do
     local option="${options[$index]}"
 
-    [[ "$option" =~ '[A-Z]' ]] && default="$option"
+    [[ "$option" =~ '[A-Z]' ]] && default="${option:l}"
 
     options[$index]="${option:l}"
   done
@@ -124,7 +125,7 @@ function log {
   fi
 
   # redirect to stderr if we're logging an error
-  if [[ "$1" == 'error' || "$1" == 'warn' ]]; then
+  if [[ "$1" == 'error' ]]; then
     echo $log_string >&2
   else
     echo $log_string
@@ -227,47 +228,64 @@ if [[ "$package_manager" == 'unknown' ]] && ! install_package_manager "$platform
   fatal_error 2 'Failed installing package manager'
 fi
 
-# prompt user before we install dependencies with package manager
-read -q "test?About to install dependencies with $package_manager"$'. Continue? [y/N]\n' || exit 3
-echo
-
 #
 # install dependencies with package manager
 #
 
-package_manager_arguments="$(construct_dependency_arguments "$package_manager")"
+prompt "Install dependencies with $package_manager?" '[y/N]' install_dependencies
 
-echo $package_manager_arguments | xargs "$package_manager"
+if [[ "$install_dependencies" == 'y' ]]; then
+  package_manager_arguments="$(construct_dependency_arguments "$package_manager")"
 
-# prompt user if installs failed
-if [[ "$?" -ne 0 ]]; then
-  read -q $'continue?An error occured while installing dependencies. Continue? [y/N]\n' || exit 4
+  echo $package_manager_arguments | xargs "$package_manager"
+
+  # prompt user if install failed
+  if [[ "$?" -ne 0 ]]; then
+    prompt "$(log warn 'An error occured while install dependencies. Continue?')" '[y/N]' continue_install
+
+    [[ "$continue_install" == 'n' ]] && exit 4
+  fi
 fi
 
 #
 # install dependencies with git
 #
 
-if hash git 2> /dev/null; then
-  for dep in $git_dependencies; do
-    echo "$dep" | xargs git clone
-  done
-fi
+prompt "Install dependencies with git?" '[y/N]' install_git_dependencies
 
-# prompt user if installs failed
-if [[ "$?" -ne 0 ]]; then
-  read -q $'continue?An error occured while installing with git. Continue? [y/N]\n' || exit 5
+if [[ "$install_git_dependencies" == 'y' ]]; then
+  if hash git 2> /dev/null; then
+    for dep in $git_dependencies; do
+      echo "$dep" | xargs git clone
+    done
+  fi
+
+  # prompt user if install failed
+  if [[ "$?" -ne 0 ]]; then
+    prompt "$(log warn 'An error occured while installing with git. Continue?')" '[y/N]' continue_install
+
+    [[ "$continue_install" == 'n' ]] && exit 5
+  fi
 fi
 
 #
 # symlink packages from this repo
 #
 
-for package in "${(@k)packages}"; do
-  stow -t "${packages[$package]:-"$default_directory"}" "$package"
-done
+prompt 'Symlink dotfiles?' '[y/N]' symlink_dotfiles
 
-# prompt user if installs failed
-if [[ "$?" -ne 0 ]]; then
-  log error $'An error occured while symlinking files.\n'
+if [[ "$symlink_dotfiles" == 'y' ]];then
+  mkdir -p "$default_directory"
+
+  for package in "${(@k)packages}"; do
+    local destination_dir="${packages[$package]:-"$default_directory"}"
+
+    mkdir -p "$destination_dir" && stow -t "$destination_dir" "$package"
+  done
+
+  # prompt user if install failed
+  if [[ "$?" -ne 0 ]]; then
+    log warn $'An error occured while symlinking files.\n'
+  fi
 fi
+
