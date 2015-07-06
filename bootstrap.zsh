@@ -178,11 +178,41 @@ function fatal_error {
 function install_package_manager {
   case "$1" in
     osx)  ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)";;
-    arch) ;;
+    arch) install_from_aur package-query && install_from_aur yaourt;;
     *)    false;;
   esac
 
   echo $?
+}
+
+function install_from_aur {
+  local package_name="$1"
+  local package_base_url="https://aur.archlinux.org/packages"
+  local package_url="$package_base_url/${package_name:0:2}/$package_name/$package_name.tar.gz"
+  local install_dir="${2:-./temp-build}"
+  local return_dir="$(pwd)"
+
+  mkdir -p "$install_dir" && cd "$install_dir" && wget "$package_url"
+
+  [[ "$?" -ne 0 ]] && return 1
+
+  tar xfv "$package_name.tar.gz"
+
+  [[ "$?" -ne 0 ]] && return 1
+
+  cd "$package_name" && makepkg
+
+  [[ "$?" -ne 0 ]] && return 1
+
+  sudo pacman --noconfirm -U "$package_name"*.pkg.tar.xz
+
+  [[ "$?" -ne 0 ]] && return 1
+
+  cd "$return_dir" && rm -r "$install_dir"
+
+  [[ "$?" -ne 0 ]] && return 1
+
+  return 0
 }
 
 function construct_dependency_arguments {
@@ -230,8 +260,12 @@ fi
 # install missing package managers
 #
 
-if [[ "$package_manager" == 'unknown' ]] && ! install_package_manager "$platform"; then
-  fatal_error 2 'Failed installing package manager'
+if [[ "$package_manager" == 'unknown' ]]; then
+  log info 'Installing missing package manager'
+
+  if ! install_package_manager "$platform"; then
+    fatal_error 2 'Failed installing package manager'
+  fi
 fi
 
 #
