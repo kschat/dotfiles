@@ -29,6 +29,8 @@ Plugin 'airblade/vim-gitgutter'
 Plugin 'jelera/vim-javascript-syntax'
 Plugin 'bling/vim-airline'
 Plugin 'tpope/vim-fugitive'
+Plugin 'mustache/vim-mustache-handlebars'
+Plugin 'mattn/emmet-vim'
 
 " Required. All of your Plugins must be added before the following line
 call vundle#end()
@@ -92,6 +94,10 @@ set hlsearch        " highlight matches
 
 " set space to clear out search highlighting
 nnoremap <space> :noh<return><esc>
+
+" shortcuts to cycle through buffers
+nnoremap <Tab> :bnext<CR>
+nnoremap <S-Tab> :bprevious<CR>
 
 "
 " Misc
