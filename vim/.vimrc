@@ -104,6 +104,7 @@ nnoremap <S-Tab> :bprevious<CR>
 "
 
 set autoread                    " reload files when changed outside of vim
+set backspace=indent,eol,start  " allow backspace over anything in Insert mode
 
 let g:airline_powerline_fonts=1 " enable powerline fonts
 let g:ctrlp_show_hidden=1
