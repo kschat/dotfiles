@@ -21,7 +21,6 @@ call vundle#begin()
 " let Vundle manage Vundle, required
 Plugin 'gmarik/Vundle.vim'
 
-" Plugins
 Plugin 'altercation/vim-colors-solarized'
 Plugin 'scrooloose/nerdtree'
 Plugin 'kien/ctrlp.vim'
@@ -31,6 +30,7 @@ Plugin 'bling/vim-airline'
 Plugin 'tpope/vim-fugitive'
 Plugin 'mustache/vim-mustache-handlebars'
 Plugin 'mattn/emmet-vim'
+Plugin 'wavded/vim-stylus'
 
 " Required. All of your Plugins must be added before the following line
 call vundle#end()
@@ -44,7 +44,18 @@ endif
 
 filetype plugin indent on
 
-" config settings based on http://dougblack.io/words/a-good-vimrc.html
+"
+" General
+"
+
+" change map leader from \ to ,
+let mapleader=","
+
+" reload files when changed outside of vim
+set autoread
+
+" allow backspace over anything in Insert mode
+set backspace=indent,eol,start
 
 "
 " Syntax highlighting
@@ -58,10 +69,17 @@ colorscheme solarized
 " Spacing
 "
 
-set tabstop=2       " number of visual spaces per TAB
-set softtabstop=2   " number of spaces in tab when editing
-set shiftwidth=2    " number of spaces per tab
-set expandtab       " tabs are spaces
+" number of visual spaces per TAB
+set tabstop=2
+
+" number of spaces in tab when editing
+set softtabstop=2
+
+" number of spaces per tab
+set shiftwidth=2
+
+" tabs are spaces
+set expandtab
 
 autocmd BufWritePre * :%s/\s\+$//e " remove trailing whitespace
 
@@ -69,43 +87,70 @@ autocmd BufWritePre * :%s/\s\+$//e " remove trailing whitespace
 " UI configuration
 "
 
-set number          " show line numbers
-set showcmd         " show command in bottom bar
-set cursorline      " highlight current line
-filetype indent on  " load filetype-specific indent files
-set lazyredraw      " redraw only when we need to
-set showmatch       " highlight matching [{()}]
-set colorcolumn=80  " adds 80 character vertical line
-set laststatus=2    " always show vim-airline
-set timeoutlen=50   " decrease timeout to update mode UI
-set noshowmode      " remove default mode infavor of airline
-set wildmenu        " visual autocomplete for command menu
+" show line numbers
+set number
+
+" show command in bottom bar
+set showcmd
+
+" highlight current line
+set cursorline
+
+" load filetype-specific indent files
+filetype indent on
+
+" redraw only when we need to (not during macros)
+set lazyredraw
+
+" highlight matching [{()}]
+set showmatch
+
+" adds 80 character vertical line
+set colorcolumn=80
+
+" always show vim-airline
+set laststatus=2
+
+" decrease timeout to update mode UI
+set timeoutlen=1000
+set ttimeoutlen=10
+
+" remove default mode infavor of airline
+set noshowmode
+
+" visual autocomplete for command menu
+set wildmenu
 
 "
 " Search
 "
 
-set incsearch       " search as characters are entered
-set hlsearch        " highlight matches
+" search as characters are entered
+set incsearch
+
+" highlight matches
+set hlsearch
 
 "
 " Key mappings
 "
 
 " set space to clear out search highlighting
-nnoremap <space> :noh<return><esc>
+nnoremap <leader><space> :noh<return><esc>
 
 " shortcuts to cycle through buffers
 nnoremap <Tab> :bnext<CR>
 nnoremap <S-Tab> :bprevious<CR>
 
+" shortcut to edit/reload vimrc
+nmap <silent> <leader>ev :e $VIMRC<CR>
+nmap <silent> <leader>sv :so $VIMRC<CR>
+
 "
 " Misc
 "
 
-set autoread                    " reload files when changed outside of vim
-set backspace=indent,eol,start  " allow backspace over anything in Insert mode
-
-let g:airline_powerline_fonts=1 " enable powerline fonts
+" enable powerline fonts
+let g:airline_powerline_fonts=1
 let g:ctrlp_show_hidden=1
 
