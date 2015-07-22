@@ -234,6 +234,9 @@ nnoremap <S-Tab> :bprevious<CR>
 nmap <silent> <leader>ev :e $VIMRC<CR>
 nmap <silent> <leader>sv :so $VIMRC<CR>
 
+" shortcut to delete a buffer without closing the split
+nnoremap <leader>d :bp\|bd #<CR>
+
 " }}}
 
 " -----------------------------------------------------------------------------
