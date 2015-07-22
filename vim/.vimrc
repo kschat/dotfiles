@@ -37,6 +37,7 @@ Plugin 'tpope/vim-fugitive'
 Plugin 'mustache/vim-mustache-handlebars'
 Plugin 'mattn/emmet-vim'
 Plugin 'wavded/vim-stylus'
+Plugin 'tmux-plugins/vim-tmux-focus-events'
 
 call vundle#end()
 
@@ -59,6 +60,7 @@ let mapleader=","
 
 " reload files when changed outside of vim
 set autoread
+autocmd FocusGained,BufEnter * :checktime
 
 " allow backspace over anything in Insert mode
 set backspace=indent,eol,start
@@ -235,12 +237,24 @@ nmap <silent> <leader>sv :so $VIMRC<CR>
 " }}}
 
 " -----------------------------------------------------------------------------
-" Misc {{{
+" CtrlP {{{
+" -----------------------------------------------------------------------------
+
+" ignore node_modules directory
+let g:ctrlp_custom_ignore='\v[\/](node_modules)$'
+
+" show hidden files in CtrlP
+let g:ctrlp_show_hidden=1
+
+" }}}
+
+" -----------------------------------------------------------------------------
+" Powerline {{{
 " -----------------------------------------------------------------------------
 
 " enable powerline fonts
 let g:airline_powerline_fonts=1
-let g:ctrlp_show_hidden=1
 
+" }}}
 
 " vim:foldmethod=marker:foldlevel=0

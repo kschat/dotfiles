@@ -61,10 +61,10 @@ dependencies=(
   git
   zsh
   tmux
-  vim
 )
 
 arch_dependencies=(
+  vim
   terminator
   gnome-shell-themes-elegance-colors
   sublime-text-dev
@@ -72,6 +72,8 @@ arch_dependencies=(
 
 osx_dependencies=(
   caskroom/cask/brew-cask
+  caskroom/cask/xquartz
+  "vim --with-client-server"
 )
 
 debian_dependencies=()
