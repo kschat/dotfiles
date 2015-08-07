@@ -5,7 +5,8 @@ set nocompatible
 " Vundle Configuration {{{
 " -----------------------------------------------------------------------------
 
-" install vundle if it doesn't exist on the current system
+" install vundle if it doesn't exist on the current system and assume this is
+" the first time vim has been run on this system
 let vundle_installed=1
 let vundle_readme=expand('~/.vim/bundle/Vundle.vim/README.md')
 
@@ -13,8 +14,14 @@ if !filereadable(vundle_readme)
   echo "Installing Vundle..."
   echo ""
 
+  " install vundle
   silent !mkdir -p ~/.vim/bundle
   silent !git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+
+  " create required directories
+  silent !mkdir -p ~/.vim/backup
+  silent !mkdir -p ~/.vim/swap
+  silent !mkdir -p ~/.vim/undo
 
   let vundle_installed=0
 endif
@@ -78,6 +85,14 @@ runtime macros/matchit.vim
 
 " replace system bell with screen flash
 set visualbell
+
+" move backup, swap, and undo file directories to central location
+set backupdir=~/.vim/backup//
+set directory=~/.vim/swap//
+set undodir=~/.vim/undo//
+
+" yank, delete, change, and put to system clipboard
+" set clipboard=unnamed
 
 " }}}
 
