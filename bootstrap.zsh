@@ -93,6 +93,7 @@ typeset -A packages; packages=(
   vim "$default_directory"
   terminator "$default_directory"
   tf2 "$tf2_directory/tf/custom"
+  powerline "$default_directory/.config/powerline"
 )
 
 exit_codes=(
