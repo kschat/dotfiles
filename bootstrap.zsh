@@ -17,6 +17,7 @@ package_manager_arguments=''
 log_level=1
 force=false
 default_directory="$HOME"
+tf2_directory="$default_directory/.local/share/Steam/steamapps/common/Team Fortress 2"
 
 #
 # parse command arguments
@@ -81,6 +82,7 @@ debian_dependencies=()
 git_dependencies=(
   "--recursive https://github.com/sorin-ionescu/prezto.git $default_directory/.zprezto"
   "https://github.com/gmarik/Vundle.vim.git $default_directory/.vim/bundle/Vundle.vim"
+  "https://github.com/n0kk/ahud.git '$tf2_directory/tf/custom/ahud-master'"
 )
 
 # dotfiles to symlink
@@ -90,7 +92,7 @@ typeset -A packages; packages=(
   git "$default_directory"
   vim "$default_directory"
   terminator "$default_directory"
-  tf2 "$default_directory/.local/share/Steam/steamapps/common/Team Fortress 2/tf/custom"
+  tf2 "$tf2_directory/tf/custom"
 )
 
 exit_codes=(
