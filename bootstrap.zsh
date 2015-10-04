@@ -91,6 +91,7 @@ typeset -A packages; packages=(
   vim "$default_directory"
   terminator "$default_directory"
   tf2 "$default_directory/.local/share/Steam/steamapps/common/Team Fortress 2/tf/custom"
+  powerline "$default_directory/.config/powerline"
 )
 
 exit_codes=(

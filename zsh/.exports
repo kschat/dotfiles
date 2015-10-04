@@ -43,6 +43,7 @@ export WORKSPACE="$HOME"/Workspace
 export NVM_DIR="$HOME"/.nvm
 export DOTFILES="$WORKSPACE/dotfiles"
 export VIMRC="$DOTFILES/vim/.vimrc"
+export POWERLINE_PATH='/usr/local/lib/python2.7/site-packages/powerline'
 
 # Set the the list of directories that cd searches.
 # cdpath=(
