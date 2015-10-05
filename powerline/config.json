@@ -3,19 +3,6 @@
     "term_truecolor": false
   },
   "ext": {
-    "ipython": {
-      "colorscheme": "default",
-      "theme": "in",
-      "local_themes": {
-        "rewrite": "rewrite",
-        "out": "out",
-        "in2": "in2"
-      }
-    },
-    "pdb": {
-      "colorscheme": "default",
-      "theme": "default"
-    },
     "shell": {
       "colorscheme": "default",
       "theme": "default",
@@ -26,7 +13,7 @@
     },
     "tmux": {
       "colorscheme": "solarized",
-      "theme": "default"
+      "theme": "custom"
     },
     "vim": {
       "colorscheme": "default",
