@@ -83,7 +83,8 @@ git_dependencies=(
   "--recursive https://github.com/sorin-ionescu/prezto.git $default_directory/.zprezto"
   "https://github.com/gmarik/Vundle.vim.git $default_directory/.vim/bundle/Vundle.vim"
   "https://github.com/n0kk/ahud.git '$tf2_directory/tf/custom/ahud-master'"
-  "https://github.com/tmux-plugins/tpm $default_directory/.tmux/plugins/tpm"
+  "https://github.com/tmux-plugins/tpm.git $default_directory/.tmux/plugins/tpm"
+  "https://github.com/chriskempson/base16-shell.git $default_directory/.config/base16-shell"
 )
 
 # dotfiles to symlink

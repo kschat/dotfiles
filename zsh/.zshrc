@@ -13,6 +13,8 @@ done
 # Load RVM into a shell session *as a function*
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
 
+[[ -s $BASE16_SHELL ]] && source $BASE16_SHELL
+
 # disable gnome-ssh-askpass
 unset SSH_ASKPASS
 

@@ -34,7 +34,7 @@ call vundle#begin()
 
 Plugin 'gmarik/Vundle.vim'
 
-Plugin 'altercation/vim-colors-solarized'
+Plugin 'chriskempson/base16-vim'
 Plugin 'scrooloose/nerdtree'
 Plugin 'kien/ctrlp.vim'
 Plugin 'airblade/vim-gitgutter'
@@ -103,9 +103,12 @@ set undodir=~/.vim/undo//
 " turn syntax highlighting on
 syntax enable
 
+" access colors present in 256 colorspace
+let base16colorspace=256
+
 " set color scheme to dark solarized
 set background=dark
-colorscheme solarized
+colorscheme base16-solarized
 
 " }}}
 
@@ -272,6 +275,9 @@ let g:ctrlp_show_hidden=1
 
 " enable powerline fonts
 let g:airline_powerline_fonts=1
+
+" enable tabline
+let g:airline#extensions#tabline#enabled=1
 
 " }}}
 
