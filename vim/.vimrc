@@ -45,6 +45,7 @@ Plugin 'mustache/vim-mustache-handlebars'
 Plugin 'mattn/emmet-vim'
 Plugin 'wavded/vim-stylus'
 Plugin 'tmux-plugins/vim-tmux-focus-events'
+Plugin 'tmux-plugins/vim-tmux'
 
 call vundle#end()
 
