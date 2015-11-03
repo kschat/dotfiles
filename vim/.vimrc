@@ -92,7 +92,11 @@ set directory=~/.vim/swap//
 set undodir=~/.vim/undo//
 
 " yank, delete, change, and put to system clipboard
-" set clipboard=unnamed
+if has('unnamedplus')
+  set clipboard^=unnamedplus
+else
+  set clipboard^=unnamed
+endif
 
 " }}}
 
