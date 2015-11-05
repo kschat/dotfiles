@@ -250,8 +250,8 @@ set foldnestmax=10
 nnoremap <leader><space> :noh<return><esc>
 
 " shortcuts to cycle through buffers
-nnoremap <Tab> :bnext<CR>
-nnoremap <S-Tab> :bprevious<CR>
+nnoremap <leader><Tab> :bnext<CR>
+nnoremap <leader><S-Tab> :bprevious<CR>
 
 " shortcut to edit/reload vimrc
 nmap <silent> <leader>ev :e $VIMRC<CR>
