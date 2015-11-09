@@ -41,11 +41,11 @@ Plugin 'airblade/vim-gitgutter'
 Plugin 'jelera/vim-javascript-syntax'
 Plugin 'bling/vim-airline'
 Plugin 'tpope/vim-fugitive'
-Plugin 'mustache/vim-mustache-handlebars'
 Plugin 'mattn/emmet-vim'
 Plugin 'wavded/vim-stylus'
 Plugin 'tmux-plugins/vim-tmux-focus-events'
 Plugin 'tmux-plugins/vim-tmux'
+Plugin 'christoomey/vim-tmux-navigator'
 
 call vundle#end()
 
