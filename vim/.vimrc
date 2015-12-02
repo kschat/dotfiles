@@ -41,11 +41,10 @@ Plugin 'airblade/vim-gitgutter'
 Plugin 'jelera/vim-javascript-syntax'
 Plugin 'bling/vim-airline'
 Plugin 'tpope/vim-fugitive'
-Plugin 'mustache/vim-mustache-handlebars'
-Plugin 'mattn/emmet-vim'
-Plugin 'wavded/vim-stylus'
 Plugin 'tmux-plugins/vim-tmux-focus-events'
 Plugin 'tmux-plugins/vim-tmux'
+Plugin 'christoomey/vim-tmux-navigator'
+Plugin 'tpope/vim-obsession'
 
 call vundle#end()
 
@@ -266,8 +265,8 @@ nnoremap <leader>d :bp\|bd #<CR>
 " CtrlP {{{
 " -----------------------------------------------------------------------------
 
-" ignore node_modules directory
-let g:ctrlp_custom_ignore='\v[\/](node_modules)$'
+" ignore node_modules, and git directory
+let g:ctrlp_custom_ignore='\v[\/](node_modules|\.git)$'
 
 " show hidden files in CtrlP
 let g:ctrlp_show_hidden=1

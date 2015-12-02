@@ -2,7 +2,7 @@
 	name = kschat
 	email = kyleschattler@gmail.com
 [credential]
-	helper = cache
+	helper = osxkeychain
 [filter "media"]
 	clean = git media clean %f
 	smudge = git media smudge %f
@@ -18,3 +18,5 @@
 	default = simple
 [init]
 	templatedir = ~/.git-templates
+[core]
+	excludesfile = ~/.gitignore
