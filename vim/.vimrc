@@ -283,6 +283,9 @@ let g:airline_powerline_fonts=1
 " enable tabline
 let g:airline#extensions#tabline#enabled=1
 
+" disable powerline in favor of airline
+let g:powerline_loaded=1
+
 " }}}
 
 " -----------------------------------------------------------------------------
