@@ -69,12 +69,14 @@ arch_dependencies=(
   vim
   terminator
   sublime-text-dev
+  archey-git
 )
 
 osx_dependencies=(
   caskroom/cask/brew-cask
   caskroom/cask/xquartz
   "vim --with-client-server"
+  archey
 )
 
 debian_dependencies=()
