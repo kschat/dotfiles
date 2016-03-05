@@ -22,6 +22,9 @@ function prompt_kyle_setup {
   # Add hook for calling git-info before each command.
   add-zsh-hook precmd prompt_kyle_precmd
 
+  hname=" at %F{blue}%m%f"
+  lower_prompt="%F{blue}❯%f%F{blue}❯%f%F{white}❯%f"
+
   # editor mode info
   zstyle ':prezto:module:editor:info:keymap:primary' format '%F{yellow}INSERT%f'
   zstyle ':prezto:module:editor:info:keymap:alternate' format '%F{blue}NORMAL%f'
@@ -37,7 +40,7 @@ function prompt_kyle_setup {
     'prompt' 'on %b%C%D%S%u' \
     'rprompt' ''
 
-  PROMPT=$'\nλ %F{cyan}%n%f in %F{green}%~%f ${(e)git_info[prompt]} \n%F{white}❯%f '
+  PROMPT=$'\nλ %F{cyan}%n%f${hname} in %F{green}%~%f ${(e)git_info[prompt]} \n${lower_prompt} '
   RPROMPT='%F{white}[%f${editor_info[keymap]}%F{white}]%f'
 }
 
