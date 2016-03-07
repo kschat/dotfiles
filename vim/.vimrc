@@ -62,8 +62,9 @@ endif
 " General {{{
 " -----------------------------------------------------------------------------
 
-" change map leader from \ to ,
+" change map leader from \ to , and map \ to reverse search
 let mapleader=","
+noremap \ ,
 
 " reload files when changed outside of vim
 set autoread
@@ -245,8 +246,8 @@ set foldnestmax=10
 " Key mappings {{{
 " -----------------------------------------------------------------------------
 
-" set space to clear out search highlighting
-nnoremap <leader><space> :noh<return><esc>
+" set C-l to clear out search highlighting
+nnoremap <silent> <C-l> :<C-u>noh<CR><C-l>
 
 " shortcuts to cycle through buffers
 nnoremap <leader><Tab> :bnext<CR>
