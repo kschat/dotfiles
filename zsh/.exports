@@ -39,6 +39,7 @@ fi
 # Ensure path arrays do not contain duplicates.
 typeset -gU cdpath fpath mailpath path
 
+export XDG_CONFIG_HOME="$HOME"/.config
 export WORKSPACE="$HOME"/Workspace
 export NVM_DIR="$HOME"/.nvm
 export DOTFILES="$WORKSPACE/dotfiles"

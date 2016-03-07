@@ -38,13 +38,15 @@ Plugin 'chriskempson/base16-vim'
 Plugin 'scrooloose/nerdtree'
 Plugin 'kien/ctrlp.vim'
 Plugin 'airblade/vim-gitgutter'
-Plugin 'jelera/vim-javascript-syntax'
-Plugin 'bling/vim-airline'
+Plugin 'othree/yajs.vim'
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
 Plugin 'tpope/vim-fugitive'
 Plugin 'tmux-plugins/vim-tmux-focus-events'
 Plugin 'tmux-plugins/vim-tmux'
 Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'tpope/vim-obsession'
+Plugin 'scrooloose/syntastic'
 
 call vundle#end()
 
@@ -275,14 +277,23 @@ let g:ctrlp_show_hidden=1
 " }}}
 
 " -----------------------------------------------------------------------------
-" Powerline {{{
+" Airline {{{
 " -----------------------------------------------------------------------------
 
 " enable powerline fonts
 let g:airline_powerline_fonts=1
 
+" make the airline theme match the vim theme
+let g:airline_theme='base16'
+
 " enable tabline
 let g:airline#extensions#tabline#enabled=1
+
+" enable syntastic integration
+let g:airline#extensions#syntastic#enabled=1
+
+" disable powerline in favor of airline
+let g:powerline_loaded=1
 
 " }}}
 
@@ -291,6 +302,25 @@ let g:airline#extensions#tabline#enabled=1
 " -----------------------------------------------------------------------------
 
 let g:NERDTreeShowHidden=1
+
+" }}}
+
+" -----------------------------------------------------------------------------
+" Syntastic {{{
+" -----------------------------------------------------------------------------
+
+" set statusline+=%#warningmsg#
+" set statusline+=%{SyntasticStatuslineFlag()}
+" set statusline+=%*
+
+" Sane defaults
+let g:syntastic_check_on_open=1
+let g:syntastic_check_on_wq=0
+let g:syntastic_aggregate_errors=0
+let g:syntastic_always_populate_loc_list=1
+let g:syntastic_auto_loc_list=1
+
+let g:syntastic_javascript_checkers=['eslint']
 
 " }}}
 

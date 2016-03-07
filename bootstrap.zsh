@@ -62,19 +62,21 @@ dependencies=(
   git
   zsh
   tmux
+  wget
 )
 
 arch_dependencies=(
   vim
   terminator
-  gnome-shell-themes-elegance-colors
   sublime-text-dev
+  archey-git
 )
 
 osx_dependencies=(
   caskroom/cask/brew-cask
   caskroom/cask/xquartz
   "vim --with-client-server"
+  archey
 )
 
 debian_dependencies=()
@@ -202,8 +204,8 @@ function install_package_manager {
 
 function install_from_aur {
   local package_name="$1"
-  local package_base_url="https://aur.archlinux.org/packages"
-  local package_url="$package_base_url/${package_name:0:2}/$package_name/$package_name.tar.gz"
+  local package_base_url="https://aur.archlinux.org/cgit/aur.git/snapshot"
+  local package_url="$package_base_url/$package_name.tar.gz"
   local install_dir="${2:-./temp-build}"
   local return_dir="$(pwd)"
 
@@ -215,7 +217,7 @@ function install_from_aur {
 
   [[ "$?" -ne 0 ]] && return 1
 
-  cd "$package_name" && makepkg
+  cd "$package_name" && makepkg -s --noconfirm
 
   [[ "$?" -ne 0 ]] && return 1
 
