@@ -26,6 +26,7 @@ Plug 'tmux-plugins/vim-tmux'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'tpope/vim-obsession'
 Plug 'scrooloose/syntastic', { 'for': 'javascript' }
+Plug 'mhinz/vim-startify'
 
 call plug#end()
 
@@ -303,6 +304,18 @@ let g:syntastic_mode_map = { "mode": "active" }
 
 " use eslint for JavaScript linting
 let g:syntastic_javascript_checkers=['eslint']
+
+" }}}
+
+" -----------------------------------------------------------------------------
+" Startify {{{
+" -----------------------------------------------------------------------------
+
+" remove header
+let g:startify_custom_header=[]
+
+" remove 80 character column on startify
+autocmd User Startified setlocal colorcolumn=0
 
 " }}}
 
