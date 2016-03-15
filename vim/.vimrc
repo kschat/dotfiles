@@ -249,7 +249,7 @@ set foldnestmax=10
 " -----------------------------------------------------------------------------
 
 " set C-l to clear out search highlighting
-nnoremap <silent> <C-l> :<C-u>noh<CR><C-l>
+nnoremap <leader><space> :noh<CR><esc>
 
 " shortcuts to cycle through buffers
 nnoremap <leader><Tab> :bnext<CR>
@@ -309,17 +309,28 @@ let g:NERDTreeShowHidden=1
 " Syntastic {{{
 " -----------------------------------------------------------------------------
 
-" set statusline+=%#warningmsg#
-" set statusline+=%{SyntasticStatuslineFlag()}
-" set statusline+=%*
-
-" Sane defaults
+" run linting on open
 let g:syntastic_check_on_open=1
+
+" dont run linting when quiting vim
 let g:syntastic_check_on_wq=0
+
+" run all checkers for a filetype instead of stopping at first that errors
 let g:syntastic_aggregate_errors=0
+
+" allows put errors in location-list
 let g:syntastic_always_populate_loc_list=1
+
+" auto open location-list on error and auto close when no errors are detected
 let g:syntastic_auto_loc_list=1
 
+" don't display "tooltip" errors
+let g:syntastic_enable_balloons=0
+
+" set syntastic to "active" mode
+let g:syntastic_mode_map = { "mode": "active" }
+
+" use eslint for JavaScript linting
 let g:syntastic_javascript_checkers=['eslint']
 
 " }}}
