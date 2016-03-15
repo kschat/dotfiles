@@ -2,61 +2,32 @@
 set nocompatible
 
 " -----------------------------------------------------------------------------
-" Vundle Configuration {{{
+" Vim-plug Configuration {{{
 " -----------------------------------------------------------------------------
 
-" install vundle if it doesn't exist on the current system and assume this is
-" the first time vim has been run on this system
-let vundle_installed=1
-let vundle_readme=expand('~/.vim/bundle/Vundle.vim/README.md')
-
-if !filereadable(vundle_readme)
-  echo "Installing Vundle..."
-  echo ""
-
-  " install vundle
-  silent !mkdir -p ~/.vim/bundle
-  silent !git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
-
-  " create required directories
-  silent !mkdir -p ~/.vim/backup
-  silent !mkdir -p ~/.vim/swap
-  silent !mkdir -p ~/.vim/undo
-
-  let vundle_installed=0
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall | source $MYVIMRC
 endif
 
-filetype off
+call plug#begin('~/.vim/plugged')
 
-" set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
+Plug 'chriskempson/base16-vim'
+Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
+Plug 'kien/ctrlp.vim'
+Plug 'airblade/vim-gitgutter'
+Plug 'othree/yajs.vim', { 'for': 'javascript' }
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'tpope/vim-fugitive'
+Plug 'tmux-plugins/vim-tmux-focus-events'
+Plug 'tmux-plugins/vim-tmux'
+Plug 'christoomey/vim-tmux-navigator'
+Plug 'tpope/vim-obsession'
+Plug 'scrooloose/syntastic', { 'for': 'javascript' }
 
-Plugin 'gmarik/Vundle.vim'
-
-Plugin 'chriskempson/base16-vim'
-Plugin 'scrooloose/nerdtree'
-Plugin 'kien/ctrlp.vim'
-Plugin 'airblade/vim-gitgutter'
-Plugin 'othree/yajs.vim'
-Plugin 'vim-airline/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
-Plugin 'tpope/vim-fugitive'
-Plugin 'tmux-plugins/vim-tmux-focus-events'
-Plugin 'tmux-plugins/vim-tmux'
-Plugin 'christoomey/vim-tmux-navigator'
-Plugin 'tpope/vim-obsession'
-Plugin 'scrooloose/syntastic'
-
-call vundle#end()
-
-" only install plugins if vundle was just installed
-if vundle_installed == 0
-  echo "Installing plugins"
-  echo ""
-  :PluginInstall
-  :qa
-endif
+call plug#end()
 
 " }}}
 
