@@ -1,0 +1,75 @@
+{
+  "name": "solarized",
+  "groups": {
+    "background": {
+      "bg": "base16_solarized_dark:base00",
+      "fg": "base16_solarized_dark:base00",
+      "attrs": []
+    },
+    "active_window_status": {
+      "fg": "base16_solarized_dark:blue",
+      "bg": "base16_solarized_dark:base00",
+      "attrs": []
+    },
+    "window_status": {
+      "fg": "base16_solarized_dark:blue",
+      "bg": "base16_solarized_dark:base00",
+      "attrs": []
+    },
+    "activity_status": {
+      "fg": "base16_solarized_dark:yellow",
+      "bg": "base16_solarized_dark:base00",
+      "attrs": []
+    },
+    "bell_status": {
+      "fg": "base16_solarized_dark:red",
+      "bg": "base16_solarized_dark:base00",
+      "attrs": []
+    },
+    "window": {
+      "fg": "base16_solarized_dark:blue",
+      "bg": "base16_solarized_dark:base00",
+      "attrs": []
+    },
+    "window:divider": {
+      "fg": "base16_solarized_dark:base00",
+      "bg": "base16_solarized_dark:base00",
+      "attrs": []
+    },
+    "window:current": {
+      "fg": "base16_solarized_dark:base01",
+      "bg": "base16_solarized_dark:blue",
+      "attrs": ["bold"]
+    },
+    "window_name": {
+      "fg": "base16_solarized_dark:base01",
+      "bg": "base16_solarized_dark:blue",
+      "attrs": ["bold"]
+    },
+    "session": {
+      "fg": "base16_solarized_dark:base05",
+      "bg": "base16_solarized_dark:base02",
+      "attrs": ["bold"]
+    },
+    "session:prefix": {
+      "fg": "base16_solarized_dark:base01",
+      "bg": "base16_solarized_dark:base07",
+      "attrs": ["bold"]
+    },
+    "uptime": {
+      "fg": "base16_solarized_dark:base06",
+      "bg": "base16_solarized_dark:base01",
+      "attrs": []
+    },
+    "date": {
+      "fg": "base16_solarized_dark:base06",
+      "bg": "base16_solarized_dark:base01",
+      "attrs": []
+    },
+    "hostname": {
+      "fg": "base16_solarized_dark:base05",
+      "bg": "base16_solarized_dark:base02",
+      "attrs": ["bold"]
+    }
+  }
+}

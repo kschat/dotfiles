@@ -1,16 +1,25 @@
 {
-	"segments": {
-		"right": [
-			{
-				"function": "powerline.segments.common.sys.uptime",
-				"priority": 50
-			},
-			{
-				"function": "powerline.segments.common.time.date"
-			},
-			{
-				"function": "powerline.segments.common.net.hostname"
-			}
-		]
-	}
+  "segments": {
+    "right": [
+      {
+        "function": "powerline.segments.common.sys.uptime",
+        "priority": 50
+      },
+      {
+        "function": "powerline.segments.common.time.date",
+        "draw_soft_divider": false,
+        "before": "  ",
+        "priority": 50,
+        "args": {
+          "format": "%a %b %d"
+        }
+      },
+      {
+        "function": "powerline.segments.common.net.hostname",
+        "args": {
+          "exclude_domain": true
+        }
+      }
+    ]
+  }
 }
