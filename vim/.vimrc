@@ -143,7 +143,10 @@ set showbreak=↪\ \
 " UI configuration {{{
 " -----------------------------------------------------------------------------
 
-" show line numbers
+" show line number relative to the cursor
+set relativenumber
+
+" show line current line number in front of the cursor
 set number
 
 " show command in bottom bar
