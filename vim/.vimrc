@@ -27,6 +27,7 @@ Plug 'christoomey/vim-tmux-navigator'
 Plug 'tpope/vim-obsession'
 Plug 'scrooloose/syntastic', { 'for': 'javascript' }
 Plug 'mhinz/vim-startify'
+Plug 'mbbill/undotree'
 
 call plug#end()
 
@@ -67,11 +68,10 @@ set directory=~/.vim/swap//
 set undodir=~/.vim/undo//
 
 " yank, delete, change, and put to system clipboard
-if has('unnamedplus')
-  set clipboard^=unnamedplus
-else
-  set clipboard^=unnamed
-endif
+set clipboard^=unnamedplus
+
+" disable mouse buttons (but keep scroll enabled)
+set mouse=
 
 " }}}
 
@@ -133,6 +133,13 @@ set linebreak
 
 " turn list off as it disables linebreak
 set nolist
+
+" encoding can only be set on startup
+if has('vim_starting')
+  set encoding=utf-8
+endif
+
+set fileencoding=utf-8
 
 " string to put before wrapped screen lines
 set showbreak=↪\ \
@@ -237,6 +244,11 @@ nmap <silent> <leader>sv :so $VIMRC<CR>
 " shortcut to delete a buffer without closing the split
 nnoremap <leader>d :bp\|bd #<CR>
 
+if has('nvim')
+  " Hack to get C-h working in neovim
+  nmap <BS> <C-W>h
+endif
+
 " }}}
 
 " -----------------------------------------------------------------------------
@@ -244,7 +256,7 @@ nnoremap <leader>d :bp\|bd #<CR>
 " -----------------------------------------------------------------------------
 
 " ignore node_modules, and git directory
-let g:ctrlp_custom_ignore='\v[\/](node_modules|\.git)$'
+let g:ctrlp_custom_ignore='\v[\/](node_modules|\.git|test/coverage)$'
 
 " show hidden files in CtrlP
 let g:ctrlp_show_hidden=1
