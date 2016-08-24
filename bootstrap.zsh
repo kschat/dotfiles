@@ -95,9 +95,12 @@ typeset -A packages; packages=(
   zsh "$default_directory"
   git "$default_directory"
   vim "$default_directory"
+  tmux "$default_directory"
   terminator "$default_directory"
   tf2 "$tf2_directory/tf/custom"
   powerline "$default_directory/.config/powerline"
+  colors "$default_directory/.colors"
+  xorg "$default_directory"
 )
 
 exit_codes=(

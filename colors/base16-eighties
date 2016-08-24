@@ -1,0 +1,56 @@
+! Base16 Eighties
+
+#define base00 #2D2D2D
+#define base01 #393939
+#define base02 #515151
+#define base03 #747369
+#define base04 #A09F93
+#define base05 #D3D0C8
+#define base06 #E8E6DF
+#define base07 #F2F0EC
+#define base08 #F2777A
+#define base09 #F99157
+#define base0A #FFCC66
+#define base0B #99CC99
+#define base0C #66CCCC
+#define base0D #6699CC
+#define base0E #CC99CC
+#define base0F #D27B53
+
+#define bg      #F2F0EC
+#define fg      #2D2D2D
+#define black   #2D2D2D
+#define gray    #747369
+#define lgray   #A09F93
+#define red     #F2777A
+#define orange  #F99157
+#define yellow  #FFCC66
+#define green   #99CC99
+#define cyan    #66CCCC
+#define blue    #6699CC
+#define purple  #CC99CC
+#define brown   #D27B53
+
+*.foreground:   base05
+*.background:   base00
+*.cursorColor:  base05
+
+*.color0:       base00
+*.color1:       base08
+*.color2:       base0B
+*.color3:       base0A
+*.color4:       base0D
+*.color5:       base0E
+*.color6:       base0C
+*.color7:       base05
+
+*.color8:       base03
+*.color9:       base09
+*.color10:      base01
+*.color11:      base02
+*.color12:      base04
+*.color13:      base06
+*.color14:      base0F
+*.color15:      base07
+
+! vim:filetype=xdefaults

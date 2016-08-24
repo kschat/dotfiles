@@ -1,0 +1,24 @@
+! Colors
+#include ".colors/base16-eighties"
+
+! Xft settings
+Xft.autohint:   0
+Xft.dpi:        192
+Xft.antialias:  true
+Xft.rgba:       rgb
+Xft.hinting:    true
+Xft.hintstyle:  hintfull
+Xft.lcdfilter:  lcddefault
+
+URxvt.font: xft:Source Code Pro Medium:size=12,style=Medium,antialias=true
+
+URxvt*loginShell: false
+URxvt*iso14755:   false
+
+URxvt*title:        urxvt
+URxvt.scrollBar:    false
+URxvt*cursorBlink:  false
+
+URxvt*externalBorder: 0
+URxvt*internalBorder: 10
+
