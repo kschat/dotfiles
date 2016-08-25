@@ -82,12 +82,9 @@ set mouse=
 " turn syntax highlighting on
 syntax enable
 
-" access colors present in 256 colorspace
-let base16colorspace=256
-
 " set color scheme to dark solarized
 set background=dark
-colorscheme base16-solarized
+colorscheme base16-eighties
 
 " }}}
 
