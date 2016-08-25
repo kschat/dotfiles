@@ -70,6 +70,15 @@ arch_dependencies=(
   terminator
   sublime-text-dev
   archey-git
+  rxvt-unicode
+  adobe-source-code-pro-fonts
+  ttf-font-awesome
+  acpi
+  alsa-utils
+  xorg-xrandr
+  xtitle
+  i3-gaps-git
+  lemonbar-xft-git
 )
 
 osx_dependencies=(
@@ -99,6 +108,7 @@ typeset -A packages; packages=(
   terminator "$default_directory"
   tf2 "$tf2_directory/tf/custom"
   powerline "$default_directory/.config/powerline"
+  i3 "$default_directory/.config/i3"
   colors "$default_directory/.colors"
   xorg "$default_directory"
 )

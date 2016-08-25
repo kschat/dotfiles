@@ -1,0 +1,26 @@
+#!/usr/bin/env zsh
+
+width=$(xrandr 2> /dev/null | grep current | awk '{print $8}')
+geometry="${width}x55"
+
+font1='Droid Sans:size=10:style=bold'
+font2='Droid Sans:size=10'
+
+icon1='FontAwesome:size=12'
+
+scheme='base16-eighties'
+
+fg_color="$(~/.colors/get-color ${scheme} fg)"
+bg_color="$(~/.colors/get-color ${scheme} bg)"
+red="$(~/.colors/get-color ${scheme} red)"
+orange="$(~/.colors/get-color ${scheme} orange)"
+yellow="$(~/.colors/get-color ${scheme} yellow)"
+green="$(~/.colors/get-color ${scheme} green)"
+cyan="$(~/.colors/get-color ${scheme} cyan)"
+blue="$(~/.colors/get-color ${scheme} blue)"
+purple="$(~/.colors/get-color ${scheme} purple)"
+brown="$(~/.colors/get-color ${scheme} brown)"
+
+pad='    '
+space='  '
+

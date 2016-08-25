@@ -1,0 +1,86 @@
+#!/usr/bin/env zsh
+
+. ~/.config/i3/panel_config
+
+workspace() {
+  ws=$(i3-msg -t get_workspaces | jq -r '.[] | select(.focused == true) | .name' | sed 's/^[0-9]\://')
+  echo "${ws}"
+}
+
+active_window() {
+  title=$(xtitle)
+  [ -n "${title}" ] && echo "//  %{T2}${title}%{T1}"
+}
+
+clock() {
+  echo "$(date +'%a %_I:%M%p')"
+}
+
+volume() {
+  local info=$(amixer get Master)
+  local vol=$(echo $info | awk -F '[][]' '/dB/ {print $2}' | head -1 | sed 's/%//')
+  local icon=$(if (( vol <= 100 && vol >= 41 )); then
+    echo ''
+    return
+  elif (( vol <= 40 && vol >= 1 )); then
+    echo ' '
+    return
+  else
+    echo '  '
+    return
+  fi)
+
+  echo "%{T2}${vol}%{T1}${space}${icon}"
+}
+
+power() {
+  local info=$(acpi -ba)
+  local charge=$(echo $info | grep 'Battery 0:' | sed 's/.\+, \([0-9]\+\)%.*/\1/')
+  local adapter_status=$(echo $info | grep 'Adapter 0:' | awk '{print $3}')
+
+  local icon=$(if [[ $adapter_status = 'on-line' ]]; then
+    echo ''
+    return
+  elif (( charge == 100 )); then
+    echo ''
+    return
+  elif (( charge <= 99 && charge >= 61 )); then
+    echo ''
+    return
+  elif (( charge <= 60 && charge >= 21 )); then
+    echo ''
+    return
+  elif (( charge <= 20 && charge >= 11 )); then
+    echo ''
+    return
+  elif (( charge <= 10 && charge >= 0 )); then
+    echo "%{F${red}}%{F-}"
+    return
+  fi)
+
+  echo "%{T2}${charge}%{T1}${space}${icon}"
+}
+
+user() {
+  echo "$(whoami)"
+}
+
+search() {
+  echo ""
+}
+
+left_side() {
+  echo "$(workspace)${space}$(active_window)"
+}
+
+right_side() {
+  echo "$(volume)${pad}$(power)${pad}$(clock)${pad}$(user)${pad}$(search)%{O20}"
+}
+
+while :; do
+  echo "%{O20}$(left_side)%{r}$(right_side)"
+  sleep 0.1
+done \
+  | lemonbar -p -g "${geometry}" -f "${font1}" -f "${font2}" -f "${icon1}" -B "${bg_color}" -F "${fg_color}" \
+  | while read line; do echo "$line"; done
+
