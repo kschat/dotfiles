@@ -3,12 +3,15 @@
 . ~/.config/i3/panel_config
 
 workspace() {
-  ws=$(i3-msg -t get_workspaces | jq -r '.[] | select(.focused == true) | .name' | sed 's/^[0-9]\://')
-  echo "${ws}"
+  ws1=$(bspc query -T -m DP-1 | jq -r .focusedDesktopName)
+  ws2=$(bspc query -T -m DP-5 | jq -r .focusedDesktopName)
+  # ws=$(i3-msg -t get_workspaces | jq -r '.[] | select(.focused == true) | .name' | sed 's/^[0-9]\://')
+  echo "${ws1} ${ws2}"
 }
 
 active_window() {
-  title=$(xtitle)
+  # title=$(xtitle)
+  local title='dotfiles'
   [ -n "${title}" ] && echo "//  %{T2}${title}%{T1}"
 }
 
@@ -18,7 +21,7 @@ clock() {
 
 volume() {
   local info=$(amixer get Master)
-  local vol=$(echo $info | awk -F '[][]' '/dB/ {print $2}' | head -1 | sed 's/%//')
+  local vol=$(echo $info | awk -F '[][]' '/Front Left: Playback/ {print $2}' | head -1 | sed 's/%//')
   local icon=$(if (( vol <= 100 && vol >= 41 )); then
     echo ''
     return
@@ -34,6 +37,8 @@ volume() {
 }
 
 power() {
+  echo
+  return
   local info=$(acpi -ba)
   local charge=$(echo $info | grep 'Battery 0:' | sed 's/.\+, \([0-9]\+\)%.*/\1/')
   local adapter_status=$(echo $info | grep 'Adapter 0:' | awk '{print $3}')
@@ -77,8 +82,23 @@ right_side() {
   echo "$(volume)${pad}$(power)${pad}$(clock)${pad}$(user)${pad}$(search)%{O20}"
 }
 
+monitors=$(xrandr | grep -o '^.* connected' | sed 's/ connected//')
+
+build() {
+  local tmp=0
+  local output=''
+
+  for m in $(echo "$monitors"); do
+    output+="%{S${tmp}}%{O20}$(left_side)%{r}$(right_side)"
+    tmp=$(( tmp + 1 ))
+  done
+
+  echo "$output"
+}
+
 while :; do
-  echo "%{O20}$(left_side)%{r}$(right_side)"
+  # echo "%{O20}$(left_side)%{r}$(right_side)"
+  echo "$(build)"
   sleep 0.1
 done \
   | lemonbar -p -g "${geometry}" -f "${font1}" -f "${font2}" -f "${icon1}" -B "${bg_color}" -F "${fg_color}" \
