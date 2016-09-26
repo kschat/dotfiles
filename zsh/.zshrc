@@ -19,4 +19,3 @@ unset SSH_ASKPASS
 # disable XON/XOFF flow control (stops ctrl-s from disabling a tty)
 stty -ixon
 
-archey
