@@ -1,0 +1,60 @@
+#!/usr/bin/env zsh
+
+source "$(dirname $0)/config"
+
+power="%{F${red}}%{F-}"
+
+format_volume() {
+  local info=${1}
+  local icon_color=''
+
+  [ "$(echo $info | awk -F '[][]' '{print $4}')" = 'off' ] && icon_color="%{F${red}}"
+
+  local vol=$(echo $info | awk -F '[][]' '{print $2}' | head -1 | sed 's/%//')
+
+  local icon=$(if (( vol <= 100 && vol >= 41 )); then
+    echo ''
+    return
+  elif (( vol <= 40 && vol >= 1 )); then
+    echo ' '
+    return
+  else
+    echo '  '
+    return
+  fi)
+
+  echo "${vol}${space}${icon_color}${icon}%{F-}"
+}
+
+format_workspace() {
+  echo "${1}${space}"
+}
+
+format_active_window() {
+  [ -n "${1}" ] && echo "%{T2}//%{T-}${space}${1}"
+}
+
+format_user() {
+  echo "%{T2}%{U$red}%{u}${1}%{u}%{T-}"
+}
+
+format_left() {
+  echo "${user}${space}${active_window}"
+}
+
+format_right() {
+  echo "${workspace}${pad}${volume}${pad}${clock}${pad}${power}"
+}
+
+while read -r line; do
+  case $line in
+    A*) active_window=$(format_active_window "${line:1}") ;;
+    C*) clock=${line:1} ;;
+    V*) volume=$(format_volume "${line:1}") ;;
+    U*) user=$(format_user "${line:1}") ;;
+    W*) workspace=$(format_workspace "${line##* }") ;;
+  esac
+
+  echo "%{O30}$(format_left)%{r}$(format_right)%{O30}"
+done
+

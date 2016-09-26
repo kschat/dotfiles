@@ -1,0 +1,57 @@
+#!/usr/bin/env zsh
+
+dir=$(dirname $0)
+
+source "$dir"/config
+
+if [ $(pgrep -cx panel) -gt 1 ]; then
+  echo 'The panel is already running.' >&2
+  exit 1
+fi
+
+trap 'trap - TERM; kill 0' INT TERM QUIT EXIT
+
+[ -e "$panel_fifo" ] && rm -f "$panel_fifo"
+mkfifo "$panel_fifo"
+
+# bspwm events
+bspc subscribe desktop_focus | while read line; do
+  echo "W${line}"
+done > "$panel_fifo" &
+
+# active window
+while :; do
+  echo "A$(bspc query -T -n focused | jq -r '.client.className')"
+  sleep 0.1
+done > "$panel_fifo" &
+
+# time
+while :; do
+  echo "C$(date +'%a %_I:%M%p')"
+  sleep 1
+done > "$panel_fifo" &
+
+# volume
+while :; do
+  echo "V$(amixer get Master | grep 'Front Left: Playback')"
+  sleep 0.1
+done > "$panel_fifo" &
+
+# user
+while :; do
+  echo "U$(whoami)"
+  sleep 10
+done > "$panel_fifo" &
+
+"$dir"/parser < "$panel_fifo" | lemonbar -p \
+    -g "$geometry" \
+    -f "$font1" \
+    -f "$font2" \
+    -f "$icon1" \
+    -f "$icon2" \
+    -B "$bg_color" \
+    -F "$fg_color" \
+  | zsh &
+
+wait
+

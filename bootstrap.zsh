@@ -75,10 +75,22 @@ arch_dependencies=(
   ttf-font-awesome
   acpi
   alsa-utils
+  xorg-xinit
   xorg-xrandr
   xtitle
   i3-gaps-git
+  compton
   lemonbar-xft-git
+  rofi
+  feh
+  dunst
+  i3lock
+  scrot
+  imagemagick
+  bspwm
+  sxhkd
+  mpd
+  ncmpcpp
 )
 
 osx_dependencies=(
@@ -111,6 +123,11 @@ typeset -A packages; packages=(
   i3 "$default_directory/.config/i3"
   colors "$default_directory/.colors"
   xorg "$default_directory"
+  dunst "$default_directory/.config/dunst"
+  compton "$default_directory/.config"
+  bspwm "$default_directory/.config/bspwm"
+  sxhkd "$default_directory/.config/sxhkd"
+  mpd "$default_directory/.config/mpd"
 )
 
 exit_codes=(

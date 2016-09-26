@@ -3,14 +3,15 @@
 
 ! Xft settings
 Xft.autohint:   0
-Xft.dpi:        192
+Xft.dpi:        138
 Xft.antialias:  true
 Xft.rgba:       rgb
 Xft.hinting:    true
 Xft.hintstyle:  hintfull
 Xft.lcdfilter:  lcddefault
 
-URxvt.font: xft:Source Code Pro Medium:size=12,style=Medium,antialias=true
+! Urxvt settings
+URxvt.font: xft:Source Code Pro Medium:size=10,style=Medium,antialias=true
 
 URxvt*loginShell: false
 URxvt*iso14755:   false
@@ -22,4 +23,24 @@ URxvt*intensityStyles:  false
 
 URxvt*externalBorder: 0
 URxvt*internalBorder: 10
+
+! Rofi settings
+rofi.font:        Source Code Pro Bold 40
+rofi.opacity:     90
+rofi.bw:          0
+rofi.padding:     400
+rofi.lines:       10
+rofi.columns:     1
+
+rofi.modi:            window,run
+rofi.fullscreen:      true
+rofi.separator-style: none
+rofi.hide-scrollbar:  true
+
+! bg fg altbg hlbg hlfg
+rofi.color-enabled: true
+rofi.color-window:  fg, fg
+rofi.color-normal:  fg, bg, fg, blue, fg
+rofi.color-active:  fg, gray, gray, blue, fg
+rofi.color-urgent:  fg, red, fg, red, fg
 
