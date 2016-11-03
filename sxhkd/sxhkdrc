@@ -50,7 +50,7 @@ alt + {_,shift} + Print
 
 # expand the tiled space in the given direction
 alt + super + {h,j,k,l}
-	bspc node { \
+	bspc node {           \
     @west --ratio -10,  \
     @south --ratio +10, \
     @north --ratio -10, \
@@ -59,7 +59,7 @@ alt + super + {h,j,k,l}
 
 # contract the tiled space in the given direction
 alt + super + shift + {h,j,k,l}
-	bspc node { \
+	bspc node {           \
     @east --ratio -10,  \
     @north --ratio +10, \
     @south --ratio -10, \
