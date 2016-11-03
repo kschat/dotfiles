@@ -1,5 +1,35 @@
 ! Colors
-#include ".colors/base16-eighties"
+#include ".colors/nameless"
+
+*.foreground:     fg
+*.background:     bg
+*.cursorColor:    fg
+*.highlightColor: b_black
+
+! black
+*.color0:         black
+*.color8:         b_black
+! red
+*.color1:         red
+*.color9:         b_red
+! green
+*.color2:         green
+*.color10:        b_green
+! yellow
+*.color3:         yellow
+*.color11:        b_yellow
+! blue
+*.color4:         blue
+*.color12:        b_blue
+! magenta
+*.color5:         magenta
+*.color13:        b_magenta
+! cyan
+*.color6:         cyan
+*.color14:        b_cyan
+! white
+*.color7:         white
+*.color15:        b_white
 
 ! Xft settings
 Xft.autohint:   0
@@ -11,7 +41,7 @@ Xft.hintstyle:  hintfull
 Xft.lcdfilter:  lcddefault
 
 ! Urxvt settings
-URxvt.font: xft:Source Code Pro Medium:size=10,style=Medium,antialias=true
+URxvt.font: xft:Source Code Pro Medium:size=11,style=Medium,antialias=true
 
 URxvt*loginShell: false
 URxvt*iso14755:   false
