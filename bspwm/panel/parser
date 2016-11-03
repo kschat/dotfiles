@@ -8,7 +8,7 @@ format_volume() {
   local info=${1}
   local icon_color=''
 
-  [ "$(echo $info | awk -F '[][]' '{print $4}')" = 'off' ] && icon_color="%{F${red}}"
+  [ "$(echo $info | awk -F '[][]' '{print $6}')" = 'off' ] && icon_color="%{F${red}}"
 
   local vol=$(echo $info | awk -F '[][]' '{print $2}' | head -1 | sed 's/%//')
 
@@ -52,7 +52,7 @@ while read -r line; do
     C*) clock=${line:1} ;;
     V*) volume=$(format_volume "${line:1}") ;;
     U*) user=$(format_user "${line:1}") ;;
-    W*) workspace=$(format_workspace "${line##* }") ;;
+    W*) workspace=$(format_workspace "${line:1}") ;;
   esac
 
   echo "%{O30}$(format_left)%{r}$(format_right)%{O30}"

@@ -14,9 +14,9 @@ trap 'trap - TERM; kill 0' INT TERM QUIT EXIT
 [ -e "$panel_fifo" ] && rm -f "$panel_fifo"
 mkfifo "$panel_fifo"
 
-# bspwm events
+# bspwm desktop events
 bspc subscribe desktop_focus | while read line; do
-  echo "W${line}"
+  echo "W$(bspc query -T -d "$(echo $line | cut -d' ' -f3)" | jq -r '.name')"
 done > "$panel_fifo" &
 
 # active window
@@ -33,7 +33,7 @@ done > "$panel_fifo" &
 
 # volume
 while :; do
-  echo "V$(amixer get Master | grep 'Front Left: Playback')"
+  echo "V$(amixer get Master | grep 'Mono: Playback')"
   sleep 0.1
 done > "$panel_fifo" &
 
@@ -43,7 +43,17 @@ while :; do
   sleep 10
 done > "$panel_fifo" &
 
+# hide bar on fullscreen events
+bspc subscribe node_state | while read _ _ _ wid name state; do
+  [ -z "$panel_id" ] && local panel_id=$(xdo id -a "$panel_name")
+
+  if [ "$name" = 'fullscreen' ] && [ "$state" = 'on' ]; then
+    xdo below -t "$wid" "$panel_id"
+  fi
+done &
+
 "$dir"/parser < "$panel_fifo" | lemonbar -p \
+    -n "$panel_name" \
     -g "$geometry" \
     -f "$font1" \
     -f "$font2" \

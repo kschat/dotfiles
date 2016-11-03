@@ -1,0 +1,22 @@
+#define bg        #272C30
+#define fg        #C0C0C6
+
+#define white     #C0C0C6
+#define black     #272C30
+#define red       #E25C4D
+#define yellow    #EAE877
+#define green     #2AC194
+#define cyan      #30C1B5
+#define blue      #2FA3B5
+#define magenta   #DD54BB
+
+#define b_white   #E6E6ED
+#define b_black   #525D66
+#define b_red     #E25C4D
+#define b_yellow  #EAE877
+#define b_green   #2AC194
+#define b_cyan    #30C1B5
+#define b_blue    #2FA3B5
+#define b_magenta #DD54BB
+
+! vim:filetype=xdefaults

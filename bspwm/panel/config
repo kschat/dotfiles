@@ -1,28 +1,28 @@
 #!/usr/bin/env zsh
 
 panel_fifo="/tmp/panel_fifo_${USER}"
+panel_name='bar_panel'
 
 screen_width=$(xrandr 2> /dev/null | grep current | awk '{print $8}')
-bar_width=$((screen_width - 40))
-geometry="${bar_width}x45+20+20"
+width=$((screen_width - 40))
+height=45
+geometry="${width}x${height}+20+20"
 
 font1='Droid Sans:size=10'
 font2='Droid Sans:size=10:style=bold'
 
 icon1='FontAwesome:size=12'
 
-scheme='base16-eighties'
+scheme='nameless'
 
 fg_color=$(~/.colors/get-color ${scheme} fg)
 bg_color=$(~/.colors/get-color ${scheme} bg)
 red=$(~/.colors/get-color ${scheme} red)
-orange=$(~/.colors/get-color ${scheme} orange)
 yellow=$(~/.colors/get-color ${scheme} yellow)
 green=$(~/.colors/get-color ${scheme} green)
 cyan=$(~/.colors/get-color ${scheme} cyan)
 blue=$(~/.colors/get-color ${scheme} blue)
-purple=$(~/.colors/get-color ${scheme} purple)
-brown=$(~/.colors/get-color ${scheme} brown)
+magenta=$(~/.colors/get-color ${scheme} purple)
 
 pad='    '
 space='  '

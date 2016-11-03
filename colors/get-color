@@ -1,4 +1,4 @@
 #!/usr/bin/env zsh
 
-cat ~/.colors/"${1}" | grep "${2}" | awk '{print $3}'
+grep -w "${2}" ~/.colors/"${1}" | awk '{print $3}'
 
