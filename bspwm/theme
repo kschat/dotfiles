@@ -1,0 +1,11 @@
+#!/usr/bin/env zsh
+
+scheme='nameless'
+
+typeset -A colors; colors=()
+
+for color in fg bg red yellow green cyan blue magenta; do
+  colors[$color]=$(~/.colors/get-color "$scheme" "$color")
+done
+
+echo $colors['fg']

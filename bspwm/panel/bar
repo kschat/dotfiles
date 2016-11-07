@@ -43,6 +43,12 @@ while :; do
   sleep 10
 done > "$panel_fifo" &
 
+# available updates
+while :; do
+  echo "P$(checkupdates | wc -l)"
+  sleep 1h
+done > "$panel_fifo" &
+
 # hide bar on fullscreen events
 bspc subscribe node_state | while read _ _ _ wid name state; do
   [ -z "$panel_id" ] && local panel_id=$(xdo id -a "$panel_name")
@@ -59,6 +65,7 @@ done &
     -f "$font2" \
     -f "$icon1" \
     -f "$icon2" \
+    -u "$border" \
     -B "$bg_color" \
     -F "$fg_color" \
   | zsh &
