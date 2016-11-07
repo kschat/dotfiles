@@ -2,11 +2,15 @@
 
 source "$(dirname $0)/config"
 
+underline() {
+  echo "%{+u U${1}}${2}%{-u U-}"
+}
+
 format_volume() {
   local info=${1}
-  local icon_color=''
+  local ucolor=$bg_color
 
-  [ "$(echo $info | awk -F '[][]' '{print $6}')" = 'off' ] && icon_color="%{F${red}}"
+  [ "$(echo $info | awk -F '[][]' '{print $6}')" = 'off' ] && ucolor=$red
 
   local vol=$(echo $info | awk -F '[][]' '{print $2}' | head -1 | sed 's/%//')
 
@@ -21,28 +25,28 @@ format_volume() {
     return
   fi)
 
-  echo "${vol}${space}${icon_color}${icon}%{F-}"
+  echo $(underline "$ucolor" "${vol}${space}${icon}")
 }
 
 format_workspace() {
-  echo "${1}${space}"
+  echo $(underline "$bg_color" "${1}${space}")
 }
 
 format_active_window() {
-  [ -n "${1}" ] && echo "%{+u U${blue} T2}//%{T-}${space}${1}${space}%{-u U-}"
+  [ -n "${1}" ] && echo "%{T2}//%{T-}${space}${1}"
 }
 
 format_user() {
-  echo "%{+u U${blue} T2}${space}${1}${space}%{-u U- T-}"
+  echo "%{T2}${1}%{T-}"
 }
 
 format_updates() {
-  local icon_color=''
+  local ucolor=$bg_color
   [ "$1" -eq 0 ] && return
 
-  [ "$1" -ge 20 ] && icon_color="%{F${red}}"
+  [ "$1" -ge 20 ] && ucolor=$red
 
-  echo "${1}${space}${icon_color}%{F-}"
+  echo $(underline "$ucolor" "${1}${space}${icon_color}")
 }
 
 format_center() {
@@ -50,11 +54,11 @@ format_center() {
 }
 
 format_left() {
-  echo "${user}${active_window}"
+  echo $(underline "$blue" "${user}${space}${active_window}")
 }
 
 format_right() {
-  echo "${updates}${pad}${workspace}${pad}${volume}${pad}${clock}${pad}"
+  echo "$updates$pad$workspace$pad$volume$pad$clock"
 }
 
 while read -r line; do
