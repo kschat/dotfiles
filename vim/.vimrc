@@ -13,14 +13,10 @@ endif
 
 call plug#begin('~/.vim/plugged')
 
-Plug 'chriskempson/base16-vim'
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'kien/ctrlp.vim'
 Plug 'airblade/vim-gitgutter'
-Plug 'othree/yajs.vim', { 'for': 'javascript' }
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-Plug 'tpope/vim-fugitive'
+Plug 'isRuslan/vim-es6', { 'for': 'javascript' }
 Plug 'tmux-plugins/vim-tmux-focus-events'
 Plug 'tmux-plugins/vim-tmux'
 Plug 'christoomey/vim-tmux-navigator'
@@ -28,6 +24,8 @@ Plug 'tpope/vim-obsession'
 Plug 'scrooloose/syntastic', { 'for': 'javascript' }
 Plug 'mhinz/vim-startify'
 Plug 'mbbill/undotree'
+Plug 'baskerville/vim-sxhkdrc'
+Plug 'leafgarland/typescript-vim'
 
 call plug#end()
 
@@ -84,7 +82,7 @@ syntax enable
 
 " set color scheme to dark solarized
 set background=dark
-colorscheme base16-eighties
+colorscheme nameless
 
 " }}}
 
@@ -144,7 +142,7 @@ set showbreak=↪\ \
 " }}}
 
 " -----------------------------------------------------------------------------
-" UI configuration {{{
+" UI configuration {{{"{{{
 " -----------------------------------------------------------------------------
 
 " show line number relative to the cursor
@@ -174,21 +172,19 @@ set showmatch
 " adds 80 character vertical line
 set colorcolumn=80
 
-" always show vim-airline
-set laststatus=2
-
 " decrease timeout to update mode UI
 set timeoutlen=1000
 set ttimeoutlen=10
-
-" remove default mode infavor of airline
-set noshowmode
 
 " visual autocomplete for command menu and behave line shell completion
 set wildmenu
 set wildmode=list:longest
 
+" use same vertical separator as tmux
+set fillchars+=vert:│
+
 " }}}
+"}}}
 
 " -----------------------------------------------------------------------------
 " Search {{{
@@ -257,27 +253,6 @@ let g:ctrlp_custom_ignore='\v[\/](node_modules|\.git|test/coverage)$'
 
 " show hidden files in CtrlP
 let g:ctrlp_show_hidden=1
-
-" }}}
-
-" -----------------------------------------------------------------------------
-" Airline {{{
-" -----------------------------------------------------------------------------
-
-" enable powerline fonts
-let g:airline_powerline_fonts=1
-
-" make the airline theme match the vim theme
-let g:airline_theme='base16'
-
-" enable tabline
-let g:airline#extensions#tabline#enabled=1
-
-" enable syntastic integration
-let g:airline#extensions#syntastic#enabled=1
-
-" disable powerline in favor of airline
-let g:powerline_loaded=1
 
 " }}}
 

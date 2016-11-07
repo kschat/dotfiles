@@ -16,7 +16,7 @@
 #define b_yellow  #EAE877
 #define b_green   #2AC194
 #define b_cyan    #30C1B5
-#define b_blue    #2FA3B5
+#define b_blue    #2D3338
 #define b_magenta #DD54BB
 
 ! vim:filetype=xdefaults
