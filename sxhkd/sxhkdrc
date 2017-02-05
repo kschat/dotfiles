@@ -1,64 +1,87 @@
 # terminal emulator
-alt + Return
+super + Return
   urxvt
 
 # program launcher
-alt + {_,shift} + p
+super + {_,shift} + p
   rofi -show {drun,run}
 
-# reload keybindings
-alt + Escape
-	pkill -USR1 -x sxhkd
+# screenshot
+super + {_,shift} + Print
+  notify-send -a 'screenshot' 'Taking screenshot...'; \
+  scrot {_,-s} -d 1 ~/Pictures/screenshots/'%Y-%m-%d_%H-%M-%S_$wx$h.png'
 
-# lock screen
-alt + ctrl + l
-  ~/.config/i3/lock.sh
+# reload keybindings
+super + Escape
+	pkill -USR1 -x sxhkd; \
+  notify-send -a 'reload' 'Keybindings reloaded'
 
 # quit bspwm normally
-alt + ctrl + Escape
-	bspc quit
+super + ctrl + Escape
+	pkill -x bar; bspc quit
 
-# select or move nodes using vim direction keys
-alt + {_,shift} + {h,j,k,l}
-  bspc node --{focus,swap} {west,south,north,east}
-
-# close or kill applications
-alt + {_,shift} + q
+# close or kill nodes
+super + {w,q}
   bspc node --{close,kill}
 
+# select or move nodes using vim direction keys
+super + {_,shift} + {h,j,k,l}
+  bspc node --{focus,swap} {west,south,north,east}
+
+# pre-select next window split location (cancel by re-selecting current dir)
+super + ctrl + {h,j,k,l}
+  bspc node --presel-dir \~{west,south,north,east}
+
+# circulate binary tree leaves forward/backward
+super + {comma,period}
+  bspc node @/ --circulate {forward,backward}
+
+# rotate binary tree counter-clockwise/clockwise
+super + ctrl {comma,period}
+  bspc node @/ --rotate {-90,90}
+
+# flip (mirror) binary tree vertically/horizontally
+super + alt {comma,period}
+  bspc node @/ --flip {vertical,horizontal}
+
 # toggle fullscreen/floating on a node
-alt + {_,shift} + f
+super + {_,shift} + f
   state={floating,fullscreen}; \
   bspc query -N -n "focused.$\{state\}" && state='tiled'; \
   bspc node --state "$state"
 
 # switch desktops
-alt + {1-9,0}
+super + {1-9,0}
   bspc desktop --focus ^{1-9,10}
 
-# move node to desktop on focused monitor
-alt + shift + {1-9,0}
+# move node to desktop
+super + shift + {1-9,0}
   bspc node --to-desktop focused:^{1-9,10}
 
-# screenshot
-alt + {_,shift} + Print
-  scrot {-m,-s} ~/Pictures/screenshots/'%Y-%m-%d_$wx$h.png'
+# dynamically increase and decrease gap size on a desktop
+super + {minus,plus}
+  bspc config -d focused window_gap $(( $(bspc config -d focused window_gap) {+,-} 4))
+
+# reset gap size to global config value
+super + equal
+  bspc config -d focused window_gap $(bspc config window_gap)
 
 #
 # Resize
 #
 
-# expand the tiled space in the given direction
-alt + super + {h,j,k,l}
+# expand the tiled space in the given direction or reset layout to default
+super + alt + {h,j,k,l,equal}
 	bspc node {           \
     @west --ratio -10,  \
     @south --ratio +10, \
     @north --ratio -10, \
-    @east --ratio +10   \
+    @east --ratio +10,  \
+    @/ --equalize       \
   }
 
 # contract the tiled space in the given direction
-alt + super + shift + {h,j,k,l}
+super + alt + shift + {h,j,k,l}
 	bspc node {           \
     @east --ratio -10,  \
     @north --ratio +10, \
@@ -67,24 +90,8 @@ alt + super + shift + {h,j,k,l}
   }
 
 # move a floating window
-alt + {Left,Down,Up,Right}
+super + {Left,Down,Up,Right}
 	xdo move {-x -20,-y +20,-y -20,-x +20}
-
-#
-# Mouse
-#
-
-# focus
-~button1
-	bspc pointer -g focus
-
-# start move/resize
-alt + button{1-3}
-	; bspc pointer -g {move,resize_side,resize_corner}
-
-# end move/resize
-alt + @button{1-3}
-	bspc pointer -u
 
 #
 # Media keys
