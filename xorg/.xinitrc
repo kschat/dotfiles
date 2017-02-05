@@ -13,8 +13,9 @@ for control in Headphones PCM Front Surround Center LFE Line; do
 done
 
 amixer sset Master 25% unmute &
+pulseaudio --start &
 
-feh --bg-scale ~/Pictures/wallpapers/city-1.jpg &
+feh --bg-scale ~/.config/wallpapers/current &
 xsetroot -cursor_name left_ptr &
 urxvtd &
 sxhkd &
@@ -22,8 +23,6 @@ dunst &
 
 autocutsel -fork &
 autocutsel -selection PRIMARY -fork &
-
-eval $(keychain --eval --quiet --noask id_rsa id_rsa_walmartlabs) &
 
 xrandr --output DP-0 --primary --mode 3840x2160 --rate 60 --dpi 138
 compton &
