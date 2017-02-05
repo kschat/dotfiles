@@ -21,11 +21,13 @@ Plug 'tmux-plugins/vim-tmux-focus-events'
 Plug 'tmux-plugins/vim-tmux'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'tpope/vim-obsession'
-Plug 'scrooloose/syntastic', { 'for': 'javascript' }
 Plug 'mhinz/vim-startify'
 Plug 'mbbill/undotree'
 Plug 'baskerville/vim-sxhkdrc'
-Plug 'leafgarland/typescript-vim'
+Plug 'leafgarland/typescript-vim', { 'for': 'typescript' }
+Plug 'w0rp/ale'
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' }
 
 call plug#end()
 
@@ -167,7 +169,7 @@ set lazyredraw
 set ttyfast
 
 " highlight matching [{()}]
-set showmatch
+set noshowmatch
 
 " adds 80 character vertical line
 set colorcolumn=80
@@ -265,32 +267,46 @@ let g:NERDTreeShowHidden=1
 " }}}
 
 " -----------------------------------------------------------------------------
-" Syntastic {{{
+" Ale {{{
 " -----------------------------------------------------------------------------
 
-" run linting on open
-let g:syntastic_check_on_open=1
+let g:ale_linters = { 'javascript': ['eslint'] }
 
-" dont run linting when quiting vim
-let g:syntastic_check_on_wq=0
+" don't lint on file open
+let g:ale_lint_on_enter=0
 
-" run all checkers for a filetype instead of stopping at first that errors
-let g:syntastic_aggregate_errors=0
+" don't lint on text change
+let g:ale_lint_on_text_changed=0
 
-" allows put errors in location-list
-let g:syntastic_always_populate_loc_list=1
+" lint on file save
+let g:ale_lint_on_save=1
 
-" auto open location-list on error and auto close when no errors are detected
-let g:syntastic_auto_loc_list=1
+" run linter right away
+let g:ale_lint_delay=0
 
-" don't display "tooltip" errors
-let g:syntastic_enable_balloons=0
+" populate loclist with linting errors
+let g:ale_open_list=1
+let g:ale_set_quickfix=0
 
-" set syntastic to "active" mode
-let g:syntastic_mode_map = { "mode": "active" }
+" update gutter symbols
+let g:ale_sign_error = '●'
+let g:ale_sign_warning = '⚠'
 
-" use eslint for JavaScript linting
-let g:syntastic_javascript_checkers=['eslint']
+highlight link ALEErrorSign DiffDelete
+
+" }}}
+
+" -----------------------------------------------------------------------------
+" Deoplete {{{
+" -----------------------------------------------------------------------------
+
+let g:tern_request_timeout=1
+
+let g:deoplete#enable_at_startup=1
+
+let g:deoplete#enable_smart_case=1
+
+set completeopt-=preview
 
 " }}}
 
@@ -303,6 +319,14 @@ let g:startify_custom_header=[]
 
 " remove 80 character column on startify
 autocmd User Startified setlocal colorcolumn=0
+
+" }}}
+
+" -----------------------------------------------------------------------------
+" Tsuquyomi {{{
+" -----------------------------------------------------------------------------
+
+autocmd FileType typescript nmap <buffer> <Leader>t : <C-u>echo tsuquyomi#hint()<CR>
 
 " }}}
 
