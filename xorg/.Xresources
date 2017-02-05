@@ -55,22 +55,38 @@ URxvt*externalBorder: 0
 URxvt*internalBorder: 10
 
 ! Rofi settings
-rofi.font:        Source Code Pro Bold 40
-rofi.opacity:     90
-rofi.bw:          0
-rofi.padding:     400
+rofi.font:        Droid Sans Bold 18
+rofi.opacity:     100
+rofi.width:       30
+rofi.bw:          2
+rofi.padding:     40
 rofi.lines:       10
 rofi.columns:     1
+rofi.line-margin: 10
 
 rofi.modi:            window,run
-rofi.fullscreen:      true
 rofi.separator-style: none
 rofi.hide-scrollbar:  true
 
 ! bg fg altbg hlbg hlfg
 rofi.color-enabled: true
-rofi.color-window:  fg, fg
-rofi.color-normal:  fg, bg, fg, blue, fg
-rofi.color-active:  fg, gray, gray, blue, fg
-rofi.color-urgent:  fg, red, fg, red, fg
+rofi.color-window:  bg, fg
+rofi.color-normal:  bg, fg, bg, fg, bg
+rofi.color-active:  bg, gray, gray, blue, bg
+rofi.color-urgent:  bg, red, bg, red, bg
 
+
+
+x11-ssh-askpass*font:                   -*-droid sans-medium-r-*-*-20-*-*-*-*-*-*-*
+x11-ssh-askpass*background:             bg
+x11-ssh-askpass*foreground:             fg
+x11-ssh-askpass.Button*background:      bg
+x11-ssh-askpass.Indicator*foreground:   blue
+x11-ssh-askpass.Indicator*background:   fg
+x11-ssh-askpass.Indicator*borderWidth:   0
+x11-ssh-askpass.Indicator*horizontalSpacing: 4
+x11-ssh-askpass*borderWidth:           2
+x11-ssh-askpass*borderColor:           fg
+x11-ssh-askpass*shadowThickness:   0
+x11-ssh-askpass*defaultXResolution: 138/in
+x11-ssh-askpass*defaultYResolution: 138/in
