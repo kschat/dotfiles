@@ -46,6 +46,12 @@ export DOTFILES="$WORKSPACE/dotfiles"
 export VIMRC="$DOTFILES/vim/.vimrc"
 export POWERLINE_PATH='/usr/local/lib/python2.7/site-packages/powerline'
 export BASE16_SHELL="$HOME/.config/base16-shell/base16-solarized.dark.sh"
+export SSH_ASKPASS='/usr/lib/ssh/x11-ssh-askpass'
+
+# virtualenvwrapper config
+export WORKON_HOME="$HOME"/.virtualenvs
+export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python2
+export VIRTUALENVWRAPPER_VIRTUALENV=/usr/bin/virtualenv2
 
 # Set the the list of directories that cd searches.
 # cdpath=(

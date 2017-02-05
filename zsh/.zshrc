@@ -13,8 +13,11 @@ fi
 # Load RVM into a shell session *as a function*
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
 
-# disable gnome-ssh-askpass
-unset SSH_ASKPASS
+# Load virtualenv wrapper
+source /usr/bin/virtualenvwrapper.sh
+
+# Start keychain to avoid being prompted for password more than once
+eval $(keychain --eval --quiet id_rsa_walmartlabs id_rsa)
 
 # disable XON/XOFF flow control (stops ctrl-s from disabling a tty)
 stty -ixon
