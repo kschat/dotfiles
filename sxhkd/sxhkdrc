@@ -18,7 +18,8 @@ super + Escape
 
 # quit bspwm normally
 super + ctrl + Escape
-	pkill -x bar; bspc quit
+	pkill -F /tmp/bar-pid; \
+  bspc quit
 
 # close or kill nodes
 super + {w,q}

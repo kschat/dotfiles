@@ -1,6 +1,7 @@
 #!/usr/bin/env zsh
 
 panel_fifo="/tmp/panel_fifo_${USER}"
+panel_pid_file='/tmp/bar-pid'
 panel_name='bar_panel'
 
 width=$(xrandr 2> /dev/null | grep current | awk '{print $8}')

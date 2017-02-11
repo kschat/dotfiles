@@ -4,7 +4,7 @@ dir=$(dirname $0)
 
 source "$dir"/config
 
-if [ $(pgrep -cx panel) -gt 1 ]; then
+if [ $(pgrep -cF "$panel_pid_file") -gt 1 ]; then
   echo 'The panel is already running.' >&2
   exit 1
 fi
@@ -58,7 +58,8 @@ bspc subscribe node_state | while read _ _ _ wid name state; do
   fi
 done &
 
-"$dir"/parser < "$panel_fifo" | lemonbar -p \
+"$dir"/parser < "$panel_fifo" | lemonbar \
+    -d \
     -n "$panel_name" \
     -g "$geometry" \
     -f "$font1" \
@@ -69,6 +70,9 @@ done &
     -B "$bg_color" \
     -F "$fg_color" \
   | zsh &
+
+# store PID for kill command
+echo $$ > "$panel_pid_file"
 
 wait
 
