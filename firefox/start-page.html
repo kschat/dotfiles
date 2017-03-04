@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>~</title>
+    <style>
+      :root {
+        --black: #272C30;
+        --white: #C0C0C6;
+        --blue: #2FA3B5;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        padding: 0;
+        margin: 0;
+        border: 0;
+      }
+
+      html {
+        height: 100%;
+      }
+
+      body {
+        height: 100%;
+        font-family: "Droid Sans";
+        font-size: 24px;
+        color: var(--white);
+      }
+
+      input,
+      textarea,
+      select {
+        font-family: inherit;
+      }
+
+      a,
+      a:link,
+      a:visited,
+      a:hover,
+      a:active {
+        color: var(--blue);
+        text-decoration: none;
+        padding-right: 8px;
+        opacity: 0.8;
+        transition: opacity 0.5s ease;
+      }
+
+      a:focus,
+      a:hover {
+        outline: none;
+        opacity: 1;
+      }
+
+      .category {
+        padding-right: 8px;
+      }
+
+      .container {
+        height: 100%;
+        width: 100%;
+        position: relative;
+        background: var(--black);
+      }
+
+      .content {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+
+        min-width: 550px;
+        min-height: 400px;
+        padding: 6px;
+      }
+
+      .search-input {
+        -moz-appearance: none;
+        border: none;
+        border-radius: 0;
+        box-shadow: none;
+        font-size: 48px;
+        color: var(--white);
+        background: var(--black);
+        width: 100%;
+        padding: 12px 0;
+      }
+
+      .search-input + .slider {
+        border-bottom: 3px solid var(--white);
+        width: 0%;
+        transition: width 1s ease;
+      }
+
+      .search-input:focus + .slider {
+        width: 100%;
+      }
+
+      :-moz-placeholder,
+      ::-moz-placeholder {
+        color: var(--white);
+        opacity: 1;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="content">
+        <form id="search-form" autocomplete="off">
+          <input type="text" class="search-input" placeholder="Search" autofocus />
+          <div class="slider"></div>
+        </form>
+
+        <p>
+          <span class="category">General</span>
+          <a href="https://play.google.com/music/listen#/now">music</a>
+          <a href="https://facebook.com">facebook</a>
+          <a href="https://github.com">github</a>
+        </p>
+
+        <p>
+          <span class="category">Reddit</span>
+          <a href="https://reddit.com">frontpage</a>
+          <a href="https://reddit.com/r/programming">/r/programming</a>
+          <a href="https://reddit.com/r/linux">/r/linux</a>
+          <a href="https://reddit.com/r/unixporn">/r/unix</a>
+        </p>
+
+        <p>
+          <span class="category">Work</span>
+          <a href="https://jira.walmart.com">jira</a>
+          <a href="https://outlook.wal-mart.com/owa/">outlook</a>
+          <a href="https://mysap.wal-mart.com/irj/portal">travel</a>
+          <a href="https://launch.walmart.com">launch</a>
+        </p>
+      </div>
+    </div>
+    <script>
+      !function ($, undefined) {
+        'use strict';
+
+        const searchForm = $('#search-form');
+        const searchInput = $('#search-form > .search-input');
+
+        searchForm.addEventListener('submit', (event) => {
+          event.preventDefault();
+          const input = searchInput.value.trim();
+          window.location.href = `https://google.com/search?q=${encodeURIComponent(input)}`;
+        });
+      }(document.querySelector.bind(document));
+    </script>
+  </body>
+</html>
+

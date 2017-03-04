@@ -1,0 +1,310 @@
+@namespace url(http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul);
+
+:root {
+  --white: #C0C0C6;
+  --black: #272C30;
+  --red: #E25C4D;
+  --yellow: #EAE877;
+  --green: #2AC194;
+  --cyan: #30C1B5;
+  --blue: #2FA3B5;
+  --magenta: #DD54BB;
+
+  --b-white: #E6E6ED;
+  --b-black: #525D66;
+  --b-red: #E25C4D;
+  --b-yellow: #EAE877;
+  --b-green: #2AC194;
+  --b-cyan: #30C1B5;
+  --b-blue: #2D3338;
+  --b-magenta: #DD54BB;
+
+  --main-font: "Droid Sans";
+  --main-background-color: var(--black);
+  --main-font-color: var(--b-black);
+
+  --secondary-background-color: var(--black);
+  --secondary-font-color: var(--b-white);
+  --accent-color: var(--b-black);
+
+  --tab-height: 38px;
+  --tab-icon-size: 0px;
+  --tab-border-size: 0px;
+  --tab-side-padding: 8px;
+  --tab-font-family: var(--main-font);
+
+  --tab-background-color: var(--main-background-color);
+  --tab-font-color: var(--main-font-color);
+  --tab-border-color: var(--main-background-color);
+
+  --tab-selected-background-color: var(--secondary-background-color);
+  --tab-selected-font-color: var(--secondary-font-color);
+  --tab-selected-border-color: var(--accent-color);
+
+  /*
+   * For URL bar on bottom set `--url-bar-position` to `fixed` and `--browser-offset` to `--url-bar-computed-height`.
+   * For URL bar below tabs set `--url-bar-position` to `relative` and `--browser-offset` to `none`.
+   */
+  --url-bar-position: fixed;
+
+  --url-bar-height: 38px;
+  --url-bar-font-family: var(--main-font);
+  --url-bar-border-height: 0px;
+
+  --url-bar-background-color: var(--main-background-color);
+  --url-bar-font-color: var(--secondary-font-color);
+  --url-bar-border-color: var(--accent-color);
+  --url-bar-separator-color: var(--urlbar-separator-color);
+
+  /* do not change */
+  --url-bar-computed-height: calc(var(--url-bar-height) + var(--url-bar-border-height));
+
+  --browser-offset: calc(var(--url-bar-computed-height) - 1px);
+}
+
+* {
+  box-sizing: border-box !important;
+}
+
+#back-button,
+#back-button *,
+#forward-button,
+#forward-button *,
+#urlbar-reload-button,
+#urlbar-stop-button,
+#bookmarks-menu-button,
+#downloads-button,
+#home-button,
+#pocket-button,
+#nav-bar-overflow-button,
+#search-container,
+#window-controls,
+#PersonalToolbar,
+#new-tab-button,
+#alltabs-button,
+#urlbar-go-button,
+.urlbar-history-dropmarker,
+.tabs-newtab-button,
+.tab-close-button,
+.tab-close,
+.tab-throbber,
+.tab-background-start,
+.tab-background-end {
+  display: none !important;
+}
+
+/* Tab text and icon positioning */
+#tabbrowser-tabs .tabbrowser-tab .tab-icon-image {
+  margin: 0 !important;
+  width: var(--tab-icon-size) !important;
+  height: var(--tab-icon-size) !important;
+}
+
+/* reset tab bar and tabs style */
+.tabbrowser-tab *, .tabs-newtab-button * {
+  background: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  -moz-appearance: none !important;
+}
+
+/* Remove tab orders */
+#tabbrowser-tabs > .tabbrowser-tab::after, #tabbrowser-tabs > .tabbrowser-tab::before {
+  display: none !important;
+}
+
+tab {
+  font-family: var(--tab-font-family) !important;
+  height: var(--tab-height) !important;
+  min-height: var(--tab-height) !important;
+  background: var(--tab-background-color) !important;
+  color: var(--tab-font-color) !important;
+  border-bottom: var(--tab-border-size) solid var(--tab-border-color) !important;
+}
+
+.tabbrowser-tab[selected="true"] .tab-stack {
+  background: var(--tab-selected-background-color) !important;
+  color: var(--tab-selected-font-color) !important;
+}
+
+.tabbrowser-tab[selected="true"] {
+  border-bottom: var(--tab-border-size) solid var(--tab-selected-border-color) !important;
+}
+
+/*temp hack to always show tab icon*/
+.tab-content > .tab-icon-image {
+  display: -moz-box !important;
+  list-style-image: url("chrome://mozapps/skin/places/defaultFavicon@2x.png") !important;
+}
+
+.tab-content {
+  padding: 0 var(--tab-side-padding) !important;
+}
+
+/* pinned tabs */
+#tabbrowser-tabs .tabbrowser-tab[pinned] {
+  width: 48px !important;
+}
+
+#tabbrowser-tabs .tabbrowser-tab[pinned] .tab-icon-image {
+  width: 16px !important;
+  height: 16px !important;
+}
+
+.tabbrowser-tab[fadein]:not([pinned]) {
+  max-width: none !important;
+}
+
+.tabbrowser-tab label {
+  padding: 6px !important;
+  text-align: center !important;
+}
+
+.tabbrowser-arrowscrollbox > .arrowscrollbox-scrollbox {
+  padding: 0 !important;
+}
+
+.tabbrowser-arrowscrollbox > spacer {
+  display: none;
+}
+
+#TabsToolbar, #tabbrowser-tabs {
+  background: var(--tab-background-color);
+}
+
+/* URL bar styles */
+
+#nav-bar {
+  position: var(--url-bar-position) !important;
+  bottom: 0px;
+  width: 100%;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: flex;
+  align-items: stretch;
+  height: var(--url-bar-computed-height) !important;
+  background: var(--url-bar-background-color) !important;
+  color: var(--url-bar-font-color) !important;
+  box-shadow: none !important;
+}
+
+/* selector required to override browser.css border-top */
+#TabsToolbar:not([collapsed="true"]) + #nav-bar {
+  border-top: var(--url-bar-border-height) solid var(--url-bar-border-color) !important;
+}
+
+#nav-bar-customization-target, #urlbar-container, #urlbar {
+  margin: 0 !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 100% !important;
+}
+
+#urlbar-container {
+  display: flex;
+  align-items: stretch;
+}
+
+#urlbar-wrapper {
+  clip-path: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100% !important;
+}
+
+#urlbar {
+  border: none !important;
+  height: 100% !important;
+
+  background: var(--url-bar-background-color) !important;
+  color: var(--url-bar-font-color) !important;
+  font-family: var(--url-bar-font-family) !important;
+}
+
+.urlbar-input-box {
+  border-inline-start: none !important;
+  border-image: none !important;
+}
+
+#identity-icon {
+  width: 0 !important;
+  height: 0 !important;
+}
+
+#PanelUI-button {
+  border: none !important;
+  margin-top: 0 !important;
+  background: var(--url-bar-background-color) !important;
+}
+
+#PanelUI-menu-button {
+  height: 100% !important;
+  -moz-image-region: unset !important;
+  list-style-image: url('data:image/png,%89PNG%0D%0A%1A%0A%00%00%00%0DIHDR%00%00%00%10%00%00%00%10%08%06%00%00%00%1F%F3%FFa%00%00%00%04sBIT%08%08%08%08%7C%08d%88%00%00%00%09pHYs%00%00%0D%D7%00%00%0D%D7%01B%28%9Bx%00%00%00%19tEXtSoftware%00www.inkscape.org%9B%EE%3C%1A%00%00%009IDAT8%8Dc%60%A0%1002000TT%B4%0B%92%A3%B9%A3%A3%F2%3DciES%0A%03%23%E3l%B2%AC%FF%FF%3F%95%89%2C%8D%83%0A%8C%06"%15%C0h%20R%01%00%00%E2%86%1A%86%C2%C8%D8%A4%00%00%00%00IEND%AEB%60%82') !important;
+}
+
+#PanelUI-menu-button:hover:not([disabled="true"]) > .toolbarbutton-badge-stack {
+  background: var(--url-bar-font-color) !important;
+  box-shadow: none !important;
+  border: 1px solid var(--url-bar-font-color) !important;
+}
+
+#browser {
+  margin-bottom: var(--browser-offset) !important;
+}
+
+@-moz-document url("chrome://browser/content/browser.xul") {
+  /*remove incremental scroll buttons located at scrollbar ends. */
+scrollbar[orient='vertical'] > scrollbarbutton { min-height: 0 !important; }
+scrollbar[orient='horizontal'] > scrollbarbutton { min-width: 0 !important;  }
+
+/*boilerplate*/
+scrollbar > slider, scrollbar > slider > thumb, scrollbar > scrollbarbutton{ -moz-appearance: none !important; }
+scrollbar, scrollbar > scrollbarbutton{ border: none !important; background: none !important; }
+
+/* Actual style, adapted from tweetdeck CSS */
+scrollbar > slider {
+  border-width: 0px;
+  background-color: #3B3B3B;
+}
+scrollbar > slider > thumb {
+  border-width: 0px;
+  background-color: #555;
+  border-radius: 5px;
+}
+
+scrollbar[orient='vertical'] {
+  max-width: 10px;
+  min-width: 10px;
+}
+
+scrollbar[orient='vertical'] > slider {
+  max-width: 10px;
+  min-width: 10px;
+}
+
+scrollbar[orient='vertical'] > thumb {
+  max-width: 10px;
+  min-width: 10px;
+  min-height: 35px;
+}
+
+scrollbar[orient='horizontal'] {
+  max-height: 10px;
+  min-height: 10px;
+}
+
+scrollbar[orient='horizontal'] > slider {
+  max-height: 10px;
+  min-height: 10px;
+}
+
+scrollbar[orient='horizontal'] > thumb {
+  max-height: 10px;
+  min-height: 10px;
+  min-width: 35px;
+}
+}
+
