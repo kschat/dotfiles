@@ -1,0 +1,131 @@
+#
+# Connection
+#
+
+mpd_host = 127.0.0.1
+mpd_port = 6600
+mpd_connection_timeout = 60
+mpd_music_dir = ~/Music
+
+#
+# Directories
+#
+
+ncmpcpp_directory = ~/.config/ncmpcpp
+lyrics_directory = ~/.lyrics
+
+#
+# Visualizer
+#
+
+audio_output {
+  type    "fifo"
+  name    "Visualizer feed"
+  path    "/tmp/mopidy.fifo"
+  format  "44100:16:1"
+}
+
+visualizer_fifo_path = /tmp/mopidy.fifo
+visualizer_output_name = Visualizer feed
+visualizer_sample_multiplier = 2
+visualizer_in_stereo = no
+visualizer_sync_interval = 10
+visualizer_type = wave
+visualizer_look = │▊
+
+#
+# Colors
+#
+
+colors_enabled = yes
+empty_tag_color = cyan
+header_window_color = white
+volume_color = blue
+state_line_color = 9
+state_flags_color = blue
+main_window_color = 9
+color1 = blue
+color2 = 9
+progressbar_color = 9
+progressbar_elapsed_color = blue
+statusbar_color = white
+alternative_ui_separator_color = 9
+active_column_color = black_blue
+main_window_highlight_color = black_white
+window_border_color = white
+active_window_border = white
+
+#
+# Song format
+#
+
+song_list_format = {$5%a$9 }{$8{%t}|{%f}$9}$R{%30b}
+song_status_format = {{%t}{ $(9)/$(end) %a}{ $(9)/$(end) %b}}|{%f}
+
+now_playing_prefix = $b
+now_playing_suffix = $/b
+browser_playlist_prefix = "$5playlist$9 - "
+
+browser_sort_mode = format
+browser_sort_format = {%a - }{%b - }{%n}|{%f} {(%l)}
+
+#
+# Column format
+#
+
+song_columns_list_format = (20)[blue]{a} (6f)[9]{nE} (50)[white]{t|f:Title} (20)[cyan]{b} (7f)[white]{l}
+
+#
+# Display modes (classic/columns)
+#
+
+playlist_display_mode = columns
+browser_display_mode = columns
+search_engine_display_mode = columns
+playlist_editor_display_mode = classic
+
+#
+# User interface
+#
+
+user_interface = classic
+
+centered_cursor = yes
+
+progressbar_look = ─╼
+progressbar_boldness = yes
+
+header_visibility = yes
+statusbar_visibility = yes
+titles_visibility = no
+cyclic_scrolling = yes
+
+playlist_shorten_total_times = yes
+
+#
+# Behavior
+#
+
+screen_switcher_mode = playlist, browser, search_engine, visualizer
+
+startup_screen = playlist
+startup_slave_screen = browser
+
+locked_screen_width_part = 30
+
+ask_before_clearing_playlists = yes
+display_volume_level = yes
+
+ignore_leading_the = yes
+
+mouse_support = no
+
+external_editor = nvim
+use_console_editor = yes
+
+playlist_disable_highlight_delay = 2
+message_delay_time = 2
+
+# TODO setup dunst notification
+# execute_on_song_change = ""
+
