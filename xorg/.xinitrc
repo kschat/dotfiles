@@ -25,6 +25,7 @@ autocutsel -fork &
 autocutsel -selection PRIMARY -fork &
 
 xrandr --output DP-0 --primary --mode 3840x2160 --rate 60 --dpi 138
+nvidia-settings --load-config-only &
 compton &
 
 exec bspwm
