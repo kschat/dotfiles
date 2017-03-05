@@ -7,13 +7,12 @@ fifo='/tmp/mopidy.fifo'
 [ -e "$fifo" ] && rm -f "$fifo"
 mkfifo "$fifo"
 
-mopidy --config <(cat ./mopidy/{mopidy.conf,credentials.conf}) &
+mopidy --config <(cat ~/.config/mopidy/{mopidy.conf,credentials.conf}) &
 
 # Listen for GStreamer UDP sink and export it to FIFO
 # for more info: https://github.com/mopidy/mopidy/issues/775
-while :; do
+while sleep 1; do
   socat -d -d -T 1 -u UDP4-LISTEN:5555 OPEN:"$fifo"
-  sleep 5
 done &
 
 wait

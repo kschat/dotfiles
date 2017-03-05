@@ -89,8 +89,9 @@ arch_dependencies=(
   imagemagick
   bspwm
   sxhkd
-  mpd
+  mopidy
   ncmpcpp
+  socat
 )
 
 osx_dependencies=(
@@ -127,7 +128,9 @@ typeset -A packages; packages=(
   compton "$default_directory/.config"
   bspwm "$default_directory/.config/bspwm"
   sxhkd "$default_directory/.config/sxhkd"
-  mpd "$default_directory/.config/mpd"
+  mopidy "$default_directory/.config/mopidy"
+  ncmpcpp "$default_directory/.config/ncmpcpp"
+  wallpapers "$default_directory/.config/wallpapers"
 )
 
 exit_codes=(
