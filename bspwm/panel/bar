@@ -49,6 +49,13 @@ while :; do
   sleep 1h
 done > "$panel_fifo" &
 
+# music status
+while :; do
+  # TODO find why to subscribe to mopidy's MPD interface
+  echo "M$(mpc status 2> /dev/null | tr '\n' '|')"
+  sleep 0.5
+done > "$panel_fifo" &
+
 # hide bar on fullscreen events
 bspc subscribe node_state | while read _ _ _ wid name state; do
   [ -z "$panel_id" ] && local panel_id=$(xdo id -a "$panel_name")
