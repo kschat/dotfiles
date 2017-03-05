@@ -14,6 +14,7 @@ done
 
 amixer sset Master 25% unmute &
 pulseaudio --start &
+mopidy --config <(cat ./mopidy/{mopidy.conf,credentials.conf}) &
 
 feh --bg-scale ~/.config/wallpapers/current &
 xsetroot -cursor_name left_ptr &
