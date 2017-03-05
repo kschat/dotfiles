@@ -13,7 +13,7 @@ super + {_,shift} + Print
 
 # reload keybindings
 super + Escape
-	pkill -USR1 -x sxhkd; \
+  pkill -USR1 -x sxhkd; \
   notify-send -a 'reload' 'Keybindings reloaded'
 
 # quit bspwm normally
@@ -100,4 +100,12 @@ super + {Left,Down,Up,Right}
 
 XF86Audio{RaiseVolume,LowerVolume,Mute}
   amixer sset Master {5%+,5%-,toggle}
+
+# Pok3r requires a firmware update to enable XF86Audio{Play,Next,Prev} and the
+# only way to update the firmware is to use a computer with Windows...which I
+# don't have. So use F{7,8,9} instead.
+
+# basic music controls
+super + F{7,8,9}
+  mpc {prev,toggle,next}
 
