@@ -19,6 +19,14 @@ bspc subscribe desktop_focus | while read line; do
   echo "W$(bspc query -T -d "$(echo $line | cut -d' ' -f3)" | jq -r '.name')"
 done > "$panel_fifo" &
 
+# music status
+# Mopidy's MPD interface doesn't support channels, so we can't use `mpc subscribe`
+# to listen for events. The next best thing is using `mpc idleloop` and query for
+# the status, which is much better than polling.
+mpc idleloop player | while read _; do
+  echo "M$(mpc status 2> /dev/null | tr '\n' '|')"
+done > "$panel_fifo" &
+
 # active window
 while :; do
   echo "A$(bspc query -T -n focused | jq -r '.client.className')"
@@ -47,13 +55,6 @@ done > "$panel_fifo" &
 while :; do
   echo "P$(checkupdates | wc -l)"
   sleep 1h
-done > "$panel_fifo" &
-
-# music status
-while :; do
-  # TODO find why to subscribe to mopidy's MPD interface
-  echo "M$(mpc status 2> /dev/null | tr '\n' '|')"
-  sleep 0.5
 done > "$panel_fifo" &
 
 # hide bar on fullscreen events
