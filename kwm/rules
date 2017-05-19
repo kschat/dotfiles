@@ -1,0 +1,4 @@
+kwmc rule owner="iTerm2" properties={role="AXDialog";space="3"}
+kwmc rule owner="Steam" properties={float="true"}
+kwmc rule owner="Slack" properties={space="2"}
+

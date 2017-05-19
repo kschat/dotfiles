@@ -97,6 +97,7 @@ osx_dependencies=(
   caskroom/cask/brew-cask
   caskroom/cask/xquartz
   koekeishiya/formulae/kwm
+  koekeishiya/formulae/khd
   "vim --with-client-server"
   archey
 )
@@ -130,6 +131,8 @@ typeset -A packages; packages=(
   ncmpcpp "$default_directory/.config/ncmpcpp"
   wallpapers "$default_directory/.config/wallpapers"
   iterm2 "$default_directory/.config/iterm2"
+  kwm "$default_directory/.kwm"
+  khd "$default_directory"
 )
 
 exit_codes=(
