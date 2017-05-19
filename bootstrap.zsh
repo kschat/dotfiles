@@ -132,6 +132,7 @@ typeset -A packages; packages=(
   mopidy "$default_directory/.config/mopidy"
   ncmpcpp "$default_directory/.config/ncmpcpp"
   wallpapers "$default_directory/.config/wallpapers"
+  iterm2 "$default_directory/.config/iterm2"
 )
 
 exit_codes=(
