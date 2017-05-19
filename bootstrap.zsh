@@ -121,7 +121,6 @@ typeset -A packages; packages=(
   tmux "$default_directory"
   terminator "$default_directory"
   tf2 "$tf2_directory/tf/custom"
-  powerline "$default_directory/.config/powerline"
   i3 "$default_directory/.config/i3"
   colors "$default_directory/.colors"
   xorg "$default_directory"
