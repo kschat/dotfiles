@@ -2,7 +2,7 @@
 # Browser
 #
 
-if [[ "$OSTYPE" == darwin* ]]; then
+if [[ $OSTYPE == darwin* ]]; then
   export BROWSER='open'
 fi
 
@@ -44,12 +44,14 @@ export WORKSPACE="$HOME"/Workspace
 export NVM_DIR="$HOME"/.nvm
 export DOTFILES="$WORKSPACE/dotfiles"
 export VIMRC="$DOTFILES/vim/.vimrc"
-export SSH_ASKPASS='/usr/lib/ssh/x11-ssh-askpass'
 
-# virtualenvwrapper config
-export WORKON_HOME="$HOME"/.virtualenvs
-export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python2
-export VIRTUALENVWRAPPER_VIRTUALENV=/usr/bin/virtualenv2
+if [[ $OSTYPE == linux* ]]; then
+  export SSH_ASKPASS='/usr/lib/ssh/x11-ssh-askpass'
+  export WORKON_HOME="$HOME"/.virtualenvs
+  export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python2
+  export VIRTUALENVWRAPPER_VIRTUALENV=/usr/bin/virtualenv2
+  export VIRTUALENVWRAPPER_SH=/usr/bin/virtualenvwrapper.sh
+fi
 
 path=(
   $HOME/bin
