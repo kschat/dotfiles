@@ -97,6 +97,7 @@ arch_dependencies=(
 osx_dependencies=(
   caskroom/cask/brew-cask
   caskroom/cask/xquartz
+  koekeishiya/formulae/kwm
   "vim --with-client-server"
   archey
 )

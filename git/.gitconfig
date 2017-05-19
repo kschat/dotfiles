@@ -17,6 +17,5 @@
 [push]
 	default = simple
 [init]
-	templatedir = ~/.git-templates
 [core]
 	excludesfile = ~/.gitignore

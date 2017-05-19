@@ -67,6 +67,7 @@ export path=(
   $WORKSPACE/scripts
   $WORKSPACE/scripts/tmux-scripts
   $HOME/Library/Haskell/bin
+  $HOME/.cargo/bin
   $path
 )
 
