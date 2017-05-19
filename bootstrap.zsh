@@ -67,7 +67,6 @@ dependencies=(
 
 arch_dependencies=(
   vim
-  terminator
   sublime-text-dev
   archey-git
   rxvt-unicode
@@ -119,7 +118,6 @@ typeset -A packages; packages=(
   git "$default_directory"
   vim "$default_directory"
   tmux "$default_directory"
-  terminator "$default_directory"
   tf2 "$tf2_directory/tf/custom"
   i3 "$default_directory/.config/i3"
   colors "$default_directory/.colors"
