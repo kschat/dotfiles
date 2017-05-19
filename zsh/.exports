@@ -37,7 +37,7 @@ fi
 #
 
 # Ensure path arrays do not contain duplicates.
-typeset -gU cdpath fpath mailpath path
+typeset -gU fpath path
 
 export XDG_CONFIG_HOME="$HOME"/.config
 export WORKSPACE="$HOME"/Workspace
@@ -53,13 +53,7 @@ export WORKON_HOME="$HOME"/.virtualenvs
 export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python2
 export VIRTUALENVWRAPPER_VIRTUALENV=/usr/bin/virtualenv2
 
-# Set the the list of directories that cd searches.
-# cdpath=(
-#   $cdpath
-# )
-
-# Set the list of directories that Zsh searches for programs.
-export path=(
+path=(
   $HOME/bin
   /usr/local/bin
   /usr/local/heroku/bin
@@ -71,10 +65,13 @@ export path=(
   $path
 )
 
-export fpath=(
+fpath=(
   $HOME/.functions
   $fpath
 )
+
+export PATH
+export FPATH
 
 #
 # Less
