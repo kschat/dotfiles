@@ -1,15 +1,6 @@
 # add move without globbing to support things like `mmv *.foo *.bar`
 alias mmv='noglob zmv -W'
 
-# shortcut to start docker for PHP sites
-alias docker_php='docker run -d \
-  -p 80:80 \
-  -p 8880:8880 \
-  -p 443:443 \
-  -i -v "$HOME/Workspace/BB:/var/www" \
-  -t cores_dev \
-'
-
 if [[ "$OSTYPE" == linux* ]]; then
   # sublime-text-dev on arch exports command as `subl3` instead of `subl`
   alias subl=subl3
