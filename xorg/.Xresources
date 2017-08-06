@@ -70,10 +70,10 @@ rofi.hide-scrollbar:  true
 
 ! bg fg altbg hlbg hlfg
 rofi.color-enabled: true
-rofi.color-window:  bg, fg
-rofi.color-normal:  bg, fg, bg, fg, bg
-rofi.color-active:  bg, gray, gray, blue, bg
-rofi.color-urgent:  bg, red, bg, red, bg
+rofi.color-window:  b_white, b_white
+rofi.color-normal:  b_white, black, b_white, black, b_white
+rofi.color-active:  b_white, gray, gray, blue, b_white
+rofi.color-urgent:  b_white, red, b_white, red, b_white
 
 
 
