@@ -28,6 +28,8 @@ Plug 'leafgarland/typescript-vim', { 'for': 'typescript' }
 Plug 'w0rp/ale'
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' }
+Plug 'Shougo/vimproc.vim', { 'do' : 'make' }
+Plug 'Quramy/tsuquyomi', { 'for': 'typescript' }
 
 call plug#end()
 
@@ -251,7 +253,7 @@ endif
 " -----------------------------------------------------------------------------
 
 " ignore node_modules, and git directory
-let g:ctrlp_custom_ignore='\v[\/](node_modules|\.git|test/coverage)$'
+let g:ctrlp_custom_ignore='\v[\/](node_modules|\.git|coverage-output|build|recorded-data)$'
 
 " show hidden files in CtrlP
 let g:ctrlp_show_hidden=1
