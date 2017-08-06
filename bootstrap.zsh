@@ -228,7 +228,7 @@ function fatal_error {
 function install_package_manager {
   case "$1" in
     osx)  ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)";;
-    arch) install_from_aur package-query && install_from_aur yaourt;;
+    arch) install_from_aur cower && install_from_aur pacaur;;
     *)    false;;
   esac
 
@@ -267,7 +267,7 @@ function install_from_aur {
 
 function construct_dependency_arguments {
   case "$1" in
-    yaourt)   echo --noconfirm -S $dependencies $arch_dependencies;;
+    pacaur)   echo --noconfirm -S $dependencies $arch_dependencies;;
     brew)     echo install $dependencies $osx_dependencies;;
     apt-get)  echo install $dependencies $debian_dependencies;;
     *)        return 1;;
@@ -290,8 +290,8 @@ esac
 log info "Platform: [$platform]"
 log info 'Detecting package manager'
 
-if hash yaourt 2> /dev/null; then
-  package_manager='yaourt'
+if hash pacaur 2> /dev/null; then
+  package_manager='pacaur'
 elif hash brew 2> /dev/null; then
   package_manager='brew'
 elif hash apt-get 2> /dev/null; then
