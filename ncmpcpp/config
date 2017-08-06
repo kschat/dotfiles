@@ -23,15 +23,16 @@ audio_output {
   name    "Visualizer feed"
   path    "/tmp/mopidy.fifo"
   format  "44100:16:1"
+  buffer_time "50000"
 }
 
 visualizer_fifo_path = /tmp/mopidy.fifo
 visualizer_output_name = Visualizer feed
-visualizer_sample_multiplier = 2
+visualizer_sample_multiplier = 5
 visualizer_in_stereo = no
 visualizer_sync_interval = 10
 visualizer_type = wave
-visualizer_look = │▊
+visualizer_look = ●▊
 
 #
 # Colors
