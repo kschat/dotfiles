@@ -1,5 +1,5 @@
 [global]
-font = Droid Sans, Font Awesome 15
+font = Droid Sans, Font Awesome
 format = "<b>%a</b> %s %b"
 
 geometry = "900x5-45+95"
@@ -7,6 +7,9 @@ line_height = 15
 separator_height = 2
 padding = 20
 horizontal_padding = 20
+
+frame_width = 0
+frame_color = "#272C30"
 
 idle_threshold = 120
 show_age_threshold = 60
@@ -18,10 +21,6 @@ icon_position = off
 
 dmenu = /usr/bin/dmenu -p dunst:
 browser = /usr/bin/google-chrome-stable
-
-[frame]
-width = 0
-color = "#272C30"
 
 [urgency_low]
 foreground = "#272C30"
@@ -37,7 +36,6 @@ timeout = 10
 foreground = "#272C30"
 background = "#E6E6ED"
 timeout = 0
-
 
 [screenshot]
 appname = "screenshot"
