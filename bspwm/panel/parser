@@ -25,7 +25,7 @@ format_volume() {
     return
   fi)
 
-  echo $(underline "$ucolor" "${vol}${space}${icon}")
+  echo $(underline "$ucolor" "$vol$space$icon")
 }
 
 format_workspace() {
@@ -46,19 +46,26 @@ format_updates() {
 
   [ "$1" -ge 20 ] && ucolor=$red
 
-  echo $(underline "$ucolor" "${1}${space}${icon_color}")
+  echo $(underline "$ucolor" "${1}${space}")
 }
 
-format_center() {
-  echo
-}
+format_google_play_music() {
+  local output=${1}
+  local icon=
 
-format_left() {
-  echo $(underline "$blue" "${user}${space}${active_window}")
-}
+  [ -z "$output" ] && return
 
-format_right() {
-  echo "$music$pad$pad$updates$pad$workspace$pad$volume$pad$clock"
+  local song=$(echo $output | jq -r '.song.title | select(.)')
+
+  [ -z "$song" ] && return
+
+  local artist=$(echo $output | jq -r '.song.artist')
+  local title="$artist - $song"
+  local playing=$(echo $output | jq -r '.playing')
+
+  [ "$playing" = false ] && icon=
+
+  echo "$space%{+u U$fg_color}${title:0:55}$space$icon%{U- -u}"
 }
 
 format_music() {
@@ -75,7 +82,19 @@ format_music() {
 
   [ "$state" = 'playing' ] && icon=
 
-  echo "${space}%{+u U${blue}}${title:0:55}${space}${icon}%{U- -u}"
+  echo "$space%{+u U$fg_color}${title:0:55}$space$icon%{U- -u}"
+}
+
+format_center() {
+  echo
+}
+
+format_left() {
+  echo "%{B$fg_color F$bg_color O50}$user$space$active_window%{O100 T4}%{F- B- T-}"
+}
+
+format_right() {
+  echo "$music$pad$pad$updates$pad$workspace$pad$volume$pad$clock%{O50}"
 }
 
 while read -r line; do
@@ -87,8 +106,9 @@ while read -r line; do
     W*) workspace=$(format_workspace "${line:1}") ;;
     P*) updates=$(format_updates "${line:1}") ;;
     M*) music=$(format_music "${line:1}") ;;
+    G*) music=$(format_google_play_music "${line:1}") ;;
   esac
 
-  echo "%{O50}$(format_left)%{c}$(format_center)%{r}$(format_right)%{O50}"
+  echo "$(format_left)%{c}$(format_center)%{r}$(format_right)"
 done
 

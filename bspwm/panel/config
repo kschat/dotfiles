@@ -8,11 +8,13 @@ width=$(xrandr 2> /dev/null | grep current | awk '{print $8}')
 height=55
 geometry="${width}x${height}+0+0"
 border=4
+font_offset=-42
 
 font1='Droid Sans:size=10'
 font2='Droid Sans:size=10:style=bold'
 
 icon1='FontAwesome:size=12'
+icon2='FontAwesome:size=56'
 
 scheme='nameless'
 
@@ -25,6 +27,6 @@ cyan=$(~/.colors/get-color ${scheme} cyan)
 blue=$(~/.colors/get-color ${scheme} blue)
 magenta=$(~/.colors/get-color ${scheme} purple)
 
-pad='    '
+pad='      '
 space='  '
 

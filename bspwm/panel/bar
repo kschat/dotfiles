@@ -27,9 +27,14 @@ mpc idleloop player | while read _; do
   echo "M$(mpc status 2> /dev/null | tr '\n' '|')"
 done > "$panel_fifo" &
 
+gpmdp_playback=~/.config/Google\ Play\ Music\ Desktop\ Player/json_store/playback.json
+inotifywait -q -e close_write -m --format '%w' "$gpmdp_playback" | while read -r file; do
+  echo "G$(cat $file | jq -c 'del(.songLyrics)')"
+done > "$panel_fifo" &
+
 # active window
 while :; do
-  echo "A$(bspc query -T -n focused | jq -r '.client.className')"
+  echo "A$(bspc query -T -n focused | jq -r '.client.className' | sed -s 's/-/ /g')"
   sleep 0.1
 done > "$panel_fifo" &
 
@@ -70,9 +75,13 @@ done &
     -d \
     -n "$panel_name" \
     -g "$geometry" \
+    -o "$font_offset" \
     -f "$font1" \
+    -o "$font_offset" \
     -f "$font2" \
+    -o "$font_offset" \
     -f "$icon1" \
+    -o 0 \
     -f "$icon2" \
     -u "$border" \
     -B "$bg_color" \
