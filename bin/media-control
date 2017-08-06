@@ -1,0 +1,16 @@
+#!/usr/bin/env zsh
+
+action=$1
+
+typeset -A playerctl_actions; playerctl_actions=(
+  prev    previous
+  next    next
+  toggle  play-pause
+)
+
+if [ -z "$(playerctl --list-all 2> /dev/null)" ]; then
+  mpc "$action"
+else
+  playerctl "${playerctl_actions[$action]}"
+fi
+

@@ -92,6 +92,7 @@ arch_dependencies=(
   mopidy
   ncmpcpp
   socat
+  playerctl
 )
 
 osx_dependencies=(
@@ -131,6 +132,7 @@ typeset -A packages; packages=(
   mopidy "$default_directory/.config/mopidy"
   ncmpcpp "$default_directory/.config/ncmpcpp"
   wallpapers "$default_directory/.config/wallpapers"
+  bin "$default_directory/.bin"
 )
 
 exit_codes=(

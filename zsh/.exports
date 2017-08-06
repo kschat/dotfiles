@@ -60,7 +60,7 @@ export VIRTUALENVWRAPPER_VIRTUALENV=/usr/bin/virtualenv2
 
 # Set the list of directories that Zsh searches for programs.
 export path=(
-  $HOME/bin
+  $HOME/.bin
   /usr/local/bin
   /usr/local/heroku/bin
   $HOME/.rvm/bin
