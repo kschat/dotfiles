@@ -36,8 +36,8 @@ bootstrap.zsh [-v|vv|vvv --verbose] [-d --debug] [-f --force] /path/to/install
 
 ### Arch
 
-![Arch shell screenshot](http://i.imgur.com/XIFggpE.png)
+![Arch screenshot](http://i.imgur.com/XIFggpE.png)
 
 ### OS X
 
-![OS X shell screenshot](http://i.imgur.com/stOirdR.png)
+![macOS screenshot](http://i.imgur.com/ZkoaD8J.png)

@@ -2,7 +2,7 @@
 # Browser
 #
 
-if [[ "$OSTYPE" == darwin* ]]; then
+if [[ $OSTYPE == darwin* ]]; then
   export BROWSER='open'
 fi
 
@@ -37,24 +37,23 @@ fi
 #
 
 # Ensure path arrays do not contain duplicates.
-typeset -gU cdpath fpath mailpath path
+typeset -gU fpath path
 
 export XDG_CONFIG_HOME="$HOME"/.config
 export WORKSPACE="$HOME"/Workspace
 export NVM_DIR="$HOME"/.nvm
 export DOTFILES="$WORKSPACE/dotfiles"
 export VIMRC="$DOTFILES/vim/.vimrc"
-export POWERLINE_PATH='/usr/local/lib/python2.7/site-packages/powerline'
-export BASE16_SHELL="$HOME/.config/base16-shell/base16-solarized.dark.sh"
-export SSH_ASKPASS='/usr/lib/ssh/x11-ssh-askpass'
 
-# virtualenvwrapper config
-export WORKON_HOME="$HOME"/.virtualenvs
-export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python2
-export VIRTUALENVWRAPPER_VIRTUALENV=/usr/bin/virtualenv2
+if [[ $OSTYPE == linux* ]]; then
+  export SSH_ASKPASS='/usr/lib/ssh/x11-ssh-askpass'
+  export WORKON_HOME="$HOME"/.virtualenvs
+  export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python2
+  export VIRTUALENVWRAPPER_VIRTUALENV=/usr/bin/virtualenv2
+  export VIRTUALENVWRAPPER_SH=/usr/bin/virtualenvwrapper.sh
+fi
 
-# Set the list of directories that Zsh searches for programs.
-export path=(
+path=(
   $HOME/.bin
   /usr/local/bin
   /usr/local/heroku/bin
@@ -62,13 +61,17 @@ export path=(
   $WORKSPACE/scripts
   $WORKSPACE/scripts/tmux-scripts
   $HOME/Library/Haskell/bin
+  $HOME/.cargo/bin
   $path
 )
 
-export fpath=(
+fpath=(
   $HOME/.functions
   $fpath
 )
+
+export PATH
+export FPATH
 
 #
 # Less

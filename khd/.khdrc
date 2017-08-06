@@ -1,0 +1,52 @@
+# enable kwm compatibility mode
+khd kwm on
+
+# kill kwm
+alt + ctrl + shift - escape : kwmc quit
+
+# toggle floating mode on window
+alt - f : kwmc window -t focused
+
+# toggle space tiling mode
+alt - a : kwmc space -t bsp
+alt - s : kwmc space -t monocle
+alt - d : kwmc space -t float
+
+# rotate windows in space
+alt - r : kwmc tree rotate 90
+alt + shift - r : kwmc tree rotate 180
+
+# change window focus
+alt - h : kwmc window -f west
+alt - j : kwmc window -f south
+alt - k : kwmc window -f north
+alt - l : kwmc window -f east
+
+# move focused window
+alt + shift - h : kwmc window -s west
+alt + shift - j : kwmc window -s south
+alt + shift - k : kwmc window -s north
+alt + shift - l : kwmc window -s east
+
+# move focused window to screen
+alt + shift - 1 : kwmc window -m space 1
+alt + shift - 2 : kwmc window -m space 2
+alt + shift - 3 : kwmc window -m space 3
+alt + shift - 4 : kwmc window -m space 4
+alt + shift - 5 : kwmc window -m space 5
+alt + shift - 6 : kwmc window -m space 6
+alt + shift - 7 : kwmc window -m space 7
+alt + shift - 8 : kwmc window -m space 8
+alt + shift - 9 : kwmc window -m space 9
+
+# move to space
+alt - 1 : kwmc space -fExperimental 1
+alt - 2 : kwmc space -fExperimental 2
+alt - 3 : kwmc space -fExperimental 3
+alt - 4 : kwmc space -fExperimental 4
+alt - 5 : kwmc space -fExperimental 5
+alt - 6 : kwmc space -fExperimental 6
+alt - 7 : kwmc space -fExperimental 7
+alt - 8 : kwmc space -fExperimental 8
+alt - 9 : kwmc space -fExperimental 9
+

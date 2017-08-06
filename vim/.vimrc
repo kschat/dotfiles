@@ -5,7 +5,7 @@ set nocompatible
 " Vim-plug Configuration {{{
 " -----------------------------------------------------------------------------
 
-if empty(glob('~/.vim/autoload/plug.vim'))
+if empty(glob('~/.config/nvim/autoload/plug.vim'))
   silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
     \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
   autocmd VimEnter * PlugInstall | source $MYVIMRC
@@ -21,11 +21,14 @@ Plug 'tmux-plugins/vim-tmux-focus-events'
 Plug 'tmux-plugins/vim-tmux'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'tpope/vim-obsession'
+Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-surround'
 Plug 'mhinz/vim-startify'
 Plug 'mbbill/undotree'
+Plug 'w0rp/ale'
 Plug 'baskerville/vim-sxhkdrc'
 Plug 'leafgarland/typescript-vim', { 'for': 'typescript' }
-Plug 'w0rp/ale'
+Plug 'rust-lang/rust.vim'
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' }
 Plug 'Shougo/vimproc.vim', { 'do' : 'make' }
@@ -170,7 +173,7 @@ set lazyredraw
 " faster redraws
 set ttyfast
 
-" highlight matching [{()}]
+" don't highlight matching [{()}]
 set noshowmatch
 
 " adds 80 character vertical line
@@ -186,9 +189,9 @@ set wildmode=list:longest
 
 " use same vertical separator as tmux
 set fillchars+=vert:│
+hi VertSplit ctermbg=NONE guibg=NONE
 
 " }}}
-"}}}
 
 " -----------------------------------------------------------------------------
 " Search {{{

@@ -67,7 +67,6 @@ dependencies=(
 
 arch_dependencies=(
   vim
-  terminator
   sublime-text-dev
   archey-git
   rxvt-unicode
@@ -98,6 +97,8 @@ arch_dependencies=(
 osx_dependencies=(
   caskroom/cask/brew-cask
   caskroom/cask/xquartz
+  koekeishiya/formulae/kwm
+  koekeishiya/formulae/khd
   "vim --with-client-server"
   archey
 )
@@ -119,9 +120,7 @@ typeset -A packages; packages=(
   git "$default_directory"
   vim "$default_directory"
   tmux "$default_directory"
-  terminator "$default_directory"
   tf2 "$tf2_directory/tf/custom"
-  powerline "$default_directory/.config/powerline"
   i3 "$default_directory/.config/i3"
   colors "$default_directory/.colors"
   xorg "$default_directory"
@@ -133,6 +132,9 @@ typeset -A packages; packages=(
   ncmpcpp "$default_directory/.config/ncmpcpp"
   wallpapers "$default_directory/.config/wallpapers"
   bin "$default_directory/.bin"
+  iterm2 "$default_directory/.config/iterm2"
+  kwm "$default_directory/.kwm"
+  khd "$default_directory"
 )
 
 exit_codes=(
