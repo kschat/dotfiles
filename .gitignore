@@ -2,4 +2,5 @@ temp-dir/
 *.swp
 tf2/class_config/sound
 mopidy/credentials.conf
+*.local
 

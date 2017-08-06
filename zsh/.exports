@@ -53,11 +53,6 @@ export WORKON_HOME="$HOME"/.virtualenvs
 export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python2
 export VIRTUALENVWRAPPER_VIRTUALENV=/usr/bin/virtualenv2
 
-# Set the the list of directories that cd searches.
-# cdpath=(
-#   $cdpath
-# )
-
 # Set the list of directories that Zsh searches for programs.
 export path=(
   $HOME/.bin
@@ -91,8 +86,14 @@ if (( $#commands[(i)lesspipe(|.sh)] )); then
 fi
 
 #
-# Java
+# Programs
 #
 
 export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=on -Dswing.aatext=true'
+
+if [[ "$OSTYPE" == darwin* ]]; then
+  export _GIT_CREDENTIAL_HELPER='oxskeychain'
+else
+  export _GIT_CREDENTIAL_HELPER='cache --timeout=7200'
+fi
 

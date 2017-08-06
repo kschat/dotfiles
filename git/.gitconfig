@@ -1,8 +1,6 @@
 [user]
 	name = kschat
 	email = kyleschattler@gmail.com
-[credential]
-	helper = osxkeychain
 [filter "media"]
 	clean = git media clean %f
 	smudge = git media smudge %f
@@ -16,7 +14,9 @@
 	st = status
 [push]
 	default = simple
-[init]
-	templatedir = ~/.git-templates
 [core]
 	excludesfile = ~/.gitignore
+[merge]
+	tool = vimdiff
+[include]
+  path = .gitconfig.local
