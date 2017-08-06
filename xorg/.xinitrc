@@ -8,6 +8,7 @@ fi
 
 [[ -f ~/.Xresources ]] && xrdb -merge -I"$HOME" ~/.Xresources
 
+export ALSA_CARD=PCH
 for control in Headphones PCM Front Surround Center LFE Line; do
   amixer sset "$control" 0dB unmute &
 done
