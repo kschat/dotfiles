@@ -43,10 +43,14 @@ format = "  │  %s"
 
 [reload]
 appname = "reload"
-format = "  |  %s"
+format = "  │  %s"
 
 [slack]
 appname = "Electron"
 format = "  │  %s   %b"
+
+[backup]
+appname = "backup"
+format = "  │  %s"
 
 # vim:filetype=cfg
