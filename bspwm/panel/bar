@@ -4,12 +4,13 @@ dir=$(dirname $0)
 
 source "$dir"/config
 
-if [ $(pgrep -cF "$panel_pid_file") -gt 1 ]; then
+if pgrep -F "$panel_pid_file" > /dev/null 2>&1; then
   echo 'The panel is already running.' >&2
   exit 1
 fi
 
-trap 'trap - TERM; kill 0' INT TERM QUIT EXIT
+trap 'trap - TERM; : >! "$panel_pid_file"; kill 0' INT TERM QUIT EXIT
+trap ': >! "$panel_pid_file"; pkill -P $$; exec "$(readlink -f "$0")"' USR1
 
 [ -e "$panel_fifo" ] && rm -f "$panel_fifo"
 mkfifo "$panel_fifo"
