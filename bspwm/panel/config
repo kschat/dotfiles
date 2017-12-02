@@ -27,6 +27,6 @@ cyan=$(~/.colors/get-color ${scheme} cyan)
 blue=$(~/.colors/get-color ${scheme} blue)
 magenta=$(~/.colors/get-color ${scheme} purple)
 
-pad='      '
+pad='    '
 space='  '
 

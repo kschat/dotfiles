@@ -25,11 +25,11 @@ format_volume() {
     return
   fi)
 
-  echo $(underline "$ucolor" "$vol$space$icon")
+  echo "$pad$(underline "$ucolor" "$vol$space$icon")$pad"
 }
 
 format_workspace() {
-  echo $(underline "$bg_color" "${1}${space}")
+  echo "$pad$(underline "$bg_color" "${1}${space}")$pad"
 }
 
 format_active_window() {
@@ -37,7 +37,7 @@ format_active_window() {
 }
 
 format_user() {
-  echo "%{T2}${1}%{T-}"
+  echo "%{T2}${1}%{T-}$space"
 }
 
 format_updates() {
@@ -46,7 +46,7 @@ format_updates() {
 
   [ "$1" -ge 20 ] && ucolor=$red
 
-  echo $(underline "$ucolor" "${1}${space}")
+  echo "$pad$(underline "$ucolor" "${1}${space}")$pad"
 }
 
 format_google_play_music() {
@@ -65,7 +65,7 @@ format_google_play_music() {
 
   [ "$playing" = false ] && icon=
 
-  echo "$space%{+u U$fg_color}${title:0:55}$space$icon%{U- -u}"
+  echo "$pad$pad%{+u U$fg_color}${title:0:55}$space$icon%{U- -u}$pad$pad"
 }
 
 format_music() {
@@ -82,7 +82,7 @@ format_music() {
 
   [ "$state" = 'playing' ] && icon=
 
-  echo "$space%{+u U$fg_color}${title:0:55}$space$icon%{U- -u}"
+  echo "$pad$pad$space%{+u U$fg_color}${title:0:55}$space$icon%{U- -u}$pad$pad"
 }
 
 format_center() {
@@ -90,17 +90,17 @@ format_center() {
 }
 
 format_left() {
-  echo "%{B$fg_color F$bg_color O50}$user$space$active_window%{O100 T4}%{F- B- T-}"
+  echo "%{B$fg_color F$bg_color O50}$user$active_window%{O100 T4}%{F- B- T-}"
 }
 
 format_right() {
-  echo "$music$pad$pad$updates$pad$workspace$pad$volume$pad$clock%{O50}"
+  echo "$music$updates$workspace$volume$clock%{O50}"
 }
 
 while read -r line; do
   case $line in
     A*) active_window=$(format_active_window "${line:1}") ;;
-    C*) clock=${line:1} ;;
+    C*) clock=$pad${line:1} ;;
     V*) volume=$(format_volume "${line:1}") ;;
     U*) user=$(format_user "${line:1}") ;;
     W*) workspace=$(format_workspace "${line:1}") ;;
