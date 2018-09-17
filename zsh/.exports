@@ -89,14 +89,17 @@ if (( $#commands[(i)lesspipe(|.sh)] )); then
 fi
 
 #
-# Programs
+# Miscellaneous
 #
 
 export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=on -Dswing.aatext=true'
+export _JAVA_AWT_WM_NONREPARENTING=1
 
 if [[ "$OSTYPE" == darwin* ]]; then
   export _GIT_CREDENTIAL_HELPER='oxskeychain'
 else
   export _GIT_CREDENTIAL_HELPER='cache --timeout=7200'
 fi
+
+export LPASS_AGENT_TIMEOUT=432000
 
