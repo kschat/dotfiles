@@ -33,6 +33,7 @@ Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' }
 Plug 'Shougo/vimproc.vim', { 'do' : 'make' }
 Plug 'Quramy/tsuquyomi', { 'for': 'typescript' }
+Plug 'rodjek/vim-puppet', { 'for': 'puppet' }
 
 call plug#end()
 
@@ -256,7 +257,7 @@ endif
 " -----------------------------------------------------------------------------
 
 " ignore node_modules, and git directory
-let g:ctrlp_custom_ignore='\v[\/](node_modules|\.git|coverage-output|build|recorded-data)$'
+let g:ctrlp_custom_ignore='\v[\/](node_modules|\.git|coverage-output|build|recorded-data|dist)$'
 
 " show hidden files in CtrlP
 let g:ctrlp_show_hidden=1
@@ -275,7 +276,10 @@ let g:NERDTreeShowHidden=1
 " Ale {{{
 " -----------------------------------------------------------------------------
 
-let g:ale_linters = { 'javascript': ['eslint'] }
+let g:ale_linters = {
+\  'javascript': ['eslint'],
+\  'typescript': ['tsserver']
+\}
 
 " don't lint on file open
 let g:ale_lint_on_enter=0
@@ -286,7 +290,7 @@ let g:ale_lint_on_text_changed=0
 " lint on file save
 let g:ale_lint_on_save=1
 
-" run linter right away
+" don't run linter right away
 let g:ale_lint_delay=0
 
 " populate loclist with linting errors
@@ -332,6 +336,8 @@ autocmd User Startified setlocal colorcolumn=0
 " -----------------------------------------------------------------------------
 
 autocmd FileType typescript nmap <buffer> <Leader>t : <C-u>echo tsuquyomi#hint()<CR>
+
+let g:tsuquyomi_disable_quickfix=1
 
 " }}}
 
