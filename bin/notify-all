@@ -1,0 +1,27 @@
+#!/usr/bin/env zsh
+
+typeset -A xusers; xusers=()
+typeset -A displays; displays=()
+
+env_pattern='s/.* (DISPLAY=:[0-9]*).* (DBUS_SESSION_BUS_ADDRESS=[^ ]+).*/\1|\2/p'
+
+for i in $(users);do
+  [[ $i != root ]] && xusers[$i]=1
+done
+
+for u in "${(@k)xusers}"; do
+  for i in $(sudo ps e -u "$u" | sed -rn "$env_pattern"); do
+    local display=$(echo $i | cut -d '|' -f 1)
+    local dbus_session=$(echo $i | cut -d '|' -f 2)
+    displays[$display]="$u|$i"
+  done
+done
+
+for d in "${(@k)displays}"; do
+  local data=${displays[$d]}
+  local display=$(echo $data | cut -d '|' -f 2)
+  local dbus_session=$(echo $data | cut -d '|' -f 3)
+  local user_name=$(echo $data | cut -d '|' -f 1)
+  sudo -u "$user_name" $display $dbus_session notify-send "$@"
+done
+
