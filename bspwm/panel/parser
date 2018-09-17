@@ -85,6 +85,17 @@ format_music() {
   echo "$pad$pad$space%{+u U$fg_color}${title:0:55}$space$icon%{U- -u}$pad$pad"
 }
 
+format_vpn() {
+  local output=${1}
+  local icon=
+
+  case $output in
+    DISCONNECTED) echo "%{A:vpn-connect -q:}$pad$pad%{A}"; return ;;
+    CONNECTED) echo "%{A:pkill -F /tmp/vpn-connect-pid:}$pad$pad%{A}"; return ;;
+    CONNECTING) echo "$pad$pad"; return ;;
+  esac
+}
+
 format_center() {
   echo
 }
@@ -94,7 +105,7 @@ format_left() {
 }
 
 format_right() {
-  echo "$music$updates$workspace$volume$clock%{O50}"
+  echo "$music$vpn$updates$workspace$volume$clock%{O50}"
 }
 
 while read -r line; do
@@ -107,6 +118,7 @@ while read -r line; do
     P*) updates=$(format_updates "${line:1}") ;;
     M*) music=$(format_music "${line:1}") ;;
     G*) music=$(format_google_play_music "${line:1}") ;;
+    N*) vpn=$(format_vpn "${line:1}") ;;
   esac
 
   echo "$(format_left)%{c}$(format_center)%{r}$(format_right)"
