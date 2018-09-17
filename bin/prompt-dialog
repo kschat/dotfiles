@@ -1,0 +1,8 @@
+#!/usr/bin/env zsh
+
+echo '' | rofi -dmenu \
+  -password \
+  -lines 1 \
+  -p "$1" \
+  -color-normal '#E6E6ED,#272C30,#E6E6ED,#E6E6ED,#E6E6ED'
+
