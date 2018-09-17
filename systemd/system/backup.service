@@ -1,0 +1,7 @@
+[Unit]
+Description=Backup system service
+
+[Service]
+Type=simple
+ExecStart=/home/kyle/.bin/backup
+

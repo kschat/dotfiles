@@ -1,0 +1,98 @@
+#!/usr/bin/env zsh
+
+set -e
+trap 'report_error' ERR
+
+# needed to send notifications as root
+# TODO don't hardcode
+export DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus
+
+filter_file=/tmp/backup-filters
+
+cat << EOM >"$filter_file"
+- /dev/*
+- /proc/*
+- /sys/*
+- /tmp/*
+- /run/*
+- /mnt/*
+- /var/run/*
+- /var/cache/*
+- /var/tmp/*
+- /var/lock/*
+- /media/*
+- /home/**/.cache/*
+- /home/**/.Cache/*
+- /home/**/cache/*
+- /home/**/Cache/*
+- /home/kyle/.config/**/GPUCache/*
+- /home/kyle/.config/**/IndexedDB/*
+- /home/kyle/.config/google-chrome/*
+- /home/kyle/.config/google-chrome-beta/*
+- /home/kyle/.config/chromium/*
+- /home/kyle/Workspace/**/node_modules/*
+- /**/logs/*
+- /**/log/*
++ /usr/local/
+- /usr/*
+EOM
+
+log_and_quit() {
+  >&2 echo $1
+  exit 1
+}
+
+report_error() {
+  /home/kyle/.bin/notify-all -a 'backup' 'Error occured while backing up system'
+}
+
+sync_files() {
+  local source_dir=$1
+  local destination_dir=$2
+  local link_dir=$3
+
+  rsync --archive \
+    --acls \
+    --xattrs \
+    --partial \
+    --delete \
+    --delay-updates \
+    --sparse \
+    --progress \
+    --human-readable \
+    --itemize-changes \
+    --link-dest="$link_dir" \
+    --filter="merge $filter_file" \
+    "$source_dir" \
+    "$destination_dir"
+}
+
+backup() {
+  [[ -z $1 ]] || [[ -z $2 ]] && log_and_quit 'Missing required input'
+
+  local now=$(date '+%Y-%m-%d_%T')
+  local source_dir=$1
+  local snapshot_dir=$2
+  local latest_dir="$snapshot_dir/latest"
+  local current_dir="$snapshot_dir/$now"
+
+  mkdir -p "$snapshot_dir"
+
+  sync_files "$source_dir" "$current_dir" "$latest_dir" || {
+    local error_code=$?
+    [[ $error_code -ne 24 ]] && return "$error_code"
+  }
+
+  rm -f "$latest_dir"
+  ln -s "$current_dir" "$latest_dir"
+}
+
+ionice -c 3 -p $$
+renice +10 -p $$
+
+/home/kyle/.bin/notify-all -a 'backup' 'System backup running...'
+
+backup / /media/Storage/snapshots
+
+/home/kyle/.bin/notify-all -a 'backup' 'System backup complete'
+

@@ -1,0 +1,12 @@
+[Unit]
+Description=Backup system daily
+
+[Timer]
+OnBootSec=10min
+OnUnitActiveSec=8h
+Persistent=true
+Unit=backup.service
+
+[Install]
+WantedBy=default.target
+
