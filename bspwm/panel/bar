@@ -9,16 +9,30 @@ if pgrep -F "$panel_pid_file" > /dev/null 2>&1; then
   exit 1
 fi
 
+# clean up PID file
 trap 'trap - TERM; : >! "$panel_pid_file"; kill 0' INT TERM QUIT EXIT
+
+# Reload bar with updated config
 trap ': >! "$panel_pid_file"; pkill -P $$; exec "$(readlink -f "$0")"' USR1
 
 [ -e "$panel_fifo" ] && rm -f "$panel_fifo"
 mkfifo "$panel_fifo"
 
-# bspwm desktop events
-bspc subscribe desktop_focus | while read line; do
-  echo "W$(bspc query -T -d "$(echo $line | cut -d' ' -f3)" | jq -r '.name')"
-done > "$panel_fifo" &
+get_workspace() {
+  echo "W$(bspc query -T -d "$1" | jq -r '.name')"
+}
+
+get_active_window() {
+  echo "A$(bspc query -T -n focused | jq -r '.client.className' | sed -s 's/-/ /g')"
+}
+
+get_volume() {
+  echo "V$(amixer get Master | grep 'Front Left: Playback')"
+}
+
+get_vpn_status() {
+  echo "N$(vpn-connect -s)"
+}
 
 # music status
 # Mopidy's MPD interface doesn't support channels, so we can't use `mpc subscribe`
@@ -29,15 +43,26 @@ mpc idleloop player | while read _; do
 done > "$panel_fifo" &
 
 gpmdp_playback=~/.config/Google\ Play\ Music\ Desktop\ Player/json_store/playback.json
-inotifywait -q -e close_write -m --format '%w' "$gpmdp_playback" | while read -r file; do
+inotifywait -qm -e close_write --format '%w' "$gpmdp_playback" | while read -r file; do
   echo "G$(cat $file | jq -c 'del(.songLyrics)')"
 done > "$panel_fifo" &
 
-# active window
-while :; do
-  echo "A$(bspc query -T -n focused | jq -r '.client.className' | sed -s 's/-/ /g')"
-  sleep 0.1
+# bspwm desktop events
+bspc subscribe desktop_focus | while read _ _ desktop_id; do
+  get_workspace "$desktop_id"
+  # If we switch to a desktop without a window we want the current window name
+  # to reflect that
+  get_active_window
 done > "$panel_fifo" &
+
+get_workspace "$(bspc query -D -n focused)" > "$panel_fifo" &
+
+# active window
+bspc subscribe node_focus node_remove | while read _; do
+  get_active_window
+done > "$panel_fifo" &
+
+get_active_window > "$panel_fifo" &
 
 # time
 while :; do
@@ -46,10 +71,11 @@ while :; do
 done > "$panel_fifo" &
 
 # volume
-while :; do
-  echo "V$(amixer get Master | grep 'Mono: Playback')"
-  sleep 0.1
+pactl subscribe | grep --line-buffered 'sink' | while read _; do
+  get_volume
 done > "$panel_fifo" &
+
+get_volume > "$panel_fifo" &
 
 # user
 while :; do
@@ -60,17 +86,15 @@ done > "$panel_fifo" &
 # available updates
 while :; do
   echo "P$(checkupdates | wc -l)"
-  sleep 1h
+  sleep 5m
 done > "$panel_fifo" &
 
-# hide bar on fullscreen events
-bspc subscribe node_state | while read _ _ _ wid name state; do
-  [ -z "$panel_id" ] && local panel_id=$(xdo id -a "$panel_name")
+# vpn
+inotifywait -qm -e close_write --format '%w' "$(vpn-connect -f)" | while read _; do
+  get_vpn_status
+done > "$panel_fifo" &
 
-  if [ "$name" = 'fullscreen' ] && [ "$state" = 'on' ]; then
-    xdo below -t "$wid" "$panel_id"
-  fi
-done &
+get_vpn_status > "$panel_fifo" &
 
 "$dir"/parser < "$panel_fifo" | lemonbar \
     -d \
@@ -91,6 +115,13 @@ done &
 
 # store PID for kill command
 echo $$ > "$panel_pid_file"
+
+until bar_id=$(xdo id -a "$panel_name"); do
+  sleep 0.001
+done
+
+# hide bar on fullscreen
+xdo below -t "$(xdo id -n root)" "$bar_id"
 
 wait
 
