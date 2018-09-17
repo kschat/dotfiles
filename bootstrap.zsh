@@ -135,6 +135,8 @@ typeset -A packages; packages=(
   iterm2 "$default_directory/.config/iterm2"
   kwm "$default_directory/.kwm"
   khd "$default_directory"
+  # TODO add support for systemd/user and systemd/system units
+  # systemd "$default_directory/.config/systemd"
 )
 
 exit_codes=(
@@ -232,7 +234,7 @@ function fatal_error {
 function install_package_manager {
   case "$1" in
     osx)  ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)";;
-    arch) install_from_aur cower && install_from_aur pacaur;;
+    arch) install_from_aur pikaur;;
     *)    false;;
   esac
 
@@ -271,7 +273,7 @@ function install_from_aur {
 
 function construct_dependency_arguments {
   case "$1" in
-    pacaur)   echo --noconfirm -S $dependencies $arch_dependencies;;
+    pikaur)   echo --noconfirm -S $dependencies $arch_dependencies;;
     brew)     echo install $dependencies $osx_dependencies;;
     apt-get)  echo install $dependencies $debian_dependencies;;
     *)        return 1;;
@@ -285,17 +287,17 @@ function construct_dependency_arguments {
 log info 'Detecting platform'
 
 case "$(uname -rv | tr '[:upper:]' '[:lower:]')" in
-  *arch*) platform='arch';;
-  *darwin*) platform='osx';;
-  *debian*|*ubuntu*) platform='debian';;
-  *) platform='unknown';;
+  *arch*)             platform='arch';;
+  *darwin*)           platform='osx';;
+  *debian*|*ubuntu*)  platform='debian';;
+  *)                  platform='unknown';;
 esac
 
 log info "Platform: [$platform]"
 log info 'Detecting package manager'
 
-if hash pacaur 2> /dev/null; then
-  package_manager='pacaur'
+if hash pikaur 2> /dev/null; then
+  package_manager='pikaur'
 elif hash brew 2> /dev/null; then
   package_manager='brew'
 elif hash apt-get 2> /dev/null; then
