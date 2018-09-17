@@ -16,6 +16,11 @@ super + Escape
   pkill -USR1 -x sxhkd; \
   notify-send -a 'reload' 'Keybindings reloaded'
 
+# reload everything
+super + ctrl + shift + r
+ pkill -USR1 -x compton; \
+ pkill -USR1 -F /tmp/bar-pid
+
 # quit bspwm normally
 super + ctrl + Escape
 	pkill -F /tmp/bar-pid; \
