@@ -10,7 +10,7 @@
 #define blue      #2FA3B5
 #define magenta   #DD54BB
 
-#define b_white   #E6E6ED
+#define b_white   #F9F9FF
 #define b_black   #525D66
 #define b_red     #E25C4D
 #define b_yellow  #EAE877
