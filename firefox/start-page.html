@@ -5,8 +5,11 @@
     <style>
       :root {
         --black: #272C30;
-        --white: #C0C0C6;
+        --white: #E6E6ED;
         --blue: #2FA3B5;
+
+        --b-black: #525D66;
+        --b-blue: #2D3338;
       }
 
       * {
@@ -28,7 +31,7 @@
         height: 100%;
         font-family: "Droid Sans";
         font-size: 24px;
-        color: var(--white);
+        color: var(--black);
       }
 
       input,
@@ -42,10 +45,10 @@
       a:visited,
       a:hover,
       a:active {
-        color: var(--blue);
+        color: var(--white);
         text-decoration: none;
         padding-right: 8px;
-        opacity: 0.8;
+        opacity: 1;
         transition: opacity 0.5s ease;
       }
 
@@ -63,7 +66,11 @@
         height: 100%;
         width: 100%;
         position: relative;
-        background: var(--black);
+        background: url(file:///home/kyle/.config/wallpapers/current) no-repeat center center fixed;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
       }
 
       .content {
@@ -78,19 +85,23 @@
       }
 
       .search-input {
-        -moz-appearance: none;
-        border: none;
-        border-radius: 0;
-        box-shadow: none;
-        font-size: 48px;
-        color: var(--white);
-        background: var(--black);
+        color: var(--black);
+        background: var(--white);
+        font-size: 30px;
+
         width: 100%;
-        padding: 12px 0;
+        padding: 12px;
+        border: 1.5px solid var(--b-black);
+        border-radius: 6px;
+        opacity: 0.9;
+
+        outline: none;
+        -moz-appearance: none;
+        box-shadow: none;
       }
 
       .search-input + .slider {
-        border-bottom: 3px solid var(--white);
+        border-bottom: 3px solid var(--black);
         width: 0%;
         transition: width 1s ease;
       }
@@ -101,7 +112,7 @@
 
       :-moz-placeholder,
       ::-moz-placeholder {
-        color: var(--white);
+        color: var(--black);
         opacity: 1;
       }
     </style>
@@ -111,7 +122,7 @@
     <div class="container">
       <div class="content">
         <form id="search-form" autocomplete="off">
-          <input type="text" class="search-input" placeholder="Search" autofocus />
+          <input type="text" class="search-input" placeholder="Search" />
           <div class="slider"></div>
         </form>
 
