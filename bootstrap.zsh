@@ -92,6 +92,7 @@ arch_dependencies=(
   ncmpcpp
   socat
   playerctl
+  awesome
 )
 
 osx_dependencies=(
@@ -135,6 +136,7 @@ typeset -A packages; packages=(
   iterm2 "$default_directory/.config/iterm2"
   kwm "$default_directory/.kwm"
   khd "$default_directory"
+  awesomewm "$default_directory/.config/awesome"
   # TODO add support for systemd/user and systemd/system units
   # systemd "$default_directory/.config/systemd"
 )
