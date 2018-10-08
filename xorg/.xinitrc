@@ -8,7 +8,6 @@ fi
 
 [[ -f ~/.Xresources ]] && xrdb -merge -I"$HOME" ~/.Xresources
 
-export ALSA_CARD=PCH
 for control in Headphones PCM Front Surround Center LFE Line; do
   amixer sset "$control" 0dB unmute &
 done
@@ -24,7 +23,6 @@ sxhkd &
 dunst &
 
 autocutsel -fork &
-autocutsel -selection PRIMARY -fork &
 
 xrandr --output DP-0 --primary --mode 3840x2160 --rate 60 --dpi 138
 nvidia-settings --load-config-only &
