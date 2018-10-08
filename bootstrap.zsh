@@ -66,18 +66,18 @@ dependencies=(
 )
 
 arch_dependencies=(
-  vim
+  neovim
   sublime-text-dev
   archey-git
   rxvt-unicode
   adobe-source-code-pro-fonts
-  ttf-font-awesome
+  ttf-font-awesome-4
   acpi
   alsa-utils
   xorg-xinit
   xorg-xrandr
   xtitle
-  i3-gaps-git
+  xdo
   compton
   lemonbar-xft-git
   rofi
@@ -92,6 +92,14 @@ arch_dependencies=(
   ncmpcpp
   socat
   playerctl
+  autocutsel
+  jq
+  mpc
+  inotify-tools
+  pacman-contrib
+  pulseaudio
+  lpass
+  xsel
 )
 
 osx_dependencies=(
