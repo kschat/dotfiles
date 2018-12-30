@@ -25,8 +25,9 @@ local theme = {}
 theme.colors = colors
 -- Default variables
 -- theme.font = 'Droid Sans ' .. dpi(6)
-theme.font = 'Roboto Regular ' .. dpi(7.5)
+theme.font = 'Roboto Regular ' .. dpi(7)
 theme.icon_font = 'FontAwesome ' .. dpi(7)
+theme._huge_font = 'Roboto Regular ' .. dpi(25)
 -- theme.font = 'Noto Sans Regular ' .. dpi(7.5)
 theme.useless_gap = dpi(10)
 
@@ -43,10 +44,10 @@ theme.useless_gap = dpi(10)
 
 theme.wibar_bg = colors.b_white
 theme.wibar_fg = colors.black
-theme.wibar_width = dpi(429)
--- theme.wibar_width = dpi(450)
+theme.wibar_width = dpi(450)
 theme.wibar_height = dpi(45)
 theme._wibar_border_radius = dpi(45)
+theme._wibar_right_width = dpi(200)
 -- theme._wibar_border_radius = dpi(4)
 
 theme._wibar_accent_color = colors.cyan
@@ -66,7 +67,6 @@ theme.screen_padding_right = screen_padding
 theme._wibar_x = theme.screen_padding_right + theme.useless_gap * 2
 
 theme.screen_padding_bottom = screen_padding
-
 
 theme.bg_normal = colors.bg
 theme.fg_normal = colors.fg
@@ -194,21 +194,26 @@ theme.gap_single_client = true
 -- theme.menu_submenu = nil
 
 -- notification
--- theme.notification_font = nil
+theme._notification_padding = dpi(20)
+theme._notification_spacing = dpi(10)
+theme._notification_border_radius = dpi(7)
+theme._notification_icon_size = dpi(0)
+theme._notification_position = 'top_middle'
+
+theme._notification_critical_bg = colors.black
+theme._notification_critical_fg = colors.b_white
+theme._notification_critical_border_width = dpi(0)
+
 theme.notification_bg = colors.b_white
 theme.notification_fg = colors.black
 theme.notification_border_width = dpi(0)
-theme._notification_border_radius = dpi(4)
 theme.notification_border_color = colors.b_white
+theme.notification_margin = dpi(15)
+theme.notification_opacity = 1
+
 theme.notification_shape = function(cr, w, h)
   gears.shape.rounded_rect(cr, w, h, theme._notification_border_radius)
 end
-
--- theme.notification_height = theme.wibar_height
-
--- theme.notification_opacity = nil
--- theme.notification_margin = nil
--- theme.notification_width = nil
 
 -- piechart
 -- theme.piechart_border_color = nil

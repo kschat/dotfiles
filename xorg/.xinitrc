@@ -16,7 +16,7 @@ for control in Headphones PCM Front Surround Center LFE Line; do
 done
 
 amixer sset Master 25% unmute &
-pulseaudio --start &
+pulseaudio --start
 ~/.config/mopidy/start &
 
 # feh --bg-scale ~/.config/wallpapers/current &
@@ -27,7 +27,6 @@ urxvtd &
 
 # Maybe not needed for AwesomeWM?
 autocutsel -fork &
-autocutsel -selection PRIMARY -fork &
 
 xrandr --output DP-0 --primary --mode 3840x2160 --rate 60 --dpi 138
 nvidia-settings --load-config-only &
