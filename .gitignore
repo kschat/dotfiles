@@ -4,4 +4,6 @@ tf2/class_config/sound
 mopidy/credentials.conf
 *.local
 .DS_Store
+Session.vim
+zsh/.exports-private
 

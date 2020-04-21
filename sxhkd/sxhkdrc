@@ -9,7 +9,8 @@ super + {_,shift} + p
 # screenshot
 super + {_,shift} + Print
   notify-send -a 'screenshot' 'Taking screenshot...'; \
-  scrot {-d 1,-sb} ~/Pictures/screenshots/'%Y-%m-%d_%H-%M-%S_$wx$h.png'
+  scrot {--delay 1,--select '%Y-%m-%d_%H-%M-%S_$wx$h.png'} \
+    --exec 'mv $f ~/Pictures/screenshots/'
 
 # reload keybindings
 super + Escape

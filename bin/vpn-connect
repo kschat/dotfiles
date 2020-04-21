@@ -66,7 +66,7 @@ sudo --validate --askpass
 while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
 pin=$(prompt-dialog 'token')
-password=$(lpass show -p work)
+password=$(bw get password 480c961c-d8f5-474c-ad77-aa4401890b96)
 
 echo "${state[connecting]}" > "$status_file"
 notify-all -a 'vpn' 'Connecting...'
@@ -76,6 +76,7 @@ echo "$password\n$pin" | sudo openconnect \
   --non-inter \
   --passwd-on-stdin \
   --background \
+  --servercert "$WM_OPEN_CONNECT_SERVER_CERT" \
   https://sslvpngwgec.wal-mart.com/Walmart_Associate_PCI
 
 echo "${state[connected]}" > "$status_file"

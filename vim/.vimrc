@@ -34,6 +34,7 @@ Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' }
 Plug 'Shougo/vimproc.vim', { 'do' : 'make' }
 Plug 'Quramy/tsuquyomi', { 'for': 'typescript' }
 Plug 'rodjek/vim-puppet', { 'for': 'puppet' }
+Plug 'jparise/vim-graphql'
 
 call plug#end()
 

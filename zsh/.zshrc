@@ -1,5 +1,5 @@
 # Load other dotfiles
-for file in ~/.{aliases,exports}; do
+for file in ~/.{aliases,exports,exports-private}; do
   [[ -r $file ]] && [[ -f $file ]] && source "$file"
 done
 
@@ -22,5 +22,5 @@ fi
 stty -ixon
 
 # Load RVM into a shell session *as a function*
-[[ -s $HOME/.rvm/scripts/rvm ]] && source "$HOME/.rvm/scripts/rvm"
+# [[ -s $HOME/.rvm/scripts/rvm ]] && source "$HOME/.rvm/scripts/rvm"
 
