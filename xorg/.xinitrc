@@ -18,11 +18,7 @@ amixer sset Master 25% unmute &
 pulseaudio --start
 ~/.config/mopidy/start &
 
-# feh --bg-scale ~/.config/wallpapers/current &
-# xsetroot -cursor_name left_ptr &
 urxvtd &
-# sxhkd &
-# dunst &
 
 # Maybe not needed for AwesomeWM?
 autocutsel -fork &
