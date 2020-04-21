@@ -1,6 +1,9 @@
 # add move without globbing to support things like `mmv *.foo *.bar`
 alias mmv='noglob zmv -W'
 
+# creates a new tmux session named after the current working directory
+alias tmux-new='tmux new -s "${${PWD##*/}/./-}"'
+
 if [[ "$OSTYPE" == linux* ]]; then
   # sublime-text-dev on arch exports command as `subl3` instead of `subl`
   alias subl=subl3

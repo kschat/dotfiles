@@ -1,5 +1,5 @@
 # Load other dotfiles
-for file in ~/.{aliases,exports}; do
+for file in ~/.{aliases,exports,exports-private}; do
   [[ -r $file ]] && [[ -f $file ]] && source "$file"
 done
 

@@ -24,6 +24,7 @@ function bar.init(config)
   local left_bar = wibox {
     type = 'dock',
     visible = true,
+    opacity = beautiful._wibar_opacity,
     bg = beautiful.wibar_bg,
     fg = beautiful.wibar_fg,
     screen = current_screen,
@@ -43,6 +44,7 @@ function bar.init(config)
   local right_bar = wibox {
     type = 'dock',
     visible = true,
+    opacity = beautiful._wibar_opacity,
     bg = beautiful.wibar_bg,
     fg = beautiful.wibar_fg,
     screen = current_screen,
@@ -89,8 +91,8 @@ function bar.init(config)
           widget = wibox.container.background,
           -- TODO move the theme file
           forced_width = dpi(175),
-          bg = beautiful._wibar_accent_color,
-          fg = beautiful.colors.b_white,
+          bg = beautiful._wibar_accent_bg_color,
+          fg = beautiful._wibar_accent_fg_color,
 
           {
             left = beautiful._wibar_outer_margin,

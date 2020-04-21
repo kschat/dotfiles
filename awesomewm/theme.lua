@@ -48,9 +48,10 @@ theme.wibar_width = dpi(450)
 theme.wibar_height = dpi(45)
 theme._wibar_border_radius = dpi(45)
 theme._wibar_right_width = dpi(200)
--- theme._wibar_border_radius = dpi(4)
+theme._wibar_opacity = 1
 
-theme._wibar_accent_color = colors.cyan
+theme._wibar_accent_bg_color = colors.cyan
+theme._wibar_accent_fg_color = colors.b_white
 theme._wibar_outer_margin = dpi(30)
 theme._wibar_left_strip = dpi(0)
 theme._wibar_large_spacing = dpi(25)
@@ -340,12 +341,12 @@ theme.tasklist_disable_task_name = true
 colors.transparent = '#00000000'
 
 -- titlebar
-theme.titlebar_size = dpi(2)
+theme.titlebar_size = dpi(10)
 theme.titlebar_position = 'bottom'
-theme.titlebar_fg_normal = colors.transparent
-theme.titlebar_bg_normal = colors.transparent
-theme.titlebar_fg = colors.transparent
-theme.titlebar_bg = colors.transparent
+theme.titlebar_fg_normal = colors.white
+theme.titlebar_bg_normal = colors.white
+theme.titlebar_fg = colors.white
+theme.titlebar_bg = colors.white
 theme.titlebar_fg_focus = colors.cyan
 theme.titlebar_bg_focus = colors.cyan
 -- theme.titlebar_bgimage_normal = nil

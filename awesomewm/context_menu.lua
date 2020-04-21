@@ -47,7 +47,7 @@ function context_menu.init(config)
   }
 
   root.buttons(gears.table.join(
-    awful.button({}, 3, function () launcher_menu:toggle() end)
+    awful.button({}, 3, function() launcher_menu:toggle() end)
   ))
 
   return {

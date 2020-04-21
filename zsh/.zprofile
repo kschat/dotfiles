@@ -24,3 +24,5 @@ if [[ "$OSTYPE" == darwin* ]]; then
   ulimit -n 65536 65536
 fi
 
+
+export PATH="$HOME/.cargo/bin:$PATH"

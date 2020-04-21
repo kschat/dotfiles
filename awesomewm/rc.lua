@@ -94,8 +94,8 @@ end)
 --
 
 local volume_widget = VolumeWidget {
-  normal_color = beautiful.colors.bg,
-  mute_color = beautiful.colors.fg,
+  normal_color = beautiful.wibar_fg,
+  mute_color = beautiful.colors.white,
 }
 
 local update_widget = UpdateWidget {
@@ -190,7 +190,17 @@ awful.screen.connect_for_each_screen(function(current_screen)
   }
 
   awful.tag(
-    { '1  ', '2  ', '3  ', '4  ', '5  ', '6  ', '7  ', '8  ', '9  ' },
+    {
+      '1  ',
+      '2  ',
+      '3  ',
+      '4  ',
+      '5  ',
+      '6  ',
+      '7  ',
+      '8  ',
+      '9  '
+    },
     current_screen,
     awful.layout.layouts[1] -- iNdEXeS sTaRt At OnE
   )

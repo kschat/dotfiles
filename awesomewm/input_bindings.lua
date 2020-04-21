@@ -15,6 +15,20 @@ function key_bindings.init(config)
   local modkey = util.get_property(config, 'modkey')
   local terminal = util.get_property(config, 'terminal')
 
+  local scrot_notify = "notify-send -a 'screenshot' 'Taking screenshot...';"
+
+  local scrot_base_cmd = "scrot '%Y-%m-%d_%H-%M-%S_$wx$h.png' "
+    .. "--exec 'mv $f ~/Pictures/screenshots/'"
+
+  local scrot_all_cmd = scrot_notify
+    .. 'sleep 0.2 && '
+    .. scrot_base_cmd
+
+  local scrot_select_cmd = scrot_notify
+    .. 'sleep 0.2 && '
+    .. scrot_base_cmd
+    .. ' --select'
+
   local global_keys = gears.table.join(
     awful.key({ modkey, 'Shift' }, '/', hotkeys_popup.show_help, {
       description = 'show help dialog',
@@ -39,6 +53,16 @@ function key_bindings.init(config)
     awful.key({ modkey, 'Control' }, 'Escape', awesome.quit, {
       description = 'quit window manager',
       group = 'window manager'
+    }),
+
+    awful.key({}, 'Print', function() awful.spawn.with_shell(scrot_all_cmd) end, {
+      description = 'Take screenshot of entire screen',
+      group = 'utility'
+    }),
+
+    awful.key({ 'Shift' }, 'Print', function() awful.spawn.with_shell(scrot_select_cmd) end, {
+      description = 'Take screenshot of selected area',
+      group = 'utility'
     }),
 
     util.create_select_and_move_window_binding('h', 'left'),
