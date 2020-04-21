@@ -22,3 +22,4 @@
   path = .gitconfig.local
 [credential]
 	helper = bitwarden
+
