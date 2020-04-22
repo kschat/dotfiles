@@ -8,3 +8,9 @@ if [[ "$OSTYPE" == linux* ]]; then
   # sublime-text-dev on arch exports command as `subl3` instead of `subl`
   alias subl=subl3
 fi
+
+if [[ $OSTYPE == darwin* ]]; then
+  alias java8='export JAVA_HOME=$JAVA_8_HOME'
+  alias java10='export JAVA_HOME=$JAVA_10_HOME'
+fi
+

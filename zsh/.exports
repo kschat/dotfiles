@@ -44,6 +44,7 @@ export WORKSPACE="$HOME"/Workspace
 export NVM_DIR="$HOME"/.nvm
 export DOTFILES="$WORKSPACE/dotfiles"
 export VIMRC="$DOTFILES/vim/.vimrc"
+export RUST_SRC_PATH="$(rustc --print sysroot)/lib/rustlib/src/rust/src"
 
 if [[ $OSTYPE == linux* ]]; then
   export SSH_ASKPASS='/usr/lib/ssh/x11-ssh-askpass'
@@ -92,6 +93,16 @@ fi
 # Miscellaneous
 #
 
-export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=on -Dswing.aatext=true'
-export _JAVA_AWT_WM_NONREPARENTING=1
+if [[ $OSTYPE == linux* ]]; then
+  export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=on -Dswing.aatext=true'
+  export _JAVA_AWT_WM_NONREPARENTING=1
+fi
+
+if [[ $OSTYPE == darwin* ]]; then
+  export JAVA_8_HOME=$(/usr/libexec/java_home -v1.8)
+  export JAVA_10_HOME=$(/usr/libexec/java_home -v10)
+
+  #default java8
+  export JAVA_HOME=$JAVA_8_HOME
+fi
 

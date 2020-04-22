@@ -19,10 +19,4 @@ fi
 
 TMPPREFIX="${TMPDIR%/}/zsh"
 
-if [[ "$OSTYPE" == darwin* ]]; then
-  # Increase open file limit to something not terrible on OS X
-  ulimit -n 65536 65536
-fi
-
-
 export PATH="$HOME/.cargo/bin:$PATH"
