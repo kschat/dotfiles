@@ -41,7 +41,7 @@ Xft.hintstyle:  hintfull
 Xft.lcdfilter:  lcddefault
 
 ! Urxvt settings
-URxvt.font: xft:Source Code Pro Medium:size=12,style=Medium,antialias=true
+URxvt.font: xft:Source Code Pro Semibold:size=12,style=Semibold,antialias=true
 
 URxvt*loginShell: false
 URxvt*iso14755:   false
