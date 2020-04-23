@@ -26,15 +26,12 @@ Plug 'tpope/vim-surround'
 Plug 'mhinz/vim-startify'
 Plug 'mbbill/undotree'
 Plug 'w0rp/ale'
-Plug 'baskerville/vim-sxhkdrc'
+Plug 'baskerville/vim-sxhkdrc', { 'for': 'sxhkdrc' }
 Plug 'leafgarland/typescript-vim', { 'for': 'typescript' }
 Plug 'rust-lang/rust.vim'
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' }
-Plug 'Shougo/vimproc.vim', { 'do' : 'make' }
-Plug 'Quramy/tsuquyomi', { 'for': 'typescript' }
 Plug 'rodjek/vim-puppet', { 'for': 'puppet' }
-Plug 'jparise/vim-graphql'
+Plug 'jparise/vim-graphql', { 'for': ['graphql', 'javascript', 'typescript'] }
+Plug 'neoclide/coc.nvim', { 'branch': 'release' }
 
 call plug#end()
 
@@ -79,6 +76,9 @@ set clipboard^=unnamedplus
 
 " disable mouse buttons (but keep scroll enabled)
 set mouse=
+
+" reduce the time vim waits to trigger plugins
+set updatetime=250
 
 " }}}
 
@@ -163,6 +163,9 @@ set number
 " show command in bottom bar
 set showcmd
 
+" give more space for displaying messages
+set cmdheight=2
+
 " highlight current line
 set cursorline
 
@@ -192,6 +195,12 @@ set wildmode=list:longest
 " use same vertical separator as tmux
 set fillchars+=vert:│
 hi VertSplit ctermbg=NONE guibg=NONE
+
+" don't pass messages to |ins-completion-menu|.
+set shortmess+=c
+
+" always show the signcolumn
+set signcolumn=yes
 
 " }}}
 
@@ -307,20 +316,6 @@ highlight link ALEErrorSign DiffDelete
 " }}}
 
 " -----------------------------------------------------------------------------
-" Deoplete {{{
-" -----------------------------------------------------------------------------
-
-let g:tern_request_timeout=1
-
-let g:deoplete#enable_at_startup=1
-
-let g:deoplete#enable_smart_case=1
-
-set completeopt-=preview
-
-" }}}
-
-" -----------------------------------------------------------------------------
 " Startify {{{
 " -----------------------------------------------------------------------------
 
@@ -333,12 +328,98 @@ autocmd User Startified setlocal colorcolumn=0
 " }}}
 
 " -----------------------------------------------------------------------------
-" Tsuquyomi {{{
+" CoC {{{
 " -----------------------------------------------------------------------------
 
-autocmd FileType typescript nmap <buffer> <Leader>t : <C-u>echo tsuquyomi#hint()<CR>
+" use tab for trigger completion with characters ahead and navigate
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
-let g:tsuquyomi_disable_quickfix=1
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+" use <c-space> to trigger completion.
+inoremap <silent><expr> <c-space> coc#refresh()
+
+" use <cr> to confirm completion, `<C-g>u` means break undo chain at current
+" position
+if exists('*complete_info')
+  inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
+else
+  imap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+endif
+
+" navigate diagnostics
+nmap <silent> [g <Plug>(coc-diagnostic-prev)
+nmap <silent> ]g <Plug>(coc-diagnostic-next)
+
+" goto code navigation
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+" use K to show documentation in preview window
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
+
+" TODO: doesn't work, fix
+" highlight the symbol and its references when holding the cursor
+autocmd CursorHold * silent call CocActionAsync('highlight')
+
+" symbol renaming
+nmap <leader>rn <Plug>(coc-rename)
+
+" formatting selected code
+xmap <leader>f <Plug>(coc-format-selected)
+nmap <leader>f <Plug>(coc-format-selected)
+
+augroup mygroup
+  autocmd!
+  " setup formatexpr specified filetype(s)
+  autocmd FileType javascript,typescript,json setl formatexpr=CocAction('formatSelected')
+  " update signature help on jump placeholder
+  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+augroup end
+
+" remap keys for applying codeAction to the current line
+nmap <leader>ac <Plug>(coc-codeaction)
+" apply AutoFix to problem on the current line
+nmap <leader>qf <Plug>(coc-fix-current)
+
+" introduce function text object
+xmap if <Plug>(coc-funcobj-i)
+xmap af <Plug>(coc-funcobj-a)
+omap if <Plug>(coc-funcobj-i)
+omap af <Plug>(coc-funcobj-a)
+
+" mapping for range selection
+nmap <silent> <TAB> <Plug>(coc-range-select)
+xmap <silent> <TAB> <Plug>(coc-range-select)
+
+" add command to format current buffer
+command! -nargs=0 Format :call CocAction('format')
+
+" add command to fold current buffer
+command! -nargs=? Fold :call CocAction('fold', <f-args>)
+
+" add command to organize imports of the current buffer
+command! -nargs=0 OR   :call CocAction('runCommand', 'editor.action.organizeImport')
+
+" add native statusline support
+" set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 
 " }}}
 
