@@ -106,3 +106,10 @@ if [[ $OSTYPE == darwin* ]]; then
   export JAVA_HOME=$JAVA_8_HOME
 fi
 
+#
+# fzf
+#
+
+export FZF_DEFAULT_OPTS='--color 16'
+export FZF_DEFAULT_COMMAND='rg --files --no-ignore-vcs --hidden'
+
