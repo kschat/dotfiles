@@ -14,24 +14,25 @@ endif
 call plug#begin('~/.vim/plugged')
 
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
-Plug 'kien/ctrlp.vim'
 Plug 'airblade/vim-gitgutter'
 Plug 'isRuslan/vim-es6', { 'for': 'javascript' }
 Plug 'tmux-plugins/vim-tmux-focus-events'
 Plug 'tmux-plugins/vim-tmux'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'tpope/vim-obsession'
+Plug 'dhruvasagar/vim-prosession'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 Plug 'mhinz/vim-startify'
 Plug 'mbbill/undotree'
-Plug 'w0rp/ale'
 Plug 'baskerville/vim-sxhkdrc', { 'for': 'sxhkdrc' }
 Plug 'leafgarland/typescript-vim', { 'for': 'typescript' }
 Plug 'rust-lang/rust.vim'
 Plug 'rodjek/vim-puppet', { 'for': 'puppet' }
 Plug 'jparise/vim-graphql', { 'for': ['graphql', 'javascript', 'typescript'] }
 Plug 'neoclide/coc.nvim', { 'branch': 'release' }
+Plug 'junegunn/fzf'
+Plug 'junegunn/fzf.vim'
 
 call plug#end()
 
@@ -202,6 +203,12 @@ set shortmess+=c
 " always show the signcolumn
 set signcolumn=yes
 
+" horizontal splits are created below current window
+set splitbelow
+
+" vertical splits are created to the right of the current window
+set splitright
+
 " }}}
 
 " -----------------------------------------------------------------------------
@@ -263,55 +270,10 @@ endif
 " }}}
 
 " -----------------------------------------------------------------------------
-" CtrlP {{{
-" -----------------------------------------------------------------------------
-
-" ignore node_modules, and git directory
-let g:ctrlp_custom_ignore='\v[\/](node_modules|\.git|coverage-output|build|recorded-data|dist)$'
-
-" show hidden files in CtrlP
-let g:ctrlp_show_hidden=1
-
-" }}}
-
-" -----------------------------------------------------------------------------
 " NERDTree {{{
 " -----------------------------------------------------------------------------
 
 let g:NERDTreeShowHidden=1
-
-" }}}
-
-" -----------------------------------------------------------------------------
-" Ale {{{
-" -----------------------------------------------------------------------------
-
-let g:ale_linters = {
-\  'javascript': ['eslint'],
-\  'typescript': ['tsserver']
-\}
-
-" don't lint on file open
-let g:ale_lint_on_enter=0
-
-" don't lint on text change
-let g:ale_lint_on_text_changed=0
-
-" lint on file save
-let g:ale_lint_on_save=1
-
-" don't run linter right away
-let g:ale_lint_delay=0
-
-" populate loclist with linting errors
-let g:ale_open_list=1
-let g:ale_set_quickfix=0
-
-" update gutter symbols
-let g:ale_sign_error = '●'
-let g:ale_sign_warning = '⚠'
-
-highlight link ALEErrorSign DiffDelete
 
 " }}}
 
@@ -330,6 +292,15 @@ autocmd User Startified setlocal colorcolumn=0
 " -----------------------------------------------------------------------------
 " CoC {{{
 " -----------------------------------------------------------------------------
+
+let g:coc_global_extensions=[
+\  'coc-json',
+\  'coc-tsserver',
+\  'coc-eslint',
+\  'coc-prettier',
+\  'coc-vimlsp',
+\  'coc-jest',
+\]
 
 " use tab for trigger completion with characters ahead and navigate
 inoremap <silent><expr> <TAB>
@@ -383,8 +354,8 @@ autocmd CursorHold * silent call CocActionAsync('highlight')
 nmap <leader>rn <Plug>(coc-rename)
 
 " formatting selected code
-xmap <leader>f <Plug>(coc-format-selected)
-nmap <leader>f <Plug>(coc-format-selected)
+xmap <leader>= <Plug>(coc-format-selected)
+nmap <leader>= <Plug>(coc-format-selected)
 
 augroup mygroup
   autocmd!
@@ -396,6 +367,7 @@ augroup end
 
 " remap keys for applying codeAction to the current line
 nmap <leader>ac <Plug>(coc-codeaction)
+
 " apply AutoFix to problem on the current line
 nmap <leader>qf <Plug>(coc-fix-current)
 
@@ -420,6 +392,69 @@ command! -nargs=0 OR   :call CocAction('runCommand', 'editor.action.organizeImpo
 
 " add native statusline support
 " set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
+
+" fix jsx and tsx file types
+augroup typescriptreact
+  au!
+  autocmd BufNewFile,BufRead *.tsx set filetype=typescript
+  autocmd BufNewFile,BufRead *.jsx set filetype=javascript
+augroup END
+
+""" coc-jest
+
+" run jest for current project
+command! -nargs=0 Jest :call  CocAction('runCommand', 'jest.projectTest')
+
+" run jest for current file
+command! -nargs=0 JestCurrent :call  CocAction('runCommand', 'jest.fileTest', ['%'])
+
+" run jest for current test
+nnoremap <leader>te :call CocAction('runCommand', 'jest.singleTest')<CR>
+
+" init jest in current cwd, require global jest command exists
+command! JestInit :call CocAction('runCommand', 'jest.init')
+
+" }}}
+
+" -----------------------------------------------------------------------------
+" FZF {{{
+" -----------------------------------------------------------------------------
+
+let g:fzf_command_prefix='Z'
+
+let g:fzf_colors={
+\  'fg':      ['fg', 'Normal'],
+\  'bg':      ['bg', 'Normal'],
+\  'hl':      ['fg', 'Comment'],
+\  'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+\  'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+\  'hl+':     ['fg', 'Statement'],
+\  'info':    ['fg', 'Exception'],
+\  'prompt':  ['fg', 'Conditional'],
+\  'pointer': ['fg', 'Exception'],
+\  'marker':  ['fg', 'Keyword'],
+\  'spinner': ['fg', 'Label'],
+\  'header':  ['fg', 'Comment'],
+\  'gutter':  ['bg', 'Normal']
+\}
+
+" muscle memory
+nmap <c-p> :ZGFiles<CR>
+
+" fuzzy search files
+nmap <Leader>f :ZGFiles<CR>
+nmap <Leader>F :ZFiles<CR>
+
+" fuzzy search lines
+nmap <Leader>l :ZBLines<CR>
+nmap <Leader>L :ZLines<CR>
+
+" fuzzy search project
+nmap <Leader>/ :ZRg<Space>
+
+" hide status line
+autocmd! FileType fzf set laststatus=0 noshowmode noruler
+  \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
 
 " }}}
 

@@ -1,6 +1,17 @@
 {
+  "eslint.filetypes": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact"
+  ],
+  "eslint.trace.server": "verbose",
+  "tsserver.trace.server": "verbose",
+  "diagnostic.enableSign": true,
   "diagnostic.errorSign": "●",
   "diagnostic.warningSign": "⚠",
-  "diagnostic.infoSign": "●"
+  "diagnostic.infoSign": "●",
+  "eslint.run": "onSave",
+  "jest.terminalPosition": "right",
+  "jest.forceExit": true
 }
-
