@@ -267,6 +267,10 @@ if has('nvim')
   nmap <BS> <C-W>h
 endif
 
+" shortcut to add a new line below or above the current line
+nnoremap <leader>o mmo<esc>`m
+nnoremap <leader>O mmO<esc>`m
+
 " }}}
 
 " -----------------------------------------------------------------------------
