@@ -101,6 +101,7 @@ arch_dependencies=(
   pulseaudio
   lpass
   xsel
+  watchman # for coc.nvim rename symbol across file
 )
 
 osx_dependencies=(
@@ -110,6 +111,7 @@ osx_dependencies=(
   koekeishiya/formulae/khd
   "vim --with-client-server"
   archey
+  watchman # for coc.nvim rename symbol across file
 )
 
 debian_dependencies=()
