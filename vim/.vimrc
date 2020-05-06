@@ -19,10 +19,11 @@ Plug 'isRuslan/vim-es6', { 'for': 'javascript' }
 Plug 'tmux-plugins/vim-tmux-focus-events'
 Plug 'tmux-plugins/vim-tmux'
 Plug 'christoomey/vim-tmux-navigator'
-Plug 'tpope/vim-obsession'
 Plug 'dhruvasagar/vim-prosession'
+Plug 'tpope/vim-obsession'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
+Plug 'tpope/vim-commentary'
 Plug 'mhinz/vim-startify'
 Plug 'mbbill/undotree'
 Plug 'baskerville/vim-sxhkdrc', { 'for': 'sxhkdrc' }
@@ -33,6 +34,7 @@ Plug 'jparise/vim-graphql', { 'for': ['graphql', 'javascript', 'typescript'] }
 Plug 'neoclide/coc.nvim', { 'branch': 'release' }
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
+Plug 'junegunn/goyo.vim'
 
 call plug#end()
 
@@ -446,19 +448,32 @@ let g:fzf_colors={
 nmap <c-p> :ZGFiles<CR>
 
 " fuzzy search files
-nmap <Leader>f :ZGFiles<CR>
-nmap <Leader>F :ZFiles<CR>
+nmap <leader>f :ZGFiles<CR>
+nmap <leader>F :ZFiles<CR>
 
 " fuzzy search lines
-nmap <Leader>l :ZBLines<CR>
-nmap <Leader>L :ZLines<CR>
+nmap <leader>l :ZBLines<CR>
+nmap <leader>L :ZLines<CR>
 
 " fuzzy search project
-nmap <Leader>/ :ZRg<Space>
+nmap <leader>/ :ZRg<Space>
 
 " hide status line
 autocmd! FileType fzf set laststatus=0 noshowmode noruler
   \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
+
+" }}}
+
+" -----------------------------------------------------------------------------
+" GoYo {{{
+" -----------------------------------------------------------------------------
+
+" set default dimensions
+let g:goyo_width=100
+let g:goyo_height='100%'
+let g:goyo_linenr=1
+
+nmap <leader>z :Goyo<CR>
 
 " }}}
 
