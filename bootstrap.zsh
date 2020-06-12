@@ -148,6 +148,7 @@ typeset -A packages; packages=(
   awesomewm "$default_directory/.config/awesome"
   # TODO add support for systemd/user and systemd/system units
   # systemd "$default_directory/.config/systemd"
+  systemd "$default_directory/.config/systemd"
 )
 
 exit_codes=(
