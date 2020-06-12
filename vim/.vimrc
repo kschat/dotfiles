@@ -19,8 +19,8 @@ Plug 'isRuslan/vim-es6', { 'for': 'javascript' }
 Plug 'tmux-plugins/vim-tmux-focus-events'
 Plug 'tmux-plugins/vim-tmux'
 Plug 'christoomey/vim-tmux-navigator'
-Plug 'dhruvasagar/vim-prosession'
 Plug 'tpope/vim-obsession'
+Plug 'dhruvasagar/vim-prosession'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
@@ -336,10 +336,22 @@ nmap <silent> [g <Plug>(coc-diagnostic-prev)
 nmap <silent> ]g <Plug>(coc-diagnostic-next)
 
 " goto code navigation
+
 nmap <silent> gd <Plug>(coc-definition)
+nnoremap <silent> <C-W>gd :call CocAction('jumpDefinition', 'split')<CR>
+nnoremap <silent> <C-W>gD :call CocAction('jumpDefinition', 'vsplit')<CR>
+
 nmap <silent> gy <Plug>(coc-type-definition)
+nnoremap <silent> <C-W>gy :call CocAction('jumpTypeDefinition', 'split')<CR>
+nnoremap <silent> <C-W>gY :call CocAction('jumpTypeDefinition', 'vsplit')<CR>
+
 nmap <silent> gi <Plug>(coc-implementation)
+nnoremap <silent> <C-W>gi :call CocAction('jumpImplementation', 'split')<CR>
+nnoremap <silent> <C-W>gI :call CocAction('jumpImplementation', 'vsplit')<CR>
+
 nmap <silent> gr <Plug>(coc-references)
+nnoremap <silent> <C-W>gr :call CocAction('jumpReferences', 'split')<CR>
+nnoremap <silent> <C-W>gR :call CocAction('jumpReferences', 'vsplit')<CR>
 
 " use K to show documentation in preview window
 nnoremap <silent> K :call <SID>show_documentation()<CR>
@@ -352,7 +364,6 @@ function! s:show_documentation()
   endif
 endfunction
 
-" TODO: doesn't work, fix
 " highlight the symbol and its references when holding the cursor
 autocmd CursorHold * silent call CocActionAsync('highlight')
 

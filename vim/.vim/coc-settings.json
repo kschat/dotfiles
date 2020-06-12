@@ -5,13 +5,20 @@
     "typescript",
     "typescriptreact"
   ],
-  "eslint.trace.server": "verbose",
-  "tsserver.trace.server": "verbose",
   "diagnostic.enableSign": true,
   "diagnostic.errorSign": "●",
   "diagnostic.warningSign": "⚠",
   "diagnostic.infoSign": "●",
   "eslint.run": "onSave",
   "jest.terminalPosition": "right",
-  "jest.forceExit": true
+  "jest.forceExit": true,
+  "prettier.requireConfig": true,
+  "typescript.format.enabled": false,
+  "javascript.format.enabled": false,
+  "coc.preferences.formatOnSaveFiletypes": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact"
+  ]
 }
