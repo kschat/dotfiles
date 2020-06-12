@@ -146,8 +146,6 @@ typeset -A packages; packages=(
   kwm "$default_directory/.kwm"
   khd "$default_directory"
   awesomewm "$default_directory/.config/awesome"
-  # TODO add support for systemd/user and systemd/system units
-  # systemd "$default_directory/.config/systemd"
   systemd "$default_directory/.config/systemd"
 )
 
