@@ -77,7 +77,7 @@ echo "$password\n$pin" | sudo openconnect \
   --passwd-on-stdin \
   --background \
   --servercert "$WM_OPEN_CONNECT_SERVER_CERT" \
-  https://sslvpngwgec.wal-mart.com/Walmart_Associate_PCI
+  https://sslvpngwgec.wal-mart.com/Walmart_Associate_MAC_Yubi
 
 echo "${state[connected]}" > "$status_file"
 notify-all -a 'vpn' 'Connected'
