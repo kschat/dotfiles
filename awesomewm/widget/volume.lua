@@ -4,7 +4,7 @@ local spawn = require('awful.spawn')
 
 local VOLUME_SCRIPT = [[
   bash -c '
-    pactl subscribe | grep --line-buffered "sink #0"
+    pactl subscribe | grep --line-buffered "Event '"'change'"' on sink"
   '
 ]]
 
