@@ -35,6 +35,8 @@ Plug 'neoclide/coc.nvim', { 'branch': 'release' }
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/goyo.vim'
+" TODO remove once nvim 0.5 is released
+Plug 'machakann/vim-highlightedyank'
 
 call plug#end()
 
@@ -228,6 +230,9 @@ set ignorecase
 
 " override `ignorecase` when a upper case letter is entered
 set smartcase
+
+" live update buffer as a substitute is being entered
+set inccommand=nosplit
 
 " }}}
 

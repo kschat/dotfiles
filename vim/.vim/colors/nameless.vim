@@ -174,7 +174,7 @@ call <sid>hi("phpMemberSelector",  s:white, "", "")
 call <sid>hi("phpComparison",      s:white, "", "")
 call <sid>hi("phpParent",          s:white, "", "")
 
-"
+" Python highlighting
 call <sid>hi("pythonOperator",  s:magenta, "", "")
 call <sid>hi("pythonRepeat",    s:magenta, "", "")
 
@@ -204,6 +204,9 @@ call <sid>hi("SpellBad",     "", s:black, "undercurl")
 call <sid>hi("SpellLocal",   "", s:black, "undercurl")
 call <sid>hi("SpellCap",     "", s:black, "undercurl")
 call <sid>hi("SpellRare",    "", s:black, "undercurl")
+
+" Yank highlighting
+call <sid>hi("HighlightedyankRegion", "", s:b_black, "")
 
 " Remove functions
 delf <sid>hi
