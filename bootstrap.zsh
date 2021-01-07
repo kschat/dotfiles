@@ -105,12 +105,11 @@ arch_dependencies=(
 )
 
 osx_dependencies=(
-  caskroom/cask/brew-cask
-  caskroom/cask/xquartz
-  koekeishiya/formulae/kwm
-  koekeishiya/formulae/khd
-  "vim --with-client-server"
-  archey
+  ripgrep
+  bitwarden-cli
+  bash
+  fzf
+  neovim
   watchman # for coc.nvim rename symbol across file
 )
 
