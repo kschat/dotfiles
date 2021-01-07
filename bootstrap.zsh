@@ -128,6 +128,7 @@ typeset -A packages; packages=(
   zsh "$default_directory"
   git "$default_directory"
   vim "$default_directory"
+  nvim "$default_directory/.config/nvim"
   tmux "$default_directory"
   tf2 "$tf2_directory/tf/custom"
   i3 "$default_directory/.config/i3"

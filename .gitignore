@@ -7,3 +7,8 @@ mopidy/credentials.conf
 Session.vim
 zsh/.exports-private
 
+vim/.vim/autoload/
+vim/.vim/backup/
+vim/.vim/plugged/
+vim/.vim/session/
+vim/.vim/swap/
