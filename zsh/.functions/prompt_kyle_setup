@@ -24,6 +24,10 @@ function prompt_kyle_setup {
 
   hname=" at %F{blue}%m%f"
 
+
+  # required to use editor mode
+  zstyle ':prezto:module:prompt' managed 'yes'
+
   # editor mode info
   zstyle ':prezto:module:editor:info:keymap:primary' format '%F{white}——%f'
   zstyle ':prezto:module:editor:info:keymap:alternate' format '%F{cyan}——%f'
