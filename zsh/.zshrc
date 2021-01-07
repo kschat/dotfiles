@@ -7,8 +7,7 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 fi
 
-# Load NVM into a shell session
-[[ -s $NVM_DIR/nvm.sh ]] && source "$NVM_DIR/nvm.sh"
+eval "$(fnm env)"
 
 # Load virtualenv wrapper
 [[ -s $VIRTUALENVWRAPPER_SH ]] && source "$VIRTUALENVWRAPPER_SH"
@@ -20,7 +19,4 @@ fi
 
 # disable XON/XOFF flow control (stops ctrl-s from disabling a tty)
 stty -ixon
-
-# Load RVM into a shell session *as a function*
-# [[ -s $HOME/.rvm/scripts/rvm ]] && source "$HOME/.rvm/scripts/rvm"
 
