@@ -304,6 +304,8 @@ autocmd User Startified setlocal colorcolumn=0
 " CoC {{{
 " -----------------------------------------------------------------------------
 
+let g:coc_config_home='~/.vim'
+
 let g:coc_global_extensions=[
 \  'coc-json',
 \  'coc-tsserver',
@@ -311,6 +313,7 @@ let g:coc_global_extensions=[
 \  'coc-prettier',
 \  'coc-vimlsp',
 \  'coc-jest',
+\  'coc-rust-analyzer',
 \]
 
 " use tab for trigger completion with characters ahead and navigate

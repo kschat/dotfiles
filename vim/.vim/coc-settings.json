@@ -20,5 +20,6 @@
     "javascriptreact",
     "typescript",
     "typescriptreact"
-  ]
+  ],
+  "rust-analyzer.checkOnSave.command": "cargo clippy"
 }
