@@ -76,7 +76,6 @@ echo "$password\n$pin" | sudo openconnect \
   --non-inter \
   --passwd-on-stdin \
   --background \
-  --servercert "$WM_OPEN_CONNECT_SERVER_CERT" \
   https://sslvpngwgec.wal-mart.com/Walmart_Associate_MAC_Yubi
 
 echo "${state[connected]}" > "$status_file"
