@@ -141,7 +141,6 @@ typeset -A packages; packages=(
   ncmpcpp "$default_directory/.config/ncmpcpp"
   wallpapers "$default_directory/.config/wallpapers"
   bin "$default_directory/.bin"
-  iterm2 "$default_directory/.config/iterm2"
   kwm "$default_directory/.kwm"
   khd "$default_directory"
   awesomewm "$default_directory/.config/awesome"
