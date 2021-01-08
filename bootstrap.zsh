@@ -78,7 +78,7 @@ arch_dependencies=(
   xorg-xrandr
   xtitle
   xdo
-  compton
+  picom
   lemonbar-xft-git
   rofi
   feh
@@ -135,7 +135,7 @@ typeset -A packages; packages=(
   colors "$default_directory/.colors"
   xorg "$default_directory"
   dunst "$default_directory/.config/dunst"
-  compton "$default_directory/.config"
+  picom "$default_directory/.config/picom"
   bspwm "$default_directory/.config/bspwm"
   sxhkd "$default_directory/.config/sxhkd"
   mopidy "$default_directory/.config/mopidy"

@@ -25,7 +25,7 @@ autocutsel -fork &
 
 xrandr --output DP-0 --primary --mode 3840x2160 --rate 60 --dpi 138
 nvidia-settings --load-config-only &
-compton &
+picom &
 redshift -l 39.95:-75.17 &
 
 if [[ $window_manager == 'bspwm' ]]; then

@@ -19,7 +19,7 @@ super + Escape
 
 # reload everything
 super + ctrl + shift + r
- pkill -USR1 -x compton; \
+ pkill -USR1 -x picom; \
  pkill -USR1 -F /tmp/bar-pid
 
 # quit bspwm normally
