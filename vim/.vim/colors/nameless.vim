@@ -208,6 +208,15 @@ call <sid>hi("SpellRare",    "", s:black, "undercurl")
 " Yank highlighting
 call <sid>hi("HighlightedyankRegion", "", s:b_black, "")
 
+" CoC highlighting
+call <sid>hi("CocHintSign",         s:b_black, "", "")
+call <sid>hi("CocMarkdownLink",     s:b_black, "", "")
+call <sid>hi("CocHintFloat",        s:b_black, "", "")
+call <sid>hi("CocHintVirtualText",  s:b_black, "", "")
+call <sid>hi("CocListFgBlue",       s:b_black, "", "")
+call <sid>hi("CocRustChainingHint", s:b_black, "", "")
+call <sid>hi("CocRustTypeHint",     s:b_black, "", "")
+
 " Remove functions
 delf <sid>hi
 
