@@ -274,9 +274,17 @@ if has('nvim')
   nmap <BS> <C-W>h
 endif
 
-" shortcut to add a new line below or above the current line
-nnoremap <leader>o mmo<esc>`m
-nnoremap <leader>O mmO<esc>`m
+" add a new line below or above the current line
+nnoremap <silent> ]<space> @="m`o\eg``"<CR>
+nnoremap <silent> [<space> @="m`O\eg``"<CR>
+
+" move the current line up/down N lines
+nnoremap <silent> ]e :<C-U>exec "exec 'norm m`' \| move +" . (0+v:count1)<CR>``
+nnoremap <silent> [e :<C-U>exec "exec 'norm m`' \| move -" . (1+v:count1)<CR>``
+
+" move the current selection up/down N lines
+vnoremap <silent> ]e :<C-U>exec "'<,'>move '>+" . (0+v:count1)<CR>gv
+vnoremap <silent> [e :<C-U>exec "'<,'>move '<-" . (1+v:count1)<CR>gv
 
 " }}}
 
@@ -368,7 +376,7 @@ function! s:show_documentation()
   if (index(['vim','help'], &filetype) >= 0)
     execute 'h '.expand('<cword>')
   else
-    call CocAction('doHover')
+    call CocActionAsync('doHover')
   endif
 endfunction
 
@@ -391,7 +399,7 @@ augroup mygroup
 augroup end
 
 " remap keys for applying codeAction to the current line
-nmap <leader>ac <Plug>(coc-codeaction)
+nmap <leader>ac <Plug>(coc-codeaction-cursor)
 
 " apply AutoFix to problem on the current line
 nmap <leader>qf <Plug>(coc-fix-current)
@@ -493,6 +501,14 @@ let g:goyo_height='100%'
 let g:goyo_linenr=1
 
 nmap <leader>z :Goyo<CR>
+
+" }}}
+
+" -----------------------------------------------------------------------------
+" GitGutter {{{
+" -----------------------------------------------------------------------------
+
+let g:gitgutter_preview_win_floating = 1
 
 " }}}
 
