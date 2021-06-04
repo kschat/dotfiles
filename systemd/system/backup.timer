@@ -3,7 +3,7 @@ Description=Backup system daily
 
 [Timer]
 OnBootSec=10min
-OnUnitActiveSec=8h
+OnUnitActiveSec=4h
 Persistent=true
 Unit=backup.service
 

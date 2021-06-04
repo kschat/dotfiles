@@ -3,5 +3,6 @@ Description=Backup system service
 
 [Service]
 Type=simple
+ExecStartPre=/bin/bash -c "systemctl --user set-environment SSH_AUTH_SOCK=$(find /tmp/ -type s -name agent.* 2> /dev/null)"
 ExecStart=/home/kyle/.bin/backup
 
