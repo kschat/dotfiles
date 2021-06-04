@@ -71,13 +71,18 @@ password=$(bw get password 480c961c-d8f5-474c-ad77-aa4401890b96)
 echo "${state[connecting]}" > "$status_file"
 notify-all -a 'vpn' 'Connecting...'
 
+# List of IP ranges to route to the VPN
+ranges="${walmart_ranges} ${ms_ranges}"
+
 echo "$password\n$pin" | sudo openconnect \
   --user kschat2 \
   --non-inter \
   --passwd-on-stdin \
   --background \
+  --script vpn-wrapper-script \
   https://sslvpngwgec.wal-mart.com/Walmart_Associate_MAC_Yubi
 
+  # --script "vpn-slice --verbose --dump $ranges" \
 echo "${state[connected]}" > "$status_file"
 notify-all -a 'vpn' 'Connected'
 
