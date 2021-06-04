@@ -5,7 +5,8 @@ trap 'report_error' ERR
 
 # needed to send notifications as root
 # TODO don't hardcode
-export DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus
+# export DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus
+# export XDG_RUNTIME_DIR=/run/user/1000
 
 filter_file=/tmp/backup-filters
 
@@ -46,13 +47,24 @@ report_error() {
   /home/kyle/.bin/notify-all -a 'backup' 'Error occured while backing up system'
 }
 
+extract_ssh_creds() {
+  local dir=$1
+  echo "$dir" | awk -F':' '{print $1}'
+}
+
+extract_ssh_path() {
+  local dir=$1
+  echo "$dir" | awk -F':' '{print $2}'
+}
+
 sync_files() {
   local source_dir=$1
   local destination_dir=$2
   local link_dir=$3
 
-  rsync --archive \
-    --acls \
+  rsync \
+    --rsh ssh \
+    --archive \
     --xattrs \
     --partial \
     --delete \
@@ -72,27 +84,28 @@ backup() {
 
   local now=$(date '+%Y-%m-%d_%T')
   local source_dir=$1
-  local snapshot_dir=$2
+  local snapshot_dir=$(extract_ssh_path "$2")
+  local ssh_creds=$(extract_ssh_creds "$2")
   local latest_dir="$snapshot_dir/latest"
   local current_dir="$snapshot_dir/$now"
 
-  mkdir -p "$snapshot_dir"
+  ssh "$ssh_creds" "mkdir -p '$snapshot_dir'"
 
-  sync_files "$source_dir" "$current_dir" "$latest_dir" || {
+  sync_files "$source_dir" "$ssh_creds:$current_dir" "$latest_dir" || {
     local error_code=$?
-    [[ $error_code -ne 24 ]] && return "$error_code"
+    [[ $error_code -ne 23 ]] && return "$error_code"
   }
 
-  rm -f "$latest_dir"
-  ln -s "$current_dir" "$latest_dir"
+  ssh "$ssh_creds" "rm -f '$latest_dir'"
+  ssh "$ssh_creds" "ln -sF '$current_dir' '$latest_dir'"
 }
 
 ionice -c 3 -p $$
 renice +10 -p $$
 
-/home/kyle/.bin/notify-all -a 'backup' 'System backup running...'
+notify-send -a 'backup' 'System backup running...'
 
-backup / /media/Storage/snapshots
+backup / kyle@truenas:/mnt/nas/desktop-backup
 
-/home/kyle/.bin/notify-all -a 'backup' 'System backup complete'
+notify-send -a 'backup' 'System backup complete'
 
