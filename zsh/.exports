@@ -45,6 +45,8 @@ export NVM_DIR="$HOME"/.nvm
 export DOTFILES="$WORKSPACE/dotfiles"
 export VIMRC="$DOTFILES/vim/.vimrc"
 
+export SLEDGE_BIN=/home/kyle/.sledge/bin
+
 if [[ $OSTYPE == linux* ]]; then
   export SSH_ASKPASS='/usr/lib/ssh/x11-ssh-askpass'
   export WORKON_HOME="$HOME"/.virtualenvs
@@ -62,6 +64,7 @@ path=(
   $WORKSPACE/scripts/tmux-scripts
   $HOME/Library/Haskell/bin
   $HOME/.cargo/bin
+  $SLEDGE_BIN
   $path
 )
 
