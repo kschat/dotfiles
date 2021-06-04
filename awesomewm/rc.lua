@@ -62,7 +62,12 @@ context_menu.init {
   hotkeys_popup_widget = hotkeys_popup,
 }
 
+local thrizen = require('thrizen')
+
+-- awful.layout.suit.tile.ncols = 3
+
 awful.layout.layouts = {
+  thrizen,
   awful.layout.suit.tile,
   awful.layout.suit.floating,
   awful.layout.suit.tile.left,

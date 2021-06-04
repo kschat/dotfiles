@@ -25,11 +25,11 @@ local theme = {}
 theme.colors = colors
 -- Default variables
 -- theme.font = 'Droid Sans ' .. dpi(6)
-theme.font = 'Roboto Regular ' .. dpi(7)
-theme.icon_font = 'FontAwesome ' .. dpi(7)
+theme.font = 'Roboto Regular ' .. dpi(8)
+theme.icon_font = 'FontAwesome ' .. dpi(8)
 theme._huge_font = 'Roboto Regular ' .. dpi(25)
 -- theme.font = 'Noto Sans Regular ' .. dpi(7.5)
-theme.useless_gap = dpi(10)
+theme.useless_gap = dpi(8)
 
 -- wibar
 -- theme.wibar_stretch = nil
@@ -44,10 +44,10 @@ theme.useless_gap = dpi(10)
 
 theme.wibar_bg = colors.b_white
 theme.wibar_fg = colors.black
-theme.wibar_width = dpi(450)
+theme.wibar_width = dpi(425)
 theme.wibar_height = dpi(45)
 theme._wibar_border_radius = dpi(45)
-theme._wibar_right_width = dpi(200)
+theme._wibar_right_width = dpi(190)
 theme._wibar_opacity = 1
 
 theme._wibar_accent_bg_color = colors.cyan
@@ -57,7 +57,7 @@ theme._wibar_left_strip = dpi(0)
 theme._wibar_large_spacing = dpi(25)
 theme._wibar_small_spacing = dpi(15)
 
-local screen_padding = dpi(10)
+local screen_padding = dpi(4)
 
 theme.screen_padding_left = screen_padding
 theme.screen_padding_top = theme.wibar_height + screen_padding * 2
@@ -195,7 +195,7 @@ theme.gap_single_client = true
 -- theme.menu_submenu = nil
 
 -- notification
-theme._notification_padding = dpi(20)
+theme._notification_padding = dpi(10)
 theme._notification_spacing = dpi(10)
 theme._notification_border_radius = dpi(7)
 theme._notification_icon_size = dpi(0)

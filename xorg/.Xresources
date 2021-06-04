@@ -33,7 +33,7 @@
 
 ! Xft settings
 Xft.autohint:   0
-Xft.dpi:        138
+Xft.dpi:        109
 Xft.antialias:  true
 Xft.rgba:       rgb
 Xft.hinting:    true
@@ -41,7 +41,7 @@ Xft.hintstyle:  hintfull
 Xft.lcdfilter:  lcddefault
 
 ! Urxvt settings
-URxvt.font: xft:Source Code Pro Semibold:size=12,style=Semibold,antialias=true
+URxvt.font: xft:Source Code Pro Semibold:size=11,style=Semibold,antialias=true
 
 URxvt*loginShell: false
 URxvt*iso14755:   false
@@ -59,9 +59,9 @@ rofi.modi:            window,run
 rofi.separator-style: none
 rofi.hide-scrollbar:  true
 ! rofi.sidebar-mode:    true
-rofi.font:            Droid Sans Bold 18
+rofi.font:            Droid Sans Bold 16
 rofi.opacity:         100
-rofi.width:           20
+rofi.width:           18
 rofi.bw:              2
 rofi.padding:         40
 rofi.columns:         1
