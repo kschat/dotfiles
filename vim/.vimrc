@@ -29,6 +29,7 @@ Plug 'mbbill/undotree'
 Plug 'baskerville/vim-sxhkdrc', { 'for': 'sxhkdrc' }
 Plug 'leafgarland/typescript-vim', { 'for': 'typescript' }
 Plug 'rust-lang/rust.vim'
+Plug 'cespare/vim-toml', { 'for': 'toml' }
 Plug 'rodjek/vim-puppet', { 'for': 'puppet' }
 Plug 'jparise/vim-graphql', { 'for': ['graphql', 'javascript', 'typescript'] }
 Plug 'neoclide/coc.nvim', { 'branch': 'release' }
