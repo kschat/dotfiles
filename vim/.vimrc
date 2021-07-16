@@ -424,8 +424,10 @@ command! -nargs=? Fold :call CocAction('fold', <f-args>)
 " add command to organize imports of the current buffer
 command! -nargs=0 OR   :call CocAction('runCommand', 'editor.action.organizeImport')
 
-" add native statusline support
-" set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
+" add statusline support while preserving default statusline
+set statusline=%f\ %h%w%m%r
+set statusline^=\ %{coc#status()}\ %{get(b:,'coc_current_function','')}
+set statusline+=%=%(%l,%c%V\ %=\ %P%)
 
 " fix jsx and tsx file types
 augroup typescriptreact
