@@ -43,6 +43,7 @@ Xft.lcdfilter:  lcddefault
 ! Urxvt settings
 URxvt.font: xft:Source Code Pro Semibold:size=11,style=Semibold,antialias=true
 
+URxvt.perl-ext-common: resize-font
 URxvt*loginShell: false
 URxvt*iso14755:   false
 
