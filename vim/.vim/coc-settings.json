@@ -1,5 +1,5 @@
 {
-  "eslint.filetypes": [
+  "eslint.validate": [
     "javascript",
     "javascriptreact",
     "typescript",
@@ -12,6 +12,7 @@
   "eslint.run": "onSave",
   "jest.terminalPosition": "right",
   "jest.forceExit": true,
+  "jest.customFlags": ["--coverage=false"],
   "prettier.requireConfig": true,
   "typescript.format.enabled": false,
   "javascript.format.enabled": false,
