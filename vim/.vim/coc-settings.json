@@ -23,5 +23,7 @@
     "typescriptreact",
     "rust"
   ],
-  "rust-analyzer.checkOnSave.command": "cargo clippy"
+  "rust-analyzer.checkOnSave.command": "clippy",
+  "rust-analyzer.inlayHints.chainingHintsSeparator": "▶︎ ",
+  "rust-analyzer.inlayHints.typeHintsSeparator": "▶︎ "
 }
