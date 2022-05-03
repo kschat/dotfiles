@@ -58,8 +58,7 @@ MASKS[31]="255.255.255.254"
 export CISCO_SPLIT_INC=0
 
 # Create environment variables that vpnc-script uses to configure network
-function addroute()
-{
+function addroute() {
     local ROUTE="$1"
     export CISCO_SPLIT_INC_${CISCO_SPLIT_INC}_ADDR=${ROUTE%%/*}
     export CISCO_SPLIT_INC_${CISCO_SPLIT_INC}_MASKLEN=${ROUTE##*/}
@@ -68,8 +67,7 @@ function addroute()
 }
 
 # Old function for generating NetworkManager 0.8 GConf keys
-function translateroute ()
-{
+function translateroute () {
     local IPADDR="${1%%/*}"
     local MASKLEN="${1##*/}"
     local OCTET1="$(echo $IPADDR | cut -f1 -d.)"
@@ -101,4 +99,8 @@ for r in $ROUTES; do
     addroute $r
 done
 
-exec /etc/vpnc/vpnc-script
+if [[ $OSTYPE == linux* ]]; then
+  exec /etc/vpnc/vpnc-script
+else
+  exec /usr/local/etc/vpnc-script
+fi
