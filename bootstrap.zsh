@@ -71,6 +71,7 @@ arch_dependencies=(
   archey-git
   rxvt-unicode
   adobe-source-code-pro-fonts
+  nerd-fonts-source-code-pro
   ttf-font-awesome-4
   acpi
   alsa-utils
