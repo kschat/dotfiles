@@ -177,6 +177,14 @@ awful.rules.rules = {
     properties = {
       size_hints_honor = false
     }
+  },
+  {
+    rule = {
+      class = 'zoom'
+    },
+    properties = {
+      floating = true
+    }
   }
 }
 
