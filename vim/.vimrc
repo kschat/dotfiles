@@ -279,7 +279,7 @@ nmap <silent> <leader>ev :e $VIMRC<CR>
 nmap <silent> <leader>sv :so $VIMRC<CR>
 
 " shortcut to delete a buffer without closing the split
-nnoremap <leader>d :bp\|bd #<CR>
+nnoremap <silent> <leader>d :bp\|bd #<CR>
 
 if has('nvim')
   " Hack to get C-h working in neovim
