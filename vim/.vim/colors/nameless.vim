@@ -1,8 +1,6 @@
 " Syntax highlighting scheme is a heavily modified verson of the base-16 scheme
 " https://github.com/chriskempson/base16-vim
 
-hi clear
-
 if exists("syntax_on")
   syntax reset
 endif
@@ -206,7 +204,7 @@ call <sid>hi("SpellCap",     "", s:black, "undercurl")
 call <sid>hi("SpellRare",    "", s:black, "undercurl")
 
 " Yank highlighting
-call <sid>hi("HighlightedyankRegion", "", s:b_black, "")
+call <sid>hi("IncSearch", "", s:b_black, "")
 
 " CoC highlighting
 call <sid>hi("CocHintSign",         s:b_black, "", "")
