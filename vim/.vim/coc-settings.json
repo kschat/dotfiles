@@ -1,4 +1,6 @@
 {
+  "coc.preferences.watchmanPath": "DOES_NOT_EXIST__SETTING_TO_DISABLE",
+  "suggest.timeout": 5000,
   "eslint.validate": [
     "javascript",
     "javascriptreact",

@@ -27,17 +27,14 @@ Plug 'tpope/vim-commentary'
 Plug 'mhinz/vim-startify'
 Plug 'mbbill/undotree'
 Plug 'baskerville/vim-sxhkdrc', { 'for': 'sxhkdrc' }
-Plug 'leafgarland/typescript-vim', { 'for': 'typescript' }
 Plug 'rust-lang/rust.vim'
 Plug 'cespare/vim-toml', { 'for': 'toml' }
-Plug 'rodjek/vim-puppet', { 'for': 'puppet' }
 Plug 'jparise/vim-graphql', { 'for': ['graphql', 'javascript', 'typescript'] }
 Plug 'neoclide/coc.nvim', { 'branch': 'release' }
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/goyo.vim'
-" TODO remove once nvim 0.5 is released
-Plug 'machakann/vim-highlightedyank'
+Plug 'sainnhe/gruvbox-material'
 
 call plug#end()
 
@@ -54,6 +51,12 @@ noremap \ ,
 " reload files when changed outside of vim
 set autoread
 autocmd FocusGained,BufEnter * :checktime
+
+" highlight text on yank
+augroup yankgroup
+  autocmd!
+  autocmd TextYankPost * silent! lua vim.highlight.on_yank({ timeout = 1000 })
+augroup end
 
 " allow backspace over anything in Insert mode
 set backspace=indent,eol,start
@@ -92,12 +95,20 @@ set updatetime=250
 " Colors and Fonts {{{
 " -----------------------------------------------------------------------------
 
+if (has("termguicolors"))
+  set termguicolors
+endif
+
 " turn syntax highlighting on
 syntax enable
 
-" set color scheme to dark solarized
+let g:gruvbox_material_background='medium'
+let g:gruvbox_material_enable_bold='1'
+let g:gruvbox_material_diagnostic_line_highlight='1'
+let g:gruvbox_material_sign_column_background='none'
+
 set background=dark
-colorscheme nameless
+colorscheme gruvbox-material
 
 " }}}
 
@@ -325,6 +336,9 @@ let g:coc_global_extensions=[
 \  'coc-rust-analyzer',
 \]
 
+let g:coc_status_error_sign='✗'
+let g:coc_status_warning_sign='⚠'
+
 " use tab for trigger completion with characters ahead and navigate
 inoremap <silent><expr> <TAB>
       \ pumvisible() ? "\<C-n>" :
@@ -370,14 +384,17 @@ nmap <silent> gr <Plug>(coc-references)
 nnoremap <silent> <C-W>gr :call CocAction('jumpReferences', 'split')<CR>
 nnoremap <silent> <C-W>gR :call CocAction('jumpReferences', 'vsplit')<CR>
 
+" mapping to jump to floating window
+nmap <silent> <C-w>k <Plug>(coc-float-jump)
+
 " use K to show documentation in preview window
 nnoremap <silent> K :call <SID>show_documentation()<CR>
 
 function! s:show_documentation()
-  if (index(['vim','help'], &filetype) >= 0)
-    execute 'h '.expand('<cword>')
-  else
+  if CocAction('hasProvider', 'hover')
     call CocActionAsync('doHover')
+  else
+    call feedkeys('K', 'in')
   endif
 endfunction
 
@@ -391,7 +408,7 @@ nmap <leader>rn <Plug>(coc-rename)
 xmap <leader>= <Plug>(coc-format-selected)
 nmap <leader>= <Plug>(coc-format-selected)
 
-augroup mygroup
+augroup fileTypeGroup
   autocmd!
   " setup formatexpr specified filetype(s)
   autocmd FileType javascript,typescript,json setl formatexpr=CocAction('formatSelected')

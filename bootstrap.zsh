@@ -102,6 +102,7 @@ arch_dependencies=(
   lpass
   xsel
   watchman # for coc.nvim rename symbol across file
+  alacritty
 )
 
 osx_dependencies=(
@@ -146,6 +147,7 @@ typeset -A packages; packages=(
   khd "$default_directory"
   awesomewm "$default_directory/.config/awesome"
   systemd "$default_directory/.config/systemd"
+  alacritty "$default_directory/.config/alacritty"
 )
 
 exit_codes=(
