@@ -4,19 +4,20 @@ window:
 font:
   size: 12
   normal:
-    family: Source Code Pro
+    # Unpatched version: Source Code Pro
+    family: SauceCodePro Nerd Font
     style: Semibold
 
   bold:
-    family: Source Code Pro
+    family: SauceCodePro Nerd Font
     style: Bold
 
   italic:
-    family: Source Code Pro
+    family: SauceCodePro Nerd Font
     style: Semibold Italic
 
   bold_italic:
-    family: Source Code Pro
+    family: SauceCodePro Nerd Font
     style: Bold Italic
 
 schemes:
