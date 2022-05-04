@@ -46,7 +46,7 @@ do
   end)
 end
 
-TERMINAL = 'urxvt'
+TERMINAL = 'alacritty'
 EDITOR = os.getenv('EDITOR') or 'vim'
 MODKEY = 'Mod4'
 
