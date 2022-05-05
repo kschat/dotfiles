@@ -3,21 +3,27 @@ local xresources = require('beautiful.xresources')
 local dpi = xresources.apply_dpi
 
 local colors = {
-  bg = '#272C30',
-  fg = '#C0C0C6',
+  -- Gruvbox Material Hard Light
+  bg = '#f9f5d7',
+  fg = '#654735',
 
-  white = '#C0C0C6',
-  black = '#272C30',
-  red = '#E25C4D',
-  yellow = '#EAE877',
-  green = '#2AC194',
-  cyan = '#30C1B5',
-  blue = '#2FA3B5',
-  magenta = '#DD54BB',
+  black =   '#654735',
+  red =     '#c14a4a',
+  green =   '#6c782e',
+  yellow =  '#b47109',
+  blue =    '#45707a',
+  magenta = '#945e80',
+  cyan =    '#4c7a5d',
+  white =   '#f2e5bc',
 
-  b_white = '#F9F9FF',
-  b_black = '#525D66',
-  b_blue = '#2D3338',
+  b_black =   '#654735',
+  b_red =     '#c14a4a',
+  b_green =   '#6c782e',
+  b_yellow =  '#b47109',
+  b_blue =    '#45707a',
+  b_magenta = '#945e80',
+  b_cyan =    '#4c7a5d',
+  b_white =   '#f2e5bc',
 }
 
 local theme = {}
@@ -42,16 +48,16 @@ theme.useless_gap = dpi(8)
 -- theme.wibar_bgimage = nil
 -- theme.wibar_shape = nil
 
-theme.wibar_bg = colors.b_white
-theme.wibar_fg = colors.black
+theme.wibar_bg = colors.bg
+theme.wibar_fg = colors.fg
 theme.wibar_width = dpi(425)
 theme.wibar_height = dpi(45)
 theme._wibar_border_radius = dpi(45)
 theme._wibar_right_width = dpi(190)
 theme._wibar_opacity = 1
 
-theme._wibar_accent_bg_color = colors.cyan
-theme._wibar_accent_fg_color = colors.b_white
+theme._wibar_accent_bg_color = colors.blue
+theme._wibar_accent_fg_color = colors.white
 theme._wibar_outer_margin = dpi(30)
 theme._wibar_left_strip = dpi(0)
 theme._wibar_large_spacing = dpi(25)
@@ -347,8 +353,8 @@ theme.titlebar_fg_normal = colors.white
 theme.titlebar_bg_normal = colors.white
 theme.titlebar_fg = colors.white
 theme.titlebar_bg = colors.white
-theme.titlebar_fg_focus = colors.cyan
-theme.titlebar_bg_focus = colors.cyan
+theme.titlebar_fg_focus = colors.blue
+theme.titlebar_bg_focus = colors.blue
 -- theme.titlebar_bgimage_normal = nil
 -- theme.titlebar_bgimage = nil
 -- theme.titlebar_bgimage_focus = nil
