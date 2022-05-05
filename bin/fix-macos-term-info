@@ -1,0 +1,10 @@
+#!/usr/bin/env zsh
+
+output_file=/tmp/tmux-256color.src
+
+# Path is required so we use the correct version of ncurses infocmp
+/usr/local/opt/ncurses/bin/infocmp -x tmux-256color | sed -e 's/pairs#0x10000/pairs#32767/g' > "$output_file"
+
+tic "$output_file"
+
+rm -f "$output_file"
