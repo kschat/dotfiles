@@ -198,8 +198,8 @@ set ttyfast
 " don't highlight matching [{()}]
 set noshowmatch
 
-" adds 80 character vertical line
-set colorcolumn=80
+" adds 120 character vertical line
+set colorcolumn=120
 
 " decrease timeout to update mode UI
 set timeoutlen=1000
@@ -224,6 +224,9 @@ set splitbelow
 
 " vertical splits are created to the right of the current window
 set splitright
+
+" don't display '-- MODE --' text as it's displayed in statusline
+set noshowmode
 
 " }}}
 
@@ -268,7 +271,7 @@ set foldnestmax=10
 " -----------------------------------------------------------------------------
 
 " set C-l to clear out search highlighting
-nnoremap <leader><space> :noh<CR><esc>
+nnoremap <silent> <leader><space> :noh<CR><esc>
 
 " shortcuts to cycle through buffers
 nnoremap <leader><Tab> :bnext<CR>
@@ -276,7 +279,7 @@ nnoremap <leader><S-Tab> :bprevious<CR>
 
 " shortcut to edit/reload vimrc
 nmap <silent> <leader>ev :e $VIMRC<CR>
-nmap <silent> <leader>sv :so $VIMRC<CR>
+nmap <silent> <leader>sv :so $VIMRC \| echo "Reloaded vimrc"<CR>
 
 " shortcut to delete a buffer without closing the split
 nnoremap <silent> <leader>d :bp\|bd #<CR>
@@ -441,11 +444,6 @@ command! -nargs=? Fold :call CocAction('fold', <f-args>)
 " add command to organize imports of the current buffer
 command! -nargs=0 OR   :call CocAction('runCommand', 'editor.action.organizeImport')
 
-" add statusline support while preserving default statusline
-set statusline=%f\ %h%w%m%r
-set statusline^=\ %{coc#status()}\ %{get(b:,'coc_current_function','')}
-set statusline+=%=%(%l,%c%V\ %=\ %P%)
-
 " fix jsx and tsx file types
 augroup typescriptreact
   au!
@@ -505,10 +503,6 @@ nmap <leader>L :ZLines<CR>
 " fuzzy search project
 nmap <leader>/ :ZRg<Space>
 
-" hide status line
-autocmd! FileType fzf set laststatus=0 noshowmode noruler
-  \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
-
 " }}}
 
 " -----------------------------------------------------------------------------
@@ -529,6 +523,242 @@ nmap <leader>z :Goyo<CR>
 " -----------------------------------------------------------------------------
 
 let g:gitgutter_preview_win_floating = 1
+
+" }}}
+
+" -----------------------------------------------------------------------------
+" StatusLine {{{
+" -----------------------------------------------------------------------------
+
+" enable global status line
+set laststatus=3
+
+function! s:hl(group, fg, bg, ...)
+  execute 'highlight' a:group
+        \ 'guifg=' . a:fg[0]
+        \ 'guibg=' . a:bg[0]
+        \ 'ctermfg=' . a:fg[1]
+        \ 'ctermbg=' . a:bg[1]
+        \ 'gui=' . (a:0 >= 1 ?
+          \ a:1 :
+          \ 'NONE')
+        \ 'cterm=' . (a:0 >= 1 ?
+          \ a:1 :
+          \ 'NONE')
+        \ 'guisp=' . (a:0 >= 2 ?
+          \ a:2[0] :
+          \ 'NONE')
+endfunction
+
+let s:gruvbox_config = gruvbox_material#get_configuration()
+
+let s:palette = gruvbox_material#get_palette(s:gruvbox_config.background, s:gruvbox_config.palette)
+
+call s:hl('StatusNormalMode', s:palette.bg0, s:palette.aqua, 'bold')
+call s:hl('StatusNormalModeBorderLeft', s:palette.aqua, s:palette.bg0)
+call s:hl('StatusNormalModeBorderRight', s:palette.aqua, s:palette.fg0)
+
+call s:hl('StatusInsertMode', s:palette.bg0, s:palette.blue, 'bold')
+call s:hl('StatusInsertModeBorderLeft', s:palette.blue, s:palette.bg0)
+call s:hl('StatusInsertModeBorderRight', s:palette.blue, s:palette.fg0)
+
+call s:hl('StatusVisualMode', s:palette.bg0, s:palette.yellow, 'bold')
+call s:hl('StatusVisualModeBorderLeft', s:palette.yellow, s:palette.bg0)
+call s:hl('StatusVisualModeBorderRight', s:palette.yellow, s:palette.fg0)
+
+call s:hl('StatusReplaceMode', s:palette.bg0, s:palette.red, 'bold')
+call s:hl('StatusReplaceModeBorderLeft', s:palette.red, s:palette.bg0)
+call s:hl('StatusReplaceModeBorderRight', s:palette.red, s:palette.fg0)
+
+call s:hl('StatusTerminalMode', s:palette.bg0, s:palette.purple, 'bold')
+call s:hl('StatusTerminalModeBorderLeft', s:palette.purple, s:palette.bg0)
+call s:hl('StatusTerminalModeBorderRight', s:palette.purple, s:palette.fg0)
+
+call s:hl('StatusCommandMode', s:palette.bg0, s:palette.grey2, 'bold')
+call s:hl('StatusCommandModeBorderLeft', s:palette.grey2, s:palette.bg0)
+call s:hl('StatusCommandModeBorderRight', s:palette.grey2, s:palette.fg0)
+
+call s:hl('StatusSelectMode', s:palette.bg0, s:palette.grey2, 'bold')
+call s:hl('StatusSelectModeBorderLeft', s:palette.grey2, s:palette.bg0)
+call s:hl('StatusSelectModeBorderRight', s:palette.grey2, s:palette.fg0)
+
+call s:hl('StatusFileName', s:palette.bg0, s:palette.fg0)
+call s:hl('StatusFileNameBorderLeft', s:palette.fg0, s:palette.bg0)
+call s:hl('StatusFileNameBorderRight', s:palette.fg0, s:palette.bg3)
+
+call s:hl('StatusCoc', s:palette.fg0, s:palette.bg3)
+call s:hl('StatusCocBorder', s:palette.bg3, s:palette.none)
+
+call s:hl('StatusLineBackground', s:palette.fg0, s:palette.none)
+
+call s:hl('StatusFileLine', s:palette.bg0, s:palette.aqua)
+call s:hl('StatusFileLineBorderRight', s:palette.aqua, s:palette.bg0)
+call s:hl('StatusFileLineBorderLeft', s:palette.aqua, s:palette.bg0)
+
+let g:current_mode={
+      \ 'n': { 'text': 'NORMAL', 'color_group': 'StatusNormalMode' },
+      \ 'i': { 'text': 'INSERT', 'color_group': 'StatusInsertMode' },
+      \ 'R': { 'text': 'REPLACE', 'color_group': 'StatusReplaceMode' },
+      \ 'v': { 'text': 'VISUAL', 'color_group': 'StatusVisualMode' },
+      \ 'V': { 'text': 'V-LINE', 'color_group': 'StatusVisualMode' },
+      \ "\<C-v>": { 'text': 'V-BLOCK', 'color_group': 'StatusVisualMode' },
+      \ 'c': { 'text': 'COMMAND', 'color_group': 'StatusCommandMode' },
+      \ 's': { 'text': 'SELECT', 'color_group': 'StatusSelectMode' },
+      \ 'S': { 'text': 'S-LINE', 'color_group': 'StatusSelectMode' },
+      \ "\<C-s>": { 'text': 'S-BLOCK', 'color_group': 'StatusSelectMode' },
+      \ 't': { 'text': 'TERMINAL', 'color_group': 'StatusTerminalMode' },
+      \ }
+
+function! CurrentMode() abort
+  let l:mode = mode()
+  let l:mode_node = get(g:current_mode, l:mode, g:current_mode['t'])
+  let l:border_group = '%#' . l:mode_node.color_group . 'Border'
+  let l:left_border = l:border_group . 'Left#'
+  let l:right_border = l:border_group . 'Right#'
+  let l:value = '%#' . l:mode_node.color_group . '# ' . l:mode_node.text . ' '
+
+  return l:left_border . l:value . l:right_border
+endfunction
+
+function! CurrentFile(...) abort
+  let l:file_name = get(a:, 1, expand('%f'))
+  let l:border_group = '%#StatusFileNameBorder'
+  let l:left_border = l:border_group . 'Left#'
+  let l:right_border = l:border_group . 'Right#'
+  let l:file_label = l:file_name == '' ? 'NO NAME' : l:file_name
+  let l:value = '%#StatusFileName#%( %H%W%R%M%) ' . l:file_label . ' '
+
+  return l:left_border . l:value . l:right_border
+endfunction
+
+function! CocStatus() abort
+  let l:status = coc#status()
+
+  if l:status == ''
+    if b:coc_status_on || b:coc_status_on == -1
+      let b:coc_status_on = 0
+      call s:hl('StatusFileNameBorderRight', s:palette.fg0, s:palette.none)
+    endif
+
+    return ''
+  endif
+
+  if !b:coc_status_on || b:coc_status_on == -1
+    let b:coc_status_on = 1
+    call s:hl('StatusFileNameBorderRight', s:palette.fg0, s:palette.bg0)
+  endif
+
+  return '%#StatusCoc# ' . l:status . ' %#StatusCocBorder#'
+endfunction
+
+function! FileLine() abort
+  let l:border_group = '%#StatusFileLineBorder'
+  let l:left_border = l:border_group . 'Left#'
+  let l:right_border = l:border_group . 'Right#'
+
+  return l:left_border . '%#StatusFileLine#%( %l,%c%V %= %P%) ' . l:right_border
+endfunction
+
+call s:hl('StatusGitBranch', s:palette.bg0, s:palette.fg0)
+call s:hl('StatusGitBranchBorderRight', s:palette.fg0, s:palette.bg0)
+call s:hl('StatusGitBranchBorderLeft', s:palette.fg0, s:palette.bg0)
+
+function! GitBranch() abort
+  let l:current_branch = trim(system('git rev-parse --abbrev-ref HEAD 2>/dev/null'))
+  if l:current_branch == ''
+    call s:hl('StatusFileLineBorderLeft', s:palette.aqua, s:palette.bg0)
+    return ''
+  endif
+
+  " set background of previous node to white
+  call s:hl('StatusFileLineBorderLeft', s:palette.aqua, s:palette.fg0)
+
+  let l:border_group = '%#StatusGitBranchBorder'
+  let l:left_border = l:border_group . 'Left#'
+  let l:right_border = l:border_group . 'Right#'
+
+  return l:left_border . '%#StatusGitBranch# ' . l:current_branch . ' ' . l:right_border
+endfunction
+
+" define a buffer local variable to cache the value so we're not constantly
+" making system calls
+let b:git_branch = GitBranch()
+let b:coc_status_on = -1
+augroup CacheStatusLineState
+  autocmd!
+  autocmd BufEnter * let b:git_branch = GitBranch() | let b:coc_status_on = -1
+augroup END
+
+set statusline=
+set statusline+=%{%CurrentMode()%}
+set statusline+=%{%CurrentFile()%}
+set statusline+=%{%CocStatus()%}%#StatusLineBackground#
+set statusline+=\ %=%{%b:git_branch%}
+set statusline+=%{%FileLine()%}
+
+" customize fzf statusline
+function! s:fzf_statusline()
+  setlocal statusline=%{%CurrentMode()%}
+  setlocal statusline+=%{%CurrentFile('FZF')%}%#StatusLineBackground#
+  setlocal statusline+=%=%{%FileLine()%}
+endfunction
+
+autocmd! User FzfStatusLine call <SID>fzf_statusline()
+
+" }}}
+
+" -----------------------------------------------------------------------------
+" TabLine {{{
+" -----------------------------------------------------------------------------
+
+call s:hl('TabLineFill', s:palette.bg0, s:palette.none)
+call s:hl('TabLineSel', s:palette.bg0, s:palette.fg0, 'bold')
+call s:hl('TabLineSelBorder', s:palette.fg0, s:palette.none)
+
+call s:hl('TabLine', s:palette.fg0, s:palette.bg_current_word)
+call s:hl('TabLineBorder', s:palette.bg_current_word, s:palette.none)
+
+call s:hl('TabLineIcon', s:palette.bg0, s:palette.aqua, 'bold')
+call s:hl('TabLineIconBorderLeft', s:palette.aqua, s:palette.bg0)
+call s:hl('TabLineIconBorderRight', s:palette.aqua, s:palette.none)
+
+function! TabLine()
+  let l:s = '%#TabLineIconBorderLeft#% %#TabLineIcon#  %#TabLineIconBorderRight# '
+  for i in range(tabpagenr('$'))
+    let l:selected = i + 1 == tabpagenr()
+    if l:selected
+      let l:s ..= '%#TabLineSelBorder#%#TabLineSel#'
+    else
+      let l:s ..= '%#TabLineBorder#%#TabLine#'
+    endif
+
+    " set the tab page number (for mouse clicks)
+    let l:s ..= '%' .. (i + 1) .. 'T'
+
+    let l:s ..= ' %{TabLabel(' .. (i + 1) .. ')} '
+
+    if l:selected
+      let l:s ..= '%#TabLineSelBorder# '
+    else
+      let l:s ..= '%#TabLineBorder# '
+    endif
+  endfor
+
+  let l:s ..= '%#TabLineFill#%T'
+
+  return l:s
+endfunction
+
+function! TabLabel(n)
+  let l:buflist = tabpagebuflist(a:n)
+  let l:winnr = tabpagewinnr(a:n)
+  let l:name = trim(fnamemodify(bufname(l:buflist[l:winnr - 1]), ':t'))
+
+  return l:name == '' ? 'NO NAME' : l:name
+endfunction
+
+set tabline=%!TabLine()
+set showtabline=2
 
 " }}}
 
