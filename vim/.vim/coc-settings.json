@@ -9,7 +9,7 @@
   ],
   "diagnostic.enableSign": true,
   "diagnostic.errorSign": "●",
-  "diagnostic.warningSign": "⚠",
+  "diagnostic.warningSign": "",
   "diagnostic.infoSign": "●",
   "eslint.run": "onSave",
   "jest.terminalPosition": "right",

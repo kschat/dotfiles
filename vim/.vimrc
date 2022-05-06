@@ -106,6 +106,7 @@ let g:gruvbox_material_background='medium'
 let g:gruvbox_material_enable_bold='1'
 let g:gruvbox_material_diagnostic_line_highlight='1'
 let g:gruvbox_material_sign_column_background='none'
+let g:gruvbox_material_disable_terminal_colors='1'
 
 set background=dark
 colorscheme gruvbox-material
@@ -339,8 +340,8 @@ let g:coc_global_extensions=[
 \  'coc-rust-analyzer',
 \]
 
-let g:coc_status_error_sign='✗'
-let g:coc_status_warning_sign='⚠'
+let g:coc_status_error_sign=' '
+let g:coc_status_warning_sign=' '
 
 " use tab for trigger completion with characters ahead and navigate
 inoremap <silent><expr> <TAB>
