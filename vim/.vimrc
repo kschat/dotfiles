@@ -646,7 +646,7 @@ function! CocStatus() abort
 
   if !b:coc_status_on || b:coc_status_on == -1
     let b:coc_status_on = 1
-    call s:hl('StatusFileNameBorderRight', s:palette.fg0, s:palette.bg0)
+    call s:hl('StatusFileNameBorderRight', s:palette.fg0, s:palette.bg3)
   endif
 
   return '%#StatusCoc# ' . l:status . ' %#StatusCocBorder#'
