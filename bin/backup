@@ -103,9 +103,9 @@ backup() {
 ionice -c 3 -p $$
 renice +10 -p $$
 
-notify-send -a 'backup' 'System backup running...'
+notify-send -a 'backup' ' │  System backup running...'
 
 backup / kyle@truenas:/mnt/nas/desktop-backup
 
-notify-send -a 'backup' 'System backup complete'
+notify-send -a 'backup' ' │  System backup complete'
 
