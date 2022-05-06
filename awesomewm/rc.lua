@@ -107,7 +107,7 @@ local update_widget = UpdateWidget {
   interval_in_seconds = 5 * 60,
 }
 
-local clock_widget = wibox.widget.textclock('%a %_I:%M%p')
+local clock_widget = wibox.widget.textclock('%a %b %_d %_I:%M%p')
 
 local client_name_widget = ClientNameWidget {
   ellipsize = 'end',

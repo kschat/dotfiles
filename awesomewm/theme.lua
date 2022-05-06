@@ -52,16 +52,16 @@ theme.wibar_bg = colors.bg
 theme.wibar_fg = colors.fg
 theme.wibar_width = dpi(425)
 theme.wibar_height = dpi(45)
-theme._wibar_border_radius = dpi(45)
-theme._wibar_right_width = dpi(190)
+theme._wibar_border_radius = dpi(20)
+theme._wibar_right_width = dpi(220)
 theme._wibar_opacity = 1
+theme._wibar_margin = dpi(4)
+theme._wibar_app_title_width = dpi(175)
 
 theme._wibar_accent_bg_color = colors.blue
 theme._wibar_accent_fg_color = colors.white
 theme._wibar_outer_margin = dpi(30)
-theme._wibar_left_strip = dpi(0)
 theme._wibar_large_spacing = dpi(25)
-theme._wibar_small_spacing = dpi(15)
 
 local screen_padding = dpi(4)
 
@@ -211,10 +211,10 @@ theme._notification_critical_bg = colors.black
 theme._notification_critical_fg = colors.b_white
 theme._notification_critical_border_width = dpi(0)
 
-theme.notification_bg = colors.b_white
-theme.notification_fg = colors.black
+theme.notification_bg = colors.bg
+theme.notification_fg = colors.fg
 theme.notification_border_width = dpi(0)
-theme.notification_border_color = colors.b_white
+theme.notification_border_color = colors.bg
 theme.notification_margin = dpi(15)
 theme.notification_opacity = 1
 
@@ -347,7 +347,7 @@ theme.tasklist_disable_task_name = true
 colors.transparent = '#00000000'
 
 -- titlebar
-theme.titlebar_size = dpi(10)
+theme.titlebar_size = dpi(0)
 theme.titlebar_position = 'bottom'
 theme.titlebar_fg_normal = colors.white
 theme.titlebar_bg_normal = colors.white

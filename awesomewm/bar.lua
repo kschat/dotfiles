@@ -56,28 +56,45 @@ function bar.init(config)
   }
 
   right_bar:setup {
-    left = beautiful._wibar_outer_margin,
-    right = beautiful._wibar_outer_margin,
     widget = wibox.container.margin,
+    top = beautiful._wibar_margin,
+    bottom = beautiful._wibar_margin,
+    right = beautiful._wibar_margin,
+    left = beautiful._wibar_outer_margin,
 
     {
-      layout = wibox.layout.fixed.horizontal,
-      spacing = beautiful._wibar_small_spacing,
+      layout = wibox.layout.align.horizontal,
 
-      clock_widget,
+      nil,
 
       {
-        font = beautiful.icon_font,
-        text = '│',
-        widget = wibox.widget.textbox
+        layout = wibox.layout.fixed.horizontal,
+
+        clock_widget,
       },
 
-      search_widget,
-    }
+      {
+        layout = wibox.layout.fixed.horizontal,
+
+        {
+          widget = wibox.container.background,
+          bg = beautiful._wibar_accent_bg_color,
+          fg = beautiful._wibar_accent_fg_color,
+          forced_width = dpi(50),
+          shape = function(cr, w, h)
+            gears.shape.rounded_rect(cr, w, h, beautiful._wibar_border_radius)
+          end,
+
+          search_widget,
+        },
+      },
+    },
   }
 
   left_bar:setup {
-    left = beautiful._wibar_left_strip,
+    top = beautiful._wibar_margin,
+    bottom = beautiful._wibar_margin,
+    left = beautiful._wibar_margin,
     right = beautiful._wibar_outer_margin,
     widget = wibox.container.margin,
 
@@ -89,10 +106,13 @@ function bar.init(config)
 
         {
           widget = wibox.container.background,
-          -- TODO move the theme file
-          forced_width = dpi(175),
+          forced_width = beautiful._wibar_app_title_width,
           bg = beautiful._wibar_accent_bg_color,
           fg = beautiful._wibar_accent_fg_color,
+          shape = function(cr, w, h)
+            gears.shape.rounded_rect(cr, w, h, beautiful._wibar_border_radius)
+          end,
+
 
           {
             left = beautiful._wibar_outer_margin,
