@@ -27,33 +27,29 @@ function prompt_kyle_setup {
   # required to use editor mode
   zstyle ':prezto:module:prompt' managed 'yes'
 
+  # Note: the "current" node decides the fg color (the color of the round border), but does not set the bg color (the
+  # color of the "next" node). The next node sets its background color and then displays the round border. This is so
+  # dynamic ordering of nodes renders the correct background color (e.g. when you cd from a git repo to a non-git repo).
+
   # editor mode info
-  zstyle ':prezto:module:editor:info:keymap:primary' format '%F{cyan}%f%K{cyan}%F{black}%B I %b%f%k%F{cyan}%K{black}%k%f'
-  zstyle ':prezto:module:editor:info:keymap:alternate' format '%F{blue}%f%K{blue}%F{black}%B N %b%f%k%F{blue}%K{black}%k%f'
+  zstyle ':prezto:module:editor:info:keymap:primary' format '%F{cyan}%f%F{black}%K{cyan}%B I %b%k%f%F{cyan}'
+  zstyle ':prezto:module:editor:info:keymap:alternate' format '%F{blue}%f%F{black}%K{blue}%B N %b%k%f%F{blue}'
 
   # git info
   zstyle ':prezto:module:git:info' verbose 'yes'
   zstyle ':prezto:module:git:info:branch' format '%b'
   zstyle ':prezto:module:git:info:clean' format ' ✔'
-  zstyle ':prezto:module:git:info:dirty' format ' ✗'
+  zstyle ':prezto:module:git:info:dirty' format ' '
   zstyle ':prezto:module:git:info:stashed' format ' ✚'
   zstyle ':prezto:module:git:info:untracked' format ' ●'
-  zstyle ':prezto:module:git:info:keys' format 'prompt' '%K{black}%F{white} %b%C%D%S%u %f%k%K{white}%F{black}%f' 'rprompt' ''
-  # zstyle ':prezto:module:git:info:branch' format '%F{cyan}%b%f'
-  # zstyle ':prezto:module:git:info:clean' format ' %F{green}✔%f'
-  # zstyle ':prezto:module:git:info:dirty' format ' %F{red}✗%f'
-  # zstyle ':prezto:module:git:info:stashed' format ' %F{magenta}✚%f'
-  # zstyle ':prezto:module:git:info:untracked' format ' %F{yellow}●%f'
-  # zstyle ':prezto:module:git:info:keys' format 'prompt' 'on %b%C%D%S%u' 'rprompt' ''
+  zstyle ':prezto:module:git:info:keys' format \
+    'prompt' '%K{black}%k%f%F{white}%K{black} %b%C%D%S%u %k%f%F{black}' \
+    'rprompt' ''
 
-  # PROMPT=$'\n %F{cyan}%n%f${hname} in %F{green}%~%f ${(e)git_info[prompt]} \n ${(e)editor_info[keymap]} %f'
-  # P=$'——'
-
-  # PROMPT=$'\n %F{cyan}%n%f${hname} in %F{green}%~%f ${(e)git_info[prompt]}'
-  PROMPT=$'\n ${(e)editor_info[keymap]}'
+  PROMPT=$'\n${(e)editor_info[keymap]}'
   PROMPT+=$'${(e)git_info[prompt]}'
-  PROMPT+=$'%K{white}%F{black} %~ %f%k%F{white}%f'
-  PROMPT+=$'\n —— %f'
+  PROMPT+=$'%K{white}%k%f%F{black}%K{white} %~ %k%f%F{white}%f'
+  PROMPT+=$'\n —— '
 }
 
 prompt_kyle_setup "$@"
