@@ -33,7 +33,7 @@ if [[ $window_manager != 'gnome' ]]; then
   redshift -l 39.95:-75.17 &
 
   if [[ $window_manager == 'bspwm' ]]; then
-    feh --bg-scale ~/.config/wallpapers/current &
+    feh --bg-fill ~/.config/wallpapers/current &
     xsetroot -cursor_name left_ptr &
     sxhkd &
     dunst &

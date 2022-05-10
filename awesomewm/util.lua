@@ -19,7 +19,7 @@ function util.set_wallpaper(current_screen, wallpaper)
     wallpaper = wallpaper(current_screen)
   end
 
-  gears.wallpaper.maximized(wallpaper, current_screen, true)
+  gears.wallpaper.maximized(wallpaper, current_screen, false)
 end
 
 function util.create_select_and_move_window_binding(key, direction)
