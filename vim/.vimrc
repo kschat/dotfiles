@@ -443,7 +443,7 @@ command! -nargs=0 Format :call CocAction('format')
 command! -nargs=? Fold :call CocAction('fold', <f-args>)
 
 " add command to organize imports of the current buffer
-command! -nargs=0 OR   :call CocAction('runCommand', 'editor.action.organizeImport')
+command! -nargs=0 OR :call CocAction('runCommand', 'editor.action.organizeImport')
 
 " fix jsx and tsx file types
 augroup typescriptreact
@@ -455,10 +455,11 @@ augroup END
 """ coc-jest
 
 " run jest for current project
-command! -nargs=0 Jest :call  CocAction('runCommand', 'jest.projectTest')
+command! -nargs=0 Jest :call CocAction('runCommand', 'jest.projectTest')
 
 " run jest for current file
-command! -nargs=0 JestCurrent :call  CocAction('runCommand', 'jest.fileTest', ['%'])
+command! -nargs=0 JestCurrent :call CocAction('runCommand', 'jest.fileTest', ['%'])
+nnoremap <leader>tE :JestCurrent<CR>
 
 " run jest for current test
 nnoremap <leader>te :call CocAction('runCommand', 'jest.singleTest')<CR>
