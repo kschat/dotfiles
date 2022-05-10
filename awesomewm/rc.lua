@@ -114,7 +114,7 @@ local client_name_widget = ClientNameWidget {
   align = 'center',
   class_map = {
     ['Google-chrome'] = 'Google Chrome',
-    ['Gnome-calculator'] = 'Calculator',
+    ['gnome-calculator'] = 'Calculator',
     ['jetbrains-idea-ce'] = 'IntelliJ IDEA',
   }
 }
@@ -160,7 +160,7 @@ awful.rules.rules = {
   {
     rule_any = {
       class = {
-        'Gnome-calculator',
+        'gnome-calculator',
       }
     },
     properties = {
