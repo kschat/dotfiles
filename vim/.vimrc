@@ -555,46 +555,61 @@ let s:gruvbox_config = gruvbox_material#get_configuration()
 
 let s:palette = gruvbox_material#get_palette(s:gruvbox_config.background, s:gruvbox_config.palette)
 
-call s:hl('StatusNormalMode', s:palette.bg0, s:palette.aqua, 'bold')
-call s:hl('StatusNormalModeBorderLeft', s:palette.aqua, s:palette.bg0)
-call s:hl('StatusNormalModeBorderRight', s:palette.aqua, s:palette.fg0)
+function! s:patch_status_line_colors()
+  call s:hl('StatusNormalMode', s:palette.bg0, s:palette.aqua, 'bold')
+  call s:hl('StatusNormalModeBorderLeft', s:palette.aqua, s:palette.bg0)
+  call s:hl('StatusNormalModeBorderRight', s:palette.aqua, s:palette.fg0)
 
-call s:hl('StatusInsertMode', s:palette.bg0, s:palette.blue, 'bold')
-call s:hl('StatusInsertModeBorderLeft', s:palette.blue, s:palette.bg0)
-call s:hl('StatusInsertModeBorderRight', s:palette.blue, s:palette.fg0)
+  call s:hl('StatusInsertMode', s:palette.bg0, s:palette.blue, 'bold')
+  call s:hl('StatusInsertModeBorderLeft', s:palette.blue, s:palette.bg0)
+  call s:hl('StatusInsertModeBorderRight', s:palette.blue, s:palette.fg0)
 
-call s:hl('StatusVisualMode', s:palette.bg0, s:palette.yellow, 'bold')
-call s:hl('StatusVisualModeBorderLeft', s:palette.yellow, s:palette.bg0)
-call s:hl('StatusVisualModeBorderRight', s:palette.yellow, s:palette.fg0)
+  call s:hl('StatusVisualMode', s:palette.bg0, s:palette.yellow, 'bold')
+  call s:hl('StatusVisualModeBorderLeft', s:palette.yellow, s:palette.bg0)
+  call s:hl('StatusVisualModeBorderRight', s:palette.yellow, s:palette.fg0)
 
-call s:hl('StatusReplaceMode', s:palette.bg0, s:palette.red, 'bold')
-call s:hl('StatusReplaceModeBorderLeft', s:palette.red, s:palette.bg0)
-call s:hl('StatusReplaceModeBorderRight', s:palette.red, s:palette.fg0)
+  call s:hl('StatusReplaceMode', s:palette.bg0, s:palette.red, 'bold')
+  call s:hl('StatusReplaceModeBorderLeft', s:palette.red, s:palette.bg0)
+  call s:hl('StatusReplaceModeBorderRight', s:palette.red, s:palette.fg0)
 
-call s:hl('StatusTerminalMode', s:palette.bg0, s:palette.purple, 'bold')
-call s:hl('StatusTerminalModeBorderLeft', s:palette.purple, s:palette.bg0)
-call s:hl('StatusTerminalModeBorderRight', s:palette.purple, s:palette.fg0)
+  call s:hl('StatusTerminalMode', s:palette.bg0, s:palette.purple, 'bold')
+  call s:hl('StatusTerminalModeBorderLeft', s:palette.purple, s:palette.bg0)
+  call s:hl('StatusTerminalModeBorderRight', s:palette.purple, s:palette.fg0)
 
-call s:hl('StatusCommandMode', s:palette.bg0, s:palette.grey2, 'bold')
-call s:hl('StatusCommandModeBorderLeft', s:palette.grey2, s:palette.bg0)
-call s:hl('StatusCommandModeBorderRight', s:palette.grey2, s:palette.fg0)
+  call s:hl('StatusCommandMode', s:palette.bg0, s:palette.grey2, 'bold')
+  call s:hl('StatusCommandModeBorderLeft', s:palette.grey2, s:palette.bg0)
+  call s:hl('StatusCommandModeBorderRight', s:palette.grey2, s:palette.fg0)
 
-call s:hl('StatusSelectMode', s:palette.bg0, s:palette.grey2, 'bold')
-call s:hl('StatusSelectModeBorderLeft', s:palette.grey2, s:palette.bg0)
-call s:hl('StatusSelectModeBorderRight', s:palette.grey2, s:palette.fg0)
+  call s:hl('StatusSelectMode', s:palette.bg0, s:palette.grey2, 'bold')
+  call s:hl('StatusSelectModeBorderLeft', s:palette.grey2, s:palette.bg0)
+  call s:hl('StatusSelectModeBorderRight', s:palette.grey2, s:palette.fg0)
 
-call s:hl('StatusFileName', s:palette.bg0, s:palette.fg0)
-call s:hl('StatusFileNameBorderLeft', s:palette.fg0, s:palette.bg0)
-call s:hl('StatusFileNameBorderRight', s:palette.fg0, s:palette.bg3)
+  call s:hl('StatusFileName', s:palette.bg0, s:palette.fg0)
+  call s:hl('StatusFileNameBorderLeft', s:palette.fg0, s:palette.bg0)
+  call s:hl('StatusFileNameBorderRight', s:palette.fg0, s:palette.bg3)
 
-call s:hl('StatusCoc', s:palette.fg0, s:palette.bg3)
-call s:hl('StatusCocBorder', s:palette.bg3, s:palette.none)
+  call s:hl('StatusCoc', s:palette.fg0, s:palette.bg3)
+  call s:hl('StatusCocBorder', s:palette.bg3, s:palette.none)
 
-call s:hl('StatusLineBackground', s:palette.fg0, s:palette.none)
+  call s:hl('StatusLineBackground', s:palette.fg0, s:palette.none)
 
-call s:hl('StatusFileLine', s:palette.bg0, s:palette.aqua)
-call s:hl('StatusFileLineBorderRight', s:palette.aqua, s:palette.bg0)
-call s:hl('StatusFileLineBorderLeft', s:palette.aqua, s:palette.bg0)
+  call s:hl('StatusFileLine', s:palette.bg0, s:palette.aqua)
+  call s:hl('StatusFileLineBorderRight', s:palette.aqua, s:palette.bg0)
+  call s:hl('StatusFileLineBorderLeft', s:palette.aqua, s:palette.bg0)
+
+  call s:hl('StatusGitBranch', s:palette.bg0, s:palette.fg0)
+  call s:hl('StatusGitBranchBorderRight', s:palette.fg0, s:palette.bg0)
+  call s:hl('StatusGitBranchBorderLeft', s:palette.fg0, s:palette.bg0)
+endfunction
+
+call s:patch_status_line_colors()
+
+" patch colors when color scheme is applied so plugins like GoYo reset colors
+" correctly
+augroup PatchStatusLine
+  autocmd!
+  autocmd! ColorScheme * call s:patch_status_line_colors()
+augroup END
 
 let g:current_mode={
       \ 'n': { 'text': 'NORMAL', 'color_group': 'StatusNormalMode' },
@@ -660,10 +675,6 @@ function! FileLine() abort
   return l:left_border . '%#StatusFileLine#%( %l,%c%V %= %P%) ' . l:right_border
 endfunction
 
-call s:hl('StatusGitBranch', s:palette.bg0, s:palette.fg0)
-call s:hl('StatusGitBranchBorderRight', s:palette.fg0, s:palette.bg0)
-call s:hl('StatusGitBranchBorderLeft', s:palette.fg0, s:palette.bg0)
-
 function! GitBranch() abort
   let l:current_branch = trim(system('git rev-parse --abbrev-ref HEAD 2>/dev/null'))
   if l:current_branch == ''
@@ -712,16 +723,27 @@ autocmd! User FzfStatusLine call <SID>fzf_statusline()
 " TabLine {{{
 " -----------------------------------------------------------------------------
 
-call s:hl('TabLineFill', s:palette.bg0, s:palette.none)
-call s:hl('TabLineSel', s:palette.bg0, s:palette.fg0, 'bold')
-call s:hl('TabLineSelBorder', s:palette.fg0, s:palette.none)
+function! s:patch_tab_line_colors()
+  call s:hl('TabLineFill', s:palette.bg0, s:palette.none)
+  call s:hl('TabLineSel', s:palette.bg0, s:palette.fg0, 'bold')
+  call s:hl('TabLineSelBorder', s:palette.fg0, s:palette.none)
 
-call s:hl('TabLine', s:palette.fg0, s:palette.bg_current_word)
-call s:hl('TabLineBorder', s:palette.bg_current_word, s:palette.none)
+  call s:hl('TabLine', s:palette.fg0, s:palette.bg_current_word)
+  call s:hl('TabLineBorder', s:palette.bg_current_word, s:palette.none)
 
-call s:hl('TabLineIcon', s:palette.bg0, s:palette.aqua, 'bold')
-call s:hl('TabLineIconBorderLeft', s:palette.aqua, s:palette.bg0)
-call s:hl('TabLineIconBorderRight', s:palette.aqua, s:palette.none)
+  call s:hl('TabLineIcon', s:palette.bg0, s:palette.aqua, 'bold')
+  call s:hl('TabLineIconBorderLeft', s:palette.aqua, s:palette.bg0)
+  call s:hl('TabLineIconBorderRight', s:palette.aqua, s:palette.none)
+endfunction
+
+call s:patch_tab_line_colors()
+
+" patch colors when color scheme is applied so plugins like GoYo reset colors
+" correctly
+augroup PatchTabLine
+  autocmd!
+  autocmd ColorScheme * call s:patch_tab_line_colors()
+augroup END
 
 function! TabLine()
   let l:s = '%#TabLineIconBorderLeft#% %#TabLineIcon#  %#TabLineIconBorderRight# '
