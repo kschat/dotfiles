@@ -15,8 +15,8 @@ if [[ $window_manager != 'gnome' ]]; then
     amixer sset "$control" 0dB unmute &
   done
 
-  amixer sset Master 20% unmute &
   pulseaudio --start
+  amixer sset Master 20% unmute
 
   [[ -f ~/Music/startup-sound.mp3 ]] && mpv --no-terminal ~/Music/startup-sound.mp3 &
 
