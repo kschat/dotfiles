@@ -92,6 +92,12 @@ if (( $#commands[(i)lesspipe(|.sh)] )); then
 fi
 
 #
+# Bat
+#
+
+export BAT_THEME='gruvbox-material-dark'
+
+#
 # Miscellaneous
 #
 

@@ -4,6 +4,8 @@ alias mmv='noglob zmv -W'
 # creates a new tmux session named after the current working directory
 alias tmux-new='tmux new -s "${${PWD##*/}/./-}"'
 
+alias cat='bat --paging never'
+
 if [[ "$OSTYPE" == linux* ]]; then
   # sublime-text-dev on arch exports command as `subl3` instead of `subl`
   alias subl=subl3

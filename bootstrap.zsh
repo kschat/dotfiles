@@ -63,6 +63,8 @@ dependencies=(
   zsh
   tmux
   wget
+  bat
+  git-delta
 )
 
 arch_dependencies=(
@@ -149,6 +151,7 @@ typeset -A packages; packages=(
   awesomewm "$default_directory/.config/awesome"
   systemd "$default_directory/.config/systemd"
   alacritty "$default_directory/.config/alacritty"
+  bat "$default_directory/.config/bat"
 )
 
 exit_codes=(
