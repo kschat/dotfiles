@@ -533,7 +533,22 @@ nmap <leader>z :Goyo<CR>
 " GitGutter {{{
 " -----------------------------------------------------------------------------
 
+let g:gitgutter_sign_added = '▎'
+let g:gitgutter_sign_modified = '▎'
+let g:gitgutter_sign_removed = '▎'
+let g:gitgutter_sign_modified_removed = '▎'
+let g:gitgutter_sign_removed_above_and_below = '▎'
+
 let g:gitgutter_preview_win_floating = 1
+" let g:gitgutter_floating_window_options = {
+"         \ 'relative': 'cursor',
+"         \ 'row': 1,
+"         \ 'col': 0,
+"         \ 'width': 42,
+"         \ 'height': &previewheight,
+"         \ 'style': 'minimal',
+"         \ 'border': 'single',
+"         \ }
 
 " }}}
 
