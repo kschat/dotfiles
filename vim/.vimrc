@@ -21,6 +21,7 @@ Plug 'junegunn/fzf.vim'
 Plug 'junegunn/goyo.vim'
 Plug 'mbbill/undotree'
 Plug 'mhinz/vim-startify'
+Plug 'nvim-treesitter/nvim-treesitter', { 'do': ':TSUpdate' }
 
 " Tmux
 Plug 'tmux-plugins/vim-tmux-focus-events'
@@ -117,8 +118,23 @@ let g:gruvbox_material_diagnostic_line_highlight='1'
 let g:gruvbox_material_sign_column_background='none'
 let g:gruvbox_material_disable_terminal_colors='1'
 
+" iterm2 doesn't support setting a semibold italic font
+if (has("mac"))
+  let g:gruvbox_material_disable_italic_comment='1'
+endif
+
 set background=dark
 colorscheme gruvbox-material
+
+lua << EOF
+require'nvim-treesitter.configs'.setup {
+  ensure_installed = { "typescript", "rust", "vim", "lua" },
+
+  highlight = {
+    enable = true,
+  },
+}
+EOF
 
 " }}}
 
