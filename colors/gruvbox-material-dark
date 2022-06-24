@@ -1,0 +1,24 @@
+! Based off of: https://gist.github.com/Cardoso1994/5fbbf98603b44bc986ec18e607b7dbf1
+! medium
+#define bg        #282828
+#define fg        #D4BE98
+
+#define white     #D4BE98
+#define black     #32302F
+#define red       #EA6962
+#define yellow    #E78A4E
+#define green     #A9B665
+#define cyan      #89B482
+#define blue      #7DAEA3
+#define magenta   #D3869B
+
+#define b_white   #D4BE98
+#define b_black   #32302F
+#define b_red     #EA6962
+#define b_yellow  #E78A4E
+#define b_green   #A9B665
+#define b_cyan    #89B482
+#define b_blue    #7DAEA3
+#define b_magenta #D3869B
+
+! vim:filetype=xdefaults

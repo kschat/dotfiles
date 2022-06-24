@@ -152,6 +152,7 @@ typeset -A packages; packages=(
   systemd "$default_directory/.config/systemd"
   alacritty "$default_directory/.config/alacritty"
   bat "$default_directory/.config/bat"
+  rofi "$default_directory/.config/rofi"
 )
 
 exit_codes=(

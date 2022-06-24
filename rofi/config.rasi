@@ -1,0 +1,62 @@
+configuration {
+  modi: [window, run];
+  font: "Roboto Regular 14";
+  display-drun: "Applications";
+}
+
+@theme "gruvbox-material-dark"
+
+* {
+  background-color: @bg;
+  text-color: @fg;
+}
+
+window {
+  border-radius: 7px;
+  padding: 0.4em;
+}
+
+inputbar {
+  children: [prompt, entry];
+  background-color: @white;
+  border-radius: 100%;
+}
+
+prompt {
+  background-color: @blue;
+  color: @white;
+  padding: 0.3em 0.9em;
+  border-radius: 100%;
+  vertical-align: 0.5;
+}
+
+entry {
+  background-color: @white;
+  vertical-align: 0.5;
+  padding: 0 0 0 0.2em;
+}
+
+listview {
+  layout: vertical;
+  columns: 1;
+  lines: 14;
+  padding: 0;
+  spacing: 0;
+  margin: 0.4em 0 0 0;
+}
+
+element {
+  padding: 0.3em 0.4em;
+}
+
+element.selected {
+  background-color: @white;
+  border-radius: 7px;
+}
+
+element-text, element-icon {
+  background-color: inherit;
+  text-color: inherit;
+  padding: 0;
+}
+

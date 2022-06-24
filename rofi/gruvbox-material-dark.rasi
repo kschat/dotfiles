@@ -1,0 +1,24 @@
+* {
+  // TODO: put into central location
+  // Gruvbox Material Hard Light
+  bg:         #F9F5D7;
+  fg:         #654735;
+
+  white:      #F2E5BC;
+  black:      #654735;
+  red:        #C14A4A;
+  yellow:     #B47109;
+  green:      #6C782E;
+  cyan:       #4C7A5D;
+  blue:       #45707A;
+  magenta:    #945E80;
+
+  b-white:    #F2E5BC;
+  b-black:    #654735;
+  b-red:      #C14A4A;
+  b-yellow:   #B47109;
+  b-green:    #6C782E;
+  b-cyan:     #4C7A5D;
+  b-blue:     #45707A;
+  b-magenta:  #945E80;
+}

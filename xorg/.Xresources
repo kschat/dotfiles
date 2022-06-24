@@ -1,5 +1,5 @@
 ! Colors
-#include ".colors/nameless"
+#include ".colors/gruvbox-material-dark"
 
 *.foreground:     fg
 *.background:     bg
@@ -56,30 +56,7 @@ URxvt*intensityStyles:  false
 URxvt*externalBorder: 0
 URxvt*internalBorder: 10
 
-! Rofi settings
-rofi.modi:            window,run
-rofi.separator-style: none
-rofi.hide-scrollbar:  true
-! rofi.sidebar-mode:    true
-rofi.font:            Droid Sans Bold 16
-rofi.opacity:         100
-rofi.width:           18
-rofi.bw:              2
-rofi.padding:         40
-rofi.columns:         1
-rofi.lines:           10
-rofi.line-margin:     5
-rofi.line-padding:    15
-
-! bg fg altbg hlbg hlfg
-rofi.color-enabled: true
-rofi.color-window:  b_white, b_white
-rofi.color-normal:  b_white, black, b_white, black, b_white
-rofi.color-active:  b_white, gray, gray, blue, b_white
-rofi.color-urgent:  b_white, red, b_white, red, b_white
-
-
-
+! SSH AskPass settings
 x11-ssh-askpass*font:                   -*-droid sans-medium-r-*-*-20-*-*-*-*-*-*-*
 x11-ssh-askpass*background:             bg
 x11-ssh-askpass*foreground:             fg
