@@ -13,27 +13,37 @@ endif
 
 call plug#begin('~/.vim/plugged')
 
+" UI
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'airblade/vim-gitgutter'
-Plug 'isRuslan/vim-es6', { 'for': 'javascript' }
+Plug 'junegunn/fzf'
+Plug 'junegunn/fzf.vim'
+Plug 'junegunn/goyo.vim'
+Plug 'mbbill/undotree'
+Plug 'mhinz/vim-startify'
+Plug 'nvim-treesitter/nvim-treesitter', { 'do': ':TSUpdate' }
+
+" Tmux
 Plug 'tmux-plugins/vim-tmux-focus-events'
 Plug 'tmux-plugins/vim-tmux'
 Plug 'christoomey/vim-tmux-navigator'
+
+" Utility
 Plug 'tpope/vim-obsession'
 Plug 'dhruvasagar/vim-prosession'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
-Plug 'mhinz/vim-startify'
-Plug 'mbbill/undotree'
+
+" Language
 Plug 'baskerville/vim-sxhkdrc', { 'for': 'sxhkdrc' }
+Plug 'isRuslan/vim-es6', { 'for': 'javascript' }
 Plug 'rust-lang/rust.vim'
 Plug 'cespare/vim-toml', { 'for': 'toml' }
 Plug 'jparise/vim-graphql', { 'for': ['graphql', 'javascript', 'typescript'] }
+
+" Misc
 Plug 'neoclide/coc.nvim', { 'branch': 'release' }
-Plug 'junegunn/fzf'
-Plug 'junegunn/fzf.vim'
-Plug 'junegunn/goyo.vim'
 Plug 'sainnhe/gruvbox-material'
 
 call plug#end()
@@ -108,8 +118,23 @@ let g:gruvbox_material_diagnostic_line_highlight='1'
 let g:gruvbox_material_sign_column_background='none'
 let g:gruvbox_material_disable_terminal_colors='1'
 
+" iterm2 doesn't support setting a semibold italic font
+if (has("mac"))
+  let g:gruvbox_material_disable_italic_comment='1'
+endif
+
 set background=dark
 colorscheme gruvbox-material
+
+lua << EOF
+require'nvim-treesitter.configs'.setup {
+  ensure_installed = { "typescript", "rust", "vim", "lua" },
+
+  highlight = {
+    enable = true,
+  },
+}
+EOF
 
 " }}}
 
