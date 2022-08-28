@@ -36,11 +36,7 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 
 " Language
-Plug 'baskerville/vim-sxhkdrc', { 'for': 'sxhkdrc' }
-Plug 'isRuslan/vim-es6', { 'for': 'javascript' }
-Plug 'rust-lang/rust.vim'
-Plug 'cespare/vim-toml', { 'for': 'toml' }
-Plug 'jparise/vim-graphql', { 'for': ['graphql', 'javascript', 'typescript'] }
+Plug 'sheerun/vim-polyglot'
 
 " Misc
 Plug 'neoclide/coc.nvim', { 'branch': 'release' }
@@ -65,7 +61,7 @@ autocmd FocusGained,BufEnter * :checktime
 " highlight text on yank
 augroup yankgroup
   autocmd!
-  autocmd TextYankPost * silent! lua vim.highlight.on_yank({ timeout = 1000 })
+  autocmd TextYankPost * silent! lua vim.highlight.on_yank { timeout = 1000 }
 augroup end
 
 " allow backspace over anything in Insert mode
@@ -117,6 +113,8 @@ let g:gruvbox_material_enable_bold='1'
 let g:gruvbox_material_diagnostic_line_highlight='1'
 let g:gruvbox_material_sign_column_background='none'
 let g:gruvbox_material_disable_terminal_colors='1'
+let g:gruvbox_material_show_eob='0'
+let g:gruvbox_material_menu_selection_background='aqua'
 
 " iterm2 doesn't support setting a semibold italic font
 if (has("mac"))
@@ -125,16 +123,6 @@ endif
 
 set background=dark
 colorscheme gruvbox-material
-
-lua << EOF
-require'nvim-treesitter.configs'.setup {
-  ensure_installed = { "typescript", "rust", "vim", "lua" },
-
-  highlight = {
-    enable = true,
-  },
-}
-EOF
 
 " }}}
 
@@ -368,16 +356,16 @@ let g:coc_global_extensions=[
 let g:coc_status_error_sign=' '
 let g:coc_status_warning_sign=' '
 
-" use tab for trigger completion with characters ahead and navigate
+" Insert <tab> when previous text is space, refresh completion if not.
 inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+  \ coc#pum#visible() ? coc#pum#next(1):
+  \ <SID>check_back_space() ? "\<Tab>" :
+  \ coc#refresh()
+inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
 
 function! s:check_back_space() abort
   let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
+  return !col || getline('.')[col - 1]  =~ '\s'
 endfunction
 
 " use <c-space> to trigger completion.
@@ -385,11 +373,7 @@ inoremap <silent><expr> <c-space> coc#refresh()
 
 " use <cr> to confirm completion, `<C-g>u` means break undo chain at current
 " position
-if exists('*complete_info')
-  inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
-else
-  imap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-endif
+inoremap <expr> <cr> coc#pum#visible() ? coc#_select_confirm() : "\<CR>"
 
 " navigate diagnostics
 nmap <silent> [g <Plug>(coc-diagnostic-prev)
@@ -426,9 +410,6 @@ function! s:show_documentation()
     call feedkeys('K', 'in')
   endif
 endfunction
-
-" highlight the symbol and its references when holding the cursor
-autocmd CursorHold * silent call CocActionAsync('highlight')
 
 " symbol renaming
 nmap <leader>rn <Plug>(coc-rename)
@@ -594,7 +575,7 @@ endfunction
 
 let s:gruvbox_config = gruvbox_material#get_configuration()
 
-let s:palette = gruvbox_material#get_palette(s:gruvbox_config.background, s:gruvbox_config.palette)
+let s:palette = gruvbox_material#get_palette(s:gruvbox_config.background, s:gruvbox_config.foreground, s:gruvbox_config.colors_override)
 
 function! s:patch_status_line_colors()
   call s:hl('StatusNormalMode', s:palette.bg0, s:palette.aqua, 'bold')
