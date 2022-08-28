@@ -1,4 +1,5 @@
 {
+  "http.proxy": "off",
   "coc.preferences.watchmanPath": "DOES_NOT_EXIST__SETTING_TO_DISABLE",
   "suggest.timeout": 5000,
   "eslint.validate": [
@@ -11,6 +12,7 @@
   "diagnostic.errorSign": "",
   "diagnostic.warningSign": "",
   "diagnostic.infoSign": "",
+  "diagnostic.hintSign": "",
   "eslint.run": "onSave",
   "jest.terminalPosition": "right",
   "jest.forceExit": true,
