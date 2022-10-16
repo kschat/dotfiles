@@ -14,7 +14,8 @@ endif
 call plug#begin('~/.vim/plugged')
 
 " UI
-Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
+Plug 'nvim-tree/nvim-web-devicons'
+Plug 'nvim-tree/nvim-tree.lua'
 Plug 'airblade/vim-gitgutter'
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
@@ -22,6 +23,7 @@ Plug 'junegunn/goyo.vim'
 Plug 'mbbill/undotree'
 Plug 'mhinz/vim-startify'
 Plug 'nvim-treesitter/nvim-treesitter', { 'do': ':TSUpdate' }
+Plug 'lukas-reineke/indent-blankline.nvim'
 
 " Tmux
 Plug 'tmux-plugins/vim-tmux-focus-events'
@@ -49,6 +51,10 @@ call plug#end()
 " -----------------------------------------------------------------------------
 " General {{{
 " -----------------------------------------------------------------------------
+
+" disable netrw
+let g:loaded_netrw = 1
+let g:loaded_netrwPlugin = 1
 
 " change map leader from \ to , and map \ to reverse search
 let mapleader=","
@@ -123,6 +129,9 @@ endif
 
 set background=dark
 colorscheme gruvbox-material
+
+let s:gruvbox_config = gruvbox_material#get_configuration()
+let s:palette = gruvbox_material#get_palette(s:gruvbox_config.background, s:gruvbox_config.foreground, s:gruvbox_config.colors_override)
 
 " }}}
 
@@ -318,10 +327,103 @@ vnoremap <silent> [e :<C-U>exec "'<,'>move '<-" . (1+v:count1)<CR>gv
 " }}}
 
 " -----------------------------------------------------------------------------
-" NERDTree {{{
+" Utilities {{{
 " -----------------------------------------------------------------------------
 
-let g:NERDTreeShowHidden=1
+function! s:hl(group, ...)
+  execute 'highlight' a:group
+        \ 'guifg=' . (a:0 >= 1 ? a:1[0] : 'NONE')
+        \ 'guibg=' . (a:0 >= 2 ? a:2[0] : 'NONE')
+        \ 'ctermfg=' . (a:0 >= 1 ? a:1[1] : 'NONE')
+        \ 'ctermbg=' . (a:0 >= 2 ? a:2[1] : 'NONE')
+        \ 'gui=' . (a:0 >= 3 ? a:3 : 'NONE')
+        \ 'cterm=' . (a:0 >= 3 ? a:3 : 'NONE')
+        \ 'guisp=' . (a:0 >= 4 ? a:4[0] : 'NONE')
+endfunction
+
+" }}}
+
+" -----------------------------------------------------------------------------
+" Nvim Tree {{{
+" -----------------------------------------------------------------------------
+
+lua << EOF
+require'nvim-tree'.setup {
+  disable_netrw = true,
+  view = {
+    hide_root_folder = false,
+    mappings = {
+      list = {
+        { key = '<C-t>', action = 'close' }
+      },
+    },
+  },
+  diagnostics = {
+    enable = true,
+  },
+  renderer = {
+    group_empty = true,
+    highlight_git = true,
+    indent_width = 1,
+    icons = {
+      webdev_colors = true,
+      show = {
+        folder_arrow = false,
+        git = false,
+      },
+      glyphs = {
+        folder = {
+          empty = '',
+          empty_open = '',
+          open = '',
+          symlink_open = '',
+        },
+      },
+    },
+  },
+  filters = {
+    custom = {
+      '^.git$',
+    },
+  },
+}
+EOF
+
+" hide cursor in Nvim Tree
+function! s:nvim_tree_enter()
+  highlight! Cursor blend=100
+  set guicursor=n:Cursor/lCursor,
+    \v-c-sm:block,
+    \i-ci-ve:ver25,
+    \r-cr-o:hor2
+endfunction
+
+" reshow cursor when leaving Nvim Tree
+function! s:nvim_tree_leave()
+  highlight! Cursor blend=NONE
+  set guicursor=n-v-c-sm:block,
+    \i-ci-ve:ver25,
+    \r-cr-o:hor20
+endfunction
+
+augroup NvimTreeEnter
+  autocmd!
+  autocmd WinEnter,BufWinEnter NvimTree_* call s:nvim_tree_enter()
+augroup END
+
+augroup NvimTreeLeave
+  autocmd!
+  autocmd WinClosed,BufLeave NvimTree_* call s:nvim_tree_leave()
+augroup END
+
+call s:hl('NvimTreeFolderName', s:palette.fg0)
+call s:hl('NvimTreeEmptyFolderName', s:palette.fg0)
+call s:hl('NvimTreeOpenedFolderName', s:palette.fg0)
+call s:hl('NvimTreeFolderIcon', s:palette.yellow)
+call s:hl('NvimTreeWinSeparator', s:palette.bg0)
+
+" toggle Nvim Tree
+nnoremap <C-t> :NvimTreeToggle<CR>
 
 " }}}
 
@@ -556,27 +658,6 @@ let g:gitgutter_preview_win_floating = 1
 " enable global status line
 set laststatus=3
 
-function! s:hl(group, fg, bg, ...)
-  execute 'highlight' a:group
-        \ 'guifg=' . a:fg[0]
-        \ 'guibg=' . a:bg[0]
-        \ 'ctermfg=' . a:fg[1]
-        \ 'ctermbg=' . a:bg[1]
-        \ 'gui=' . (a:0 >= 1 ?
-          \ a:1 :
-          \ 'NONE')
-        \ 'cterm=' . (a:0 >= 1 ?
-          \ a:1 :
-          \ 'NONE')
-        \ 'guisp=' . (a:0 >= 2 ?
-          \ a:2[0] :
-          \ 'NONE')
-endfunction
-
-let s:gruvbox_config = gruvbox_material#get_configuration()
-
-let s:palette = gruvbox_material#get_palette(s:gruvbox_config.background, s:gruvbox_config.foreground, s:gruvbox_config.colors_override)
-
 function! s:patch_status_line_colors()
   call s:hl('StatusNormalMode', s:palette.bg0, s:palette.aqua, 'bold')
   call s:hl('StatusNormalModeBorderLeft', s:palette.aqua, s:palette.bg0)
@@ -630,7 +711,7 @@ call s:patch_status_line_colors()
 " correctly
 augroup PatchStatusLine
   autocmd!
-  autocmd! ColorScheme * call s:patch_status_line_colors()
+  autocmd ColorScheme * call s:patch_status_line_colors()
 augroup END
 
 let g:current_mode={
