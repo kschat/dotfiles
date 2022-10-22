@@ -103,6 +103,9 @@ set mouse=
 " reduce the time vim waits to trigger plugins
 set updatetime=250
 
+set spell spelllang=en_us
+set spellsuggest=best,5
+
 " }}}
 
 " -----------------------------------------------------------------------------
@@ -299,7 +302,7 @@ set foldnestmax=10
 " -----------------------------------------------------------------------------
 
 " set C-l to clear out search highlighting
-nnoremap <silent> <leader><space> :noh<CR><esc>
+nnoremap <nowait> / :let @/=""<CR>/
 
 " shortcuts to cycle through buffers
 nnoremap <leader><Tab> :bnext<CR>
