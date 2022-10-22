@@ -62,10 +62,13 @@ noremap \ ,
 
 " reload files when changed outside of vim
 set autoread
-autocmd FocusGained,BufEnter * :checktime
+augroup ReloadFiles
+  autocmd!
+  autocmd FocusGained,BufEnter * if mode() != 'c' | checktime
+augroup end
 
 " highlight text on yank
-augroup yankgroup
+augroup YankGroup
   autocmd!
   autocmd TextYankPost * silent! lua vim.highlight.on_yank { timeout = 1000 }
 augroup end
@@ -158,7 +161,10 @@ set autoindent
 set shiftround
 
 " remove trailing whitespace
-autocmd BufWritePre * :%s/\s\+$//e
+augroup RemoveWhitespace
+  autocmd!
+  autocmd BufWritePre * :%s/\s\+$//e
+augroup end
 
 " turn modelines on
 set modelines=1
@@ -191,7 +197,7 @@ set showbreak=↪\ \
 " }}}
 
 " -----------------------------------------------------------------------------
-" UI configuration {{{"{{{
+" UI configuration {{{
 " -----------------------------------------------------------------------------
 
 " show line number relative to the cursor
@@ -435,7 +441,10 @@ nnoremap <C-t> :NvimTreeToggle<CR>
 let g:startify_custom_header=[]
 
 " remove 80 character column on startify
-autocmd User Startified setlocal colorcolumn=0
+augroup Startify
+  autocmd!
+  autocmd User Startified setlocal colorcolumn=0
+augroup end
 
 " }}}
 
@@ -555,7 +564,7 @@ command! -nargs=0 OR :call CocAction('runCommand', 'editor.action.organizeImport
 
 " fix jsx and tsx file types
 augroup typescriptreact
-  au!
+  autocmd!
   autocmd BufNewFile,BufRead *.tsx set filetype=typescript
   autocmd BufNewFile,BufRead *.jsx set filetype=javascript
 augroup END
@@ -818,7 +827,10 @@ function! s:fzf_statusline()
   setlocal statusline+=%=%{%FileLine()%}
 endfunction
 
-autocmd! User FzfStatusLine call <SID>fzf_statusline()
+augroup FzfStatusLine
+  autocmd!
+  autocmd User FzfStatusLine call <SID>fzf_statusline()
+augroup end
 
 " }}}
 
