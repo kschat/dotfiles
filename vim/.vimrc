@@ -36,6 +36,7 @@ Plug 'dhruvasagar/vim-prosession'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
+Plug 'nat-418/boole.nvim'
 
 " Language
 Plug 'sheerun/vim-polyglot'
