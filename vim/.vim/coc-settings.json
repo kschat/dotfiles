@@ -9,10 +9,10 @@
     "typescriptreact"
   ],
   "diagnostic.enableSign": true,
-  "diagnostic.errorSign": "",
+  "diagnostic.errorSign": "",
   "diagnostic.warningSign": "",
   "diagnostic.infoSign": "",
-  "diagnostic.hintSign": "",
+  "diagnostic.hintSign": "",
   "eslint.run": "onSave",
   "jest.terminalPosition": "right",
   "jest.forceExit": true,
@@ -27,7 +27,5 @@
     "typescriptreact",
     "rust"
   ],
-  "rust-analyzer.checkOnSave.command": "clippy",
-  "rust-analyzer.inlayHints.chainingHintsSeparator": "",
-  "rust-analyzer.inlayHints.typeHintsSeparator": ""
+  "rust-analyzer.checkOnSave.command": "clippy"
 }

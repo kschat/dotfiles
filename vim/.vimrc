@@ -26,7 +26,6 @@ Plug 'nvim-treesitter/nvim-treesitter', { 'do': ':TSUpdate' }
 Plug 'lukas-reineke/indent-blankline.nvim'
 
 " Tmux
-Plug 'tmux-plugins/vim-tmux-focus-events'
 Plug 'tmux-plugins/vim-tmux'
 Plug 'christoomey/vim-tmux-navigator'
 
@@ -65,10 +64,13 @@ noremap \ ,
 
 " reload files when changed outside of vim
 set autoread
-autocmd FocusGained,BufEnter * :checktime
+augroup ReloadFiles
+  autocmd!
+  autocmd FocusGained,BufEnter * if mode() != 'c' | checktime
+augroup end
 
 " highlight text on yank
-augroup yankgroup
+augroup YankGroup
   autocmd!
   autocmd TextYankPost * silent! lua vim.highlight.on_yank { timeout = 1000 }
 augroup end
@@ -103,6 +105,9 @@ set mouse=nvi
 
 " reduce the time vim waits to trigger plugins
 set updatetime=250
+
+set spell spelllang=en_us
+set spellsuggest=best,5
 
 " }}}
 
@@ -161,7 +166,10 @@ set autoindent
 set shiftround
 
 " remove trailing whitespace
-autocmd BufWritePre * :%s/\s\+$//e
+augroup RemoveWhitespace
+  autocmd!
+  autocmd BufWritePre * :%s/\s\+$//e
+augroup end
 
 " turn modelines on
 set modelines=1
@@ -194,7 +202,7 @@ set showbreak=↪\ \
 " }}}
 
 " -----------------------------------------------------------------------------
-" UI configuration {{{"{{{
+" UI configuration {{{
 " -----------------------------------------------------------------------------
 
 " show line number relative to the cursor
@@ -297,7 +305,7 @@ set foldnestmax=10
 " -----------------------------------------------------------------------------
 
 " set C-l to clear out search highlighting
-nnoremap <silent> <leader><space> :noh<CR><esc>
+nnoremap <nowait> / :let @/=""<CR>/
 
 " shortcuts to cycle through buffers
 nnoremap <leader><Tab> :bnext<CR>
@@ -441,7 +449,10 @@ nnoremap <C-t> :NvimTreeToggle<CR>
 let g:startify_custom_header=[]
 
 " remove 80 character column on startify
-autocmd User Startified setlocal colorcolumn=0
+augroup Startify
+  autocmd!
+  autocmd User Startified setlocal colorcolumn=0
+augroup end
 
 " }}}
 
@@ -561,7 +572,7 @@ command! -nargs=0 OR :call CocAction('runCommand', 'editor.action.organizeImport
 
 " fix jsx and tsx file types
 augroup typescriptreact
-  au!
+  autocmd!
   autocmd BufNewFile,BufRead *.tsx set filetype=typescript
   autocmd BufNewFile,BufRead *.jsx set filetype=javascript
 augroup END
@@ -827,7 +838,10 @@ function! s:fzf_statusline()
   setlocal statusline+=%=%{%FileLine()%}
 endfunction
 
-autocmd! User FzfStatusLine call <SID>fzf_statusline()
+augroup FzfStatusLine
+  autocmd!
+  autocmd User FzfStatusLine call <SID>fzf_statusline()
+augroup end
 
 " }}}
 
