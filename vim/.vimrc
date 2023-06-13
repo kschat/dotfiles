@@ -37,6 +37,8 @@ Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 Plug 'nat-418/boole.nvim'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'sindrets/diffview.nvim'
 
 " Language
 Plug 'sheerun/vim-polyglot'
@@ -97,7 +99,7 @@ set undodir=~/.vim/undo//
 set clipboard^=unnamedplus
 
 " disable mouse buttons (but keep scroll enabled)
-set mouse=
+set mouse=nvi
 
 " reduce the time vim waits to trigger plugins
 set updatetime=250
@@ -417,6 +419,9 @@ augroup NvimTreeLeave
   autocmd WinClosed,BufLeave NvimTree_* call s:nvim_tree_leave()
 augroup END
 
+call s:hl('NvimTreeNormal', s:palette.fg0, s:palette.bg0)
+call s:hl('NvimTreeEndOfBuffer', s:palette.bg0, s:palette.bg0)
+call s:hl('NvimTreeCursorLine', ['NONE', 'NONE'], s:palette.bg1)
 call s:hl('NvimTreeFolderName', s:palette.fg0)
 call s:hl('NvimTreeEmptyFolderName', s:palette.fg0)
 call s:hl('NvimTreeOpenedFolderName', s:palette.fg0)
