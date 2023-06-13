@@ -35,6 +35,7 @@ Plug 'dhruvasagar/vim-prosession'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
+Plug 'nat-418/boole.nvim'
 
 " Language
 Plug 'sheerun/vim-polyglot'
@@ -610,12 +611,15 @@ let g:fzf_colors={
 \  'gutter':  ['bg', 'Normal']
 \}
 
-" muscle memory
-nmap <c-p> :ZGFiles<CR>
+" make ZGFilesCwd current directory aware
+command! -bang -nargs=? ZGFilesCwd
+  \ call fzf#vim#gitfiles(<q-args>, fzf#vim#with_preview(<q-args> == '?' ? { 'dir': getcwd(), 'placeholder': '' } : { 'dir': getcwd() }), <bang>0)
 
-" fuzzy search files
-nmap <leader>f :ZGFiles<CR>
-nmap <leader>F :ZFiles<CR>
+" muscle memory
+nmap <c-p> :ZGFilesCwd<CR>
+
+" fuzzy search all files
+nmap <leader>f :ZFiles<CR>
 
 " fuzzy search lines
 nmap <leader>l :ZBLines<CR>

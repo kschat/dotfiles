@@ -18,10 +18,25 @@
   rebase = false
 [core]
 	excludesfile = ~/.gitignore
+	pager = delta
 [merge]
 	tool = vimdiff
+	conflictstyle = diff3
 [include]
-  path = .gitconfig.local
+	path = .gitconfig.local
 [credential]
 	helper = bitwarden
+[interactive]
+	diffFilter = delta --color-only
+[diff]
+	colorMoved = default
 
+[delta]
+	syntax-theme = gruvbox-material-dark
+	hunk-header-style = line-number white underline
+	hunk-header-line-number-style = white
+	hunk-header-decoration-style = none
+	plus-style = syntax "#3b4439"
+	minus-style = syntax "#4c3432"
+[init]
+	defaultBranch = main

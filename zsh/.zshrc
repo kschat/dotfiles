@@ -7,8 +7,6 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 fi
 
-eval "$(fnm env)"
-
 # Load virtualenv wrapper
 [[ -s $VIRTUALENVWRAPPER_SH ]] && source "$VIRTUALENVWRAPPER_SH"
 
