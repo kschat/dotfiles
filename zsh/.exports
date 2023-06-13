@@ -45,7 +45,7 @@ export NVM_DIR="$HOME"/.nvm
 export DOTFILES="$WORKSPACE/dotfiles"
 export VIMRC="$DOTFILES/vim/.vimrc"
 
-export SLEDGE_BIN=/home/kyle/.sledge/bin
+export SLEDGE_BIN="$HOME"/.sledge/bin
 
 if [[ $OSTYPE == linux* ]]; then
   export SSH_ASKPASS='/usr/lib/ssh/x11-ssh-askpass'
@@ -110,8 +110,10 @@ if [[ $OSTYPE == darwin* ]]; then
   export JAVA_8_HOME=$(/usr/libexec/java_home -v1.8)
   export JAVA_10_HOME=$(/usr/libexec/java_home -v10)
 
-  #default java8
+  # default java8
   export JAVA_HOME=$JAVA_8_HOME
+
+  export OPENSSL_ROOT_DIR=/usr/local/opt/openssl/
 fi
 
 #
