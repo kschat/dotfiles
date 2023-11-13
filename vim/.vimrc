@@ -25,6 +25,24 @@ Plug 'mhinz/vim-startify'
 Plug 'nvim-treesitter/nvim-treesitter', { 'do': ':TSUpdate' }
 Plug 'lukas-reineke/indent-blankline.nvim'
 
+" Folding
+Plug 'kevinhwang91/promise-async'
+Plug 'luukvbaal/statuscol.nvim'
+Plug 'kevinhwang91/nvim-ufo'
+
+" Debugging
+Plug 'mfussenegger/nvim-dap'
+Plug 'rcarriga/nvim-dap-ui'
+Plug 'theHamsta/nvim-dap-virtual-text'
+Plug 'microsoft/vscode-js-debug', { 'do': 'npm install --legacy-peer-deps && npx gulp vsDebugServerBundle && mv dist out' }
+Plug 'mxsdev/nvim-dap-vscode-js'
+
+" Test runner
+Plug 'nvim-lua/plenary.nvim'
+Plug 'antoinemadec/FixCursorHold.nvim'
+Plug 'nvim-neotest/neotest'
+Plug 'nvim-neotest/neotest-jest'
+
 " Tmux
 Plug 'tmux-plugins/vim-tmux'
 Plug 'christoomey/vim-tmux-navigator'
@@ -140,6 +158,7 @@ colorscheme gruvbox-material
 
 let s:gruvbox_config = gruvbox_material#get_configuration()
 let s:palette = gruvbox_material#get_palette(s:gruvbox_config.background, s:gruvbox_config.foreground, s:gruvbox_config.colors_override)
+let g:palette = s:palette
 
 " }}}
 
@@ -215,7 +234,7 @@ set number
 set showcmd
 
 " give more space for displaying messages
-set cmdheight=2
+set cmdheight=1
 
 " highlight current line
 set cursorline
@@ -286,21 +305,6 @@ set inccommand=nosplit
 " }}}
 
 " -----------------------------------------------------------------------------
-" Folding {{{
-" -----------------------------------------------------------------------------
-
-" turn folding off by default
-set nofoldenable
-
-" fold any blocks nested 10 times
-set foldlevelstart=10
-
-" only fold up to 10 nested blocks
-set foldnestmax=10
-
-" }}}
-
-" -----------------------------------------------------------------------------
 " Key mappings {{{
 " -----------------------------------------------------------------------------
 
@@ -355,24 +359,267 @@ endfunction
 " }}}
 
 " -----------------------------------------------------------------------------
+" Debugger {{{
+" -----------------------------------------------------------------------------
+
+nnoremap <silent> <leader>db <cmd>lua require'dap'.toggle_breakpoint()<CR>
+nnoremap <silent> <leader>dB <cmd>lua require'dap'.set_breakpoint(vim.fn.input('Breakpoint condition: '))<CR>
+nnoremap <silent> <leader>dlp <cmd>lua require'dap'.set_breakpoint(nil, nil, vim.fn.input('Log point message: '))<CR>
+nnoremap <silent> <leader>dr <cmd>lua require'dap'.run_last()<CR>
+nnoremap <silent> <leader>di <cmd>lua require'dapui'.toggle()<CR>
+nnoremap <silent> <leader>dk <cmd>lua require'dap'.terminate()<CR>
+
+nnoremap <silent> <leader>dsc <cmd>lua require'dap'.continue()<CR>
+nnoremap <silent> <leader>dsi <cmd>lua require'dap'.step_into()<CR>
+nnoremap <silent> <leader>dso <cmd>lua require'dap'.step_out()<CR>
+nnoremap <silent> <leader>dsv <cmd>lua require'dap'.step_over()<CR>
+
+nnoremap <silent> <leader>de <cmd>lua require'dapui'.eval()<CR>
+
+function! s:patch_nvim_dap_ui()
+  call s:hl('DapBreakpoint', s:palette.red)
+  call s:hl('DapLogPoint', s:palette.blue)
+  call s:hl('DapStopped', s:palette.yellow)
+  call s:hl('DapStoppedLine', s:palette.none, s:palette.bg_visual_yellow)
+
+  call s:hl('DapUIPlayPause', s:palette.aqua)
+  call s:hl('DapUIRestart', s:palette.green)
+  call s:hl('DapUIStop', s:palette.red)
+  call s:hl('DapUIStepOver', s:palette.aqua)
+  call s:hl('DapUIStepInto', s:palette.aqua)
+  call s:hl('DapUIStepOut', s:palette.aqua)
+  call s:hl('DapUIStepBack', s:palette.aqua)
+endfunction
+
+call s:patch_nvim_dap_ui()
+
+" patch colors when color scheme is applied so plugins like GoYo reset colors
+" correctly
+augroup PatchNvimDapUi
+  autocmd!
+  autocmd ColorScheme * call s:patch_nvim_dap_ui()
+augroup END
+
+augroup NvimDap
+  autocmd!
+  " REPL auto complete
+  autocmd FileType dap-repl lua require('dap.ext.autocompl').attach()
+augroup end
+
+lua << EOF
+local dap, dapui = require("dap"), require("dapui")
+require'nvim-dap-virtual-text'.setup()
+
+dap.listeners.after.event_initialized["dapui_config"] = function()
+  dapui.open()
+end
+
+dap.listeners.before.event_exited["dapui_config"] = function()
+  dapui.close()
+end
+
+dapui.setup({
+  force_buffers = true,
+  icons = {
+    collapsed = '',
+    expanded = '',
+    current_frame = '',
+  },
+  controls = {
+    enabled = true,
+    icons = {
+      disconnect = 'ﭦ',
+      pause = '',
+      play = '',
+      run_last = '菱',
+      step_back = '碑',
+      step_into = '',
+      step_out = '',
+      step_over = '',
+      terminate = '',
+    },
+  },
+  layouts = {
+    {
+      position = 'left',
+      size = 40,
+      elements = {
+        {
+          id = 'scopes',
+          size = 0.25,
+        },
+        {
+          id = 'watches',
+          size = 0.25,
+        },
+        {
+          id = 'stacks',
+          size = 0.25,
+        },
+        {
+          id = 'breakpoints',
+          size = 0.25,
+        },
+      },
+    },
+    {
+      position = 'bottom',
+      size = 10,
+      elements = {
+        {
+          id = 'repl',
+          size = 1,
+        }
+      },
+    },
+  },
+})
+
+vim.fn.sign_define('DapBreakpoint', { text = '', texthl = 'DapBreakpoint' })
+vim.fn.sign_define('DapBreakpointCondition', { text = 'ﳁ', texthl = 'DapBreakpoint' })
+vim.fn.sign_define('DapLogPoint', { text = '', texthl = 'DapLogPoint' })
+vim.fn.sign_define('DapStopped', { text = '', texthl = 'DapStopped', linehl = 'DapStoppedLine' })
+vim.fn.sign_define('DapBreakpointRejected', { text = '', texthl = 'DapBreakpoint' })
+
+local dap = require'dap'
+
+dap.adapters.lldb = {
+	type = 'executable',
+	command = '/usr/local/opt/llvm/bin/lldb-vscode',
+	name = 'lldb',
+}
+
+local lldb = {
+	name = 'Launch lldb',
+	type = 'lldb',
+	request = 'launch',
+	program = function()
+		return vim.fn.input(
+			'Path to executable: ',
+			vim.fn.getcwd() .. '/',
+			'file'
+		)
+	end,
+	cwd = '${workspaceFolder}',
+	stopOnEntry = false,
+	args = {},
+	runInTerminal = false,
+}
+
+dap.configurations.rust = {
+  lldb,
+}
+
+require("dap-vscode-js").setup({
+  debugger_path = vim.env.HOME .. "/.vim/plugged/vscode-js-debug",
+  adapters = { 'pwa-node', 'pwa-chrome', 'pwa-msedge', 'node-terminal', 'pwa-extensionHost' },
+})
+
+for _, language in ipairs({ 'typescript', 'javascript' }) do
+  require('dap').configurations[language] = {
+    {
+      type = 'pwa-node',
+      request = 'launch',
+      name = 'Launch project',
+      program = '${workspaceFolder}/dist/index.js',
+      cwd = '${workspaceFolder}',
+      sourceMaps = true,
+      -- outFiles = { '${workspaceFolder}/dist/**/*.js' },
+      skipFiles = { '<node_internals>/**' },
+      resolveSourceMapLocations = { "${workspaceFolder}/dist/**/*.js", "${workspaceFolder}/**", "!**/node_modules/**" }
+    },
+  }
+end
+EOF
+
+" }}}
+
+" -----------------------------------------------------------------------------
+" Neotest {{{
+" -----------------------------------------------------------------------------
+
+lua << EOF
+require('neotest').setup({
+  adapters = {
+    require('neotest-jest')({
+      jestCommand = 'pnpm test -- ',
+    }),
+  },
+  icons = {
+    failed = '',
+    passed = '',
+    running = '',
+    skipped = '',
+    unknown = '',
+    watching = ''
+  },
+  status = {
+    signs = false,
+    virtual_text = true,
+  },
+})
+EOF
+
+" TODO
+" nnoremap <leader>tE :JestCurrent<CR>
+
+" nnoremap <leader>te :call CocAction('runCommand', 'jest.singleTest')<CR>
+
+" }}}
+
+" -----------------------------------------------------------------------------
+" Folding - UFO {{{
+" -----------------------------------------------------------------------------
+
+set foldcolumn=1
+set foldlevel=99
+set foldlevelstart=99
+set foldenable
+
+lua << EOF
+vim.o.fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]]
+
+local builtin = require('statuscol.builtin')
+
+require('statuscol').setup({
+  relculright = true,
+  segments = {
+    { text = { builtin.foldfunc }, click = 'v:lua.ScFa' },
+    -- TODO figure out why this isn't using default line number highlight groups
+    { text = { builtin.lnumfunc, '' }, click = 'v:lua.ScLa' },
+    { text = { '%s' }, click = 'v:lua.ScSa' },
+  },
+})
+
+require('ufo').setup()
+EOF
+
+" }}}
+
+" -----------------------------------------------------------------------------
 " Nvim Tree {{{
 " -----------------------------------------------------------------------------
 
 lua << EOF
+local function nvim_tree_on_attach(bufnr)
+  local api = require('nvim-tree.api')
+
+  local function opts(desc)
+    return { desc = 'nvim-tree: ' .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
+  end
+
+  api.config.mappings.default_on_attach(bufnr)
+  vim.keymap.set('n', '<C-t>', api.tree.close, opts('Close'))
+end
+
 require'nvim-tree'.setup {
   disable_netrw = true,
-  view = {
-    hide_root_folder = false,
-    mappings = {
-      list = {
-        { key = '<C-t>', action = 'close' }
-      },
-    },
-  },
+  on_attach = nvim_tree_on_attach,
   diagnostics = {
     enable = true,
   },
   renderer = {
+    root_folder_label = false,
     group_empty = true,
     highlight_git = true,
     indent_width = 1,
@@ -468,7 +715,6 @@ let g:coc_global_extensions=[
 \  'coc-eslint',
 \  'coc-prettier',
 \  'coc-vimlsp',
-\  'coc-jest',
 \  'coc-rust-analyzer',
 \]
 
@@ -564,9 +810,6 @@ xmap <silent> <TAB> <Plug>(coc-range-select)
 " add command to format current buffer
 command! -nargs=0 Format :call CocAction('format')
 
-" add command to fold current buffer
-command! -nargs=? Fold :call CocAction('fold', <f-args>)
-
 " add command to organize imports of the current buffer
 command! -nargs=0 OR :call CocAction('runCommand', 'editor.action.organizeImport')
 
@@ -577,20 +820,7 @@ augroup typescriptreact
   autocmd BufNewFile,BufRead *.jsx set filetype=javascript
 augroup END
 
-""" coc-jest
-
-" run jest for current project
-command! -nargs=0 Jest :call CocAction('runCommand', 'jest.projectTest')
-
-" run jest for current file
-command! -nargs=0 JestCurrent :call CocAction('runCommand', 'jest.fileTest', ['%'])
-nnoremap <leader>tE :JestCurrent<CR>
-
-" run jest for current test
-nnoremap <leader>te :call CocAction('runCommand', 'jest.singleTest')<CR>
-
-" init jest in current cwd, require global jest command exists
-command! JestInit :call CocAction('runCommand', 'jest.init')
+autocmd User CocStatusChange redrawstatus
 
 " }}}
 
@@ -652,11 +882,17 @@ nmap <leader>z :Goyo<CR>
 " GitGutter {{{
 " -----------------------------------------------------------------------------
 
-let g:gitgutter_sign_added = '▎'
-let g:gitgutter_sign_modified = '▎'
-let g:gitgutter_sign_removed = '▎'
-let g:gitgutter_sign_modified_removed = '▎'
-let g:gitgutter_sign_removed_above_and_below = '▎'
+" let g:gitgutter_sign_added = '│'
+" let g:gitgutter_sign_modified = '│'
+" let g:gitgutter_sign_removed = '│'
+" let g:gitgutter_sign_modified_removed = '│'
+" let g:gitgutter_sign_removed_above_and_below = '│'
+
+let g:gitgutter_sign_added = '┃'
+let g:gitgutter_sign_modified = '┃'
+let g:gitgutter_sign_removed = '┃'
+let g:gitgutter_sign_modified_removed = '┃'
+let g:gitgutter_sign_removed_above_and_below = '┃'
 
 let g:gitgutter_preview_win_floating = 1
 " let g:gitgutter_floating_window_options = {
