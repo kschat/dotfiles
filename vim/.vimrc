@@ -21,7 +21,7 @@ Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/goyo.vim'
 Plug 'mbbill/undotree'
-Plug 'mhinz/vim-startify'
+Plug 'goolord/alpha-nvim'
 Plug 'nvim-treesitter/nvim-treesitter', { 'do': ':TSUpdate' }
 Plug 'lukas-reineke/indent-blankline.nvim'
 Plug 'moll/vim-bbye'
@@ -294,6 +294,31 @@ set splitright
 
 " don't display '-- MODE --' text as it's displayed in statusline
 set noshowmode
+
+lua << EOF
+local alpha = require('alpha')
+local dashboard = require('alpha.themes.dashboard')
+
+-- Set header
+dashboard.section.header.val = {
+    '                                                     ',
+    '  ███╗   ██╗███████╗ ██████╗ ██╗   ██╗██╗███╗   ███╗ ',
+    '  ████╗  ██║██╔════╝██╔═══██╗██║   ██║██║████╗ ████║ ',
+    '  ██╔██╗ ██║█████╗  ██║   ██║██║   ██║██║██╔████╔██║ ',
+    '  ██║╚██╗██║██╔══╝  ██║   ██║╚██╗ ██╔╝██║██║╚██╔╝██║ ',
+    '  ██║ ╚████║███████╗╚██████╔╝ ╚████╔╝ ██║██║ ╚═╝ ██║ ',
+    '  ╚═╝  ╚═══╝╚══════╝ ╚═════╝   ╚═══╝  ╚═╝╚═╝     ╚═╝ ',
+    '                                                     ',
+}
+
+-- Send config to alpha
+alpha.setup(dashboard.opts)
+
+-- Disable folding on alpha buffer
+vim.cmd([[
+    autocmd FileType alpha setlocal nofoldenable
+]])
+EOF
 
 " }}}
 
