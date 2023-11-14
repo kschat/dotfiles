@@ -24,6 +24,8 @@ Plug 'mbbill/undotree'
 Plug 'mhinz/vim-startify'
 Plug 'nvim-treesitter/nvim-treesitter', { 'do': ':TSUpdate' }
 Plug 'lukas-reineke/indent-blankline.nvim'
+Plug 'moll/vim-bbye'
+Plug 'tiagovla/scope.nvim'
 
 " Folding
 Plug 'kevinhwang91/promise-async'
@@ -159,6 +161,18 @@ colorscheme gruvbox-material
 let s:gruvbox_config = gruvbox_material#get_configuration()
 let s:palette = gruvbox_material#get_palette(s:gruvbox_config.background, s:gruvbox_config.foreground, s:gruvbox_config.colors_override)
 let g:palette = s:palette
+
+lua << EOF
+require'nvim-treesitter.configs'.setup {
+  ensure_installed = { "lua", "vim" },
+  sync_install = false,
+  auto_install = true,
+  highlight = {
+    enable = true,
+    additional_vim_regex_highlighting = false,
+  },
+}
+EOF
 
 " }}}
 
@@ -320,7 +334,7 @@ nmap <silent> <leader>ev :e $VIMRC<CR>
 nmap <silent> <leader>sv :so $VIMRC \| echo "Reloaded vimrc"<CR>
 
 " shortcut to delete a buffer without closing the split
-nnoremap <silent> <leader>d :bp\|bd #<CR>
+nnoremap <silent> <leader>d :Bdelete<CR>
 
 if has('nvim')
   " Hack to get C-h working in neovim
@@ -726,7 +740,7 @@ inoremap <silent><expr> <TAB>
   \ coc#pum#visible() ? coc#pum#next(1):
   \ <SID>check_back_space() ? "\<Tab>" :
   \ coc#refresh()
-inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
+inoremap <silent><expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
 
 function! s:check_back_space() abort
   let col = col('.') - 1
@@ -738,7 +752,7 @@ inoremap <silent><expr> <c-space> coc#refresh()
 
 " use <cr> to confirm completion, `<C-g>u` means break undo chain at current
 " position
-inoremap <expr> <cr> coc#pum#visible() ? coc#_select_confirm() : "\<CR>"
+inoremap <silent><expr> <cr> coc#pum#visible() ? coc#_select_confirm() : "\<CR>"
 
 " navigate diagnostics
 nmap <silent> [g <Plug>(coc-diagnostic-prev)
@@ -819,8 +833,6 @@ augroup typescriptreact
   autocmd BufNewFile,BufRead *.tsx set filetype=typescript
   autocmd BufNewFile,BufRead *.jsx set filetype=javascript
 augroup END
-
-autocmd User CocStatusChange redrawstatus
 
 " }}}
 
@@ -1079,23 +1091,49 @@ augroup FzfStatusLine
   autocmd User FzfStatusLine call <SID>fzf_statusline()
 augroup end
 
+" redraw CoC status on update
+augroup CocStatusLine
+  autocmd!
+  autocmd User CocStatusChange redrawstatus
+augroup end
+
 " }}}
 
 " -----------------------------------------------------------------------------
 " TabLine {{{
 " -----------------------------------------------------------------------------
 
+" always show tabline
+set showtabline=2
+
+" Scope buffers to tabs
+lua require('scope').setup({})
+
 function! s:patch_tab_line_colors()
   call s:hl('TabLineFill', s:palette.bg0, s:palette.none)
+
+  call s:hl('BufferTabLineSel', s:palette.bg0, s:palette.fg0, 'bold')
+  call s:hl('BufferTabLineSelBorder', s:palette.fg0, s:palette.none)
+
+  call s:hl('BufferTabLine', s:palette.fg0, s:palette.bg_current_word)
+  call s:hl('BufferTabLineBorder', s:palette.bg_current_word, s:palette.none)
+
+  call s:hl('BufferTabLineIcon', s:palette.bg0, s:palette.aqua, 'bold')
+  call s:hl('BufferTabLineIconBorderLeft', s:palette.aqua, s:palette.bg0)
+  call s:hl('BufferTabLineIconBorderRight', s:palette.aqua, s:palette.none)
+
   call s:hl('TabLineSel', s:palette.bg0, s:palette.fg0, 'bold')
-  call s:hl('TabLineSelBorder', s:palette.fg0, s:palette.none)
+  call s:hl('TabLineSelBorderLeft', s:palette.fg0, s:palette.bg_current_word)
+  call s:hl('TabLineSelBorderRight', s:palette.fg0, s:palette.none)
 
   call s:hl('TabLine', s:palette.fg0, s:palette.bg_current_word)
-  call s:hl('TabLineBorder', s:palette.bg_current_word, s:palette.none)
+  call s:hl('TabLineBorder', s:palette.bg_current_word, s:palette.bg_current_word)
 
   call s:hl('TabLineIcon', s:palette.bg0, s:palette.aqua, 'bold')
   call s:hl('TabLineIconBorderLeft', s:palette.aqua, s:palette.bg0)
   call s:hl('TabLineIconBorderRight', s:palette.aqua, s:palette.none)
+
+  call s:hl('TabLineBorderLast', s:palette.bg_current_word, s:palette.none)
 endfunction
 
 call s:patch_tab_line_colors()
@@ -1108,30 +1146,82 @@ augroup PatchTabLine
 augroup END
 
 function! TabLine()
-  let l:s = '%#TabLineIconBorderLeft#% %#TabLineIcon#  %#TabLineIconBorderRight# '
-  for i in range(tabpagenr('$'))
-    let l:selected = i + 1 == tabpagenr()
+  return Buffers() .. '%=' .. Tabs()
+endfunction
+
+function! Buffers()
+  let l:s = ''
+  for i in filter(range(1, bufnr('$')), 'buflisted(v:val)')
+    let l:selected = i == bufnr()
     if l:selected
-      let l:s ..= '%#TabLineSelBorder#%#TabLineSel#'
+      let l:s ..= '%#BufferTabLineSelBorder#%#BufferTabLineSel#  '
     else
-      let l:s ..= '%#TabLineBorder#%#TabLine#'
+      let l:s ..= '%#BufferTabLineBorder#%#BufferTabLine#  '
     endif
 
-    " set the tab page number (for mouse clicks)
-    let l:s ..= '%' .. (i + 1) .. 'T'
-
-    let l:s ..= ' %{TabLabel(' .. (i + 1) .. ')} '
+    let l:s ..= '%' .. i .. '@BufTabClick@ %{BuffLabel(' .. i .. ')} '
 
     if l:selected
-      let l:s ..= '%#TabLineSelBorder# '
+      let l:s ..= ' %#BufferTabLineSelBorder# '
     else
-      let l:s ..= '%#TabLineBorder# '
+      let l:s ..= ' %#BufferTabLineBorder# '
     endif
   endfor
 
+  return '%#TabLineFill#%T' .. l:s
+endfunction
+
+function! Tabs()
+  let l:s = '%#TabLineBorderLast#'
+  let l:selected_index = -1
+  let l:total_tabs = tabpagenr('$')
+
+  for i in range(1, l:total_tabs)
+    let l:selected = i == tabpagenr()
+
+    let l:s ..= '%' .. i .. 'T'
+    if l:selected
+      let l:selected_index = i
+      let l:s ..= '%#TabLineSelBorderLeft#%#TabLineSel# '
+    else
+      let l:s ..= '%#TabLineBorder#%#TabLine# '
+    endif
+
+    let l:s ..= i
+
+    if l:selected
+      let l:s ..= ' %#TabLineSelBorderRight#'
+    else
+      let l:s ..= ' %#TabLineBorder#'
+    endif
+
+    let l:s ..= '%T'
+  endfor
+
+  if l:selected_index == l:total_tabs
+    call s:hl('TabLineIconBorderLeft', s:palette.aqua, s:palette.fg0)
+
+    call s:hl('TabLineSelBorderRight', s:palette.fg0, s:palette.fg0)
+    call s:hl('TabLineSelBorderLeft', s:palette.fg0, s:palette.bg_current_word)
+  else
+    call s:hl('TabLineIconBorderLeft', s:palette.aqua, s:palette.bg_current_word)
+    call s:hl('TabLineSelBorderRight', s:palette.fg0, s:palette.bg_current_word)
+  endif
+
+  let l:s ..= '%999X%#TabLineIconBorderLeft#% %#TabLineIcon#   %#TabLineIconBorderRight#%X'
   let l:s ..= '%#TabLineFill#%T'
 
   return l:s
+endfunction
+
+function! BuffLabel(n)
+  let l:max_length = 25
+  let l:name = trim(fnamemodify(bufname(a:n), ':t'))
+  if l:name == ''
+    return 'NO NAME'
+  endif
+
+  return len(l:name) >= l:max_length ? strpart(l:name, 0, l:max_length) .. '…' : l:name
 endfunction
 
 function! TabLabel(n)
@@ -1142,8 +1232,16 @@ function! TabLabel(n)
   return l:name == '' ? 'NO NAME' : l:name
 endfunction
 
+function! BufTabClick(minwid, clicks, btn, modifiers) abort
+  if a:btn == 'l'
+    execute 'buffer ' . a:minwid
+  elseif a:btn == 'r'
+    execute 'Bdelete ' . a:minwid
+    execute 'redrawt'
+  endif
+endfunction
+
 set tabline=%!TabLine()
-set showtabline=2
 
 " }}}
 
