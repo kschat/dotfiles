@@ -13,12 +13,16 @@ endif
 
 call plug#begin('~/.vim/plugged')
 
+" Libraries
+Plug 'nvim-lua/plenary.nvim'
+
 " UI
 Plug 'nvim-tree/nvim-web-devicons'
 Plug 'nvim-tree/nvim-tree.lua'
 Plug 'airblade/vim-gitgutter'
-Plug 'junegunn/fzf'
-Plug 'junegunn/fzf.vim'
+Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
+Plug 'nvim-telescope/telescope-live-grep-args.nvim'
+Plug 'nvim-telescope/telescope.nvim'
 Plug 'junegunn/goyo.vim'
 Plug 'mbbill/undotree'
 Plug 'goolord/alpha-nvim'
@@ -40,7 +44,6 @@ Plug 'microsoft/vscode-js-debug', { 'do': 'npm install --legacy-peer-deps && npx
 Plug 'mxsdev/nvim-dap-vscode-js'
 
 " Test runner
-Plug 'nvim-lua/plenary.nvim'
 Plug 'antoinemadec/FixCursorHold.nvim'
 Plug 'nvim-neotest/neotest'
 Plug 'nvim-neotest/neotest-jest'
@@ -56,7 +59,6 @@ Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 Plug 'nat-418/boole.nvim'
-Plug 'nvim-lua/plenary.nvim'
 Plug 'sindrets/diffview.nvim'
 
 " Language
@@ -149,11 +151,6 @@ let g:gruvbox_material_sign_column_background='none'
 let g:gruvbox_material_disable_terminal_colors='1'
 let g:gruvbox_material_show_eob='0'
 let g:gruvbox_material_menu_selection_background='aqua'
-
-" iterm2 doesn't support setting a semibold italic font
-if (has("mac"))
-  let g:gruvbox_material_disable_italic_comment='1'
-endif
 
 set background=dark
 colorscheme gruvbox-material
@@ -295,31 +292,6 @@ set splitright
 " don't display '-- MODE --' text as it's displayed in statusline
 set noshowmode
 
-lua << EOF
-local alpha = require('alpha')
-local dashboard = require('alpha.themes.dashboard')
-
--- Set header
-dashboard.section.header.val = {
-    '                                                     ',
-    '  ███╗   ██╗███████╗ ██████╗ ██╗   ██╗██╗███╗   ███╗ ',
-    '  ████╗  ██║██╔════╝██╔═══██╗██║   ██║██║████╗ ████║ ',
-    '  ██╔██╗ ██║█████╗  ██║   ██║██║   ██║██║██╔████╔██║ ',
-    '  ██║╚██╗██║██╔══╝  ██║   ██║╚██╗ ██╔╝██║██║╚██╔╝██║ ',
-    '  ██║ ╚████║███████╗╚██████╔╝ ╚████╔╝ ██║██║ ╚═╝ ██║ ',
-    '  ╚═╝  ╚═══╝╚══════╝ ╚═════╝   ╚═══╝  ╚═╝╚═╝     ╚═╝ ',
-    '                                                     ',
-}
-
--- Send config to alpha
-alpha.setup(dashboard.opts)
-
--- Disable folding on alpha buffer
-vim.cmd([[
-    autocmd FileType alpha setlocal nofoldenable
-]])
-EOF
-
 " }}}
 
 " -----------------------------------------------------------------------------
@@ -351,15 +323,15 @@ set inccommand=nosplit
 nnoremap <nowait> / :let @/=""<CR>/
 
 " shortcuts to cycle through buffers
-nnoremap <leader><Tab> :bnext<CR>
-nnoremap <leader><S-Tab> :bprevious<CR>
+nnoremap <silent> <leader><Tab> :bnext<CR>
+nnoremap <silent> <leader><S-Tab> :bprevious<CR>
 
 " shortcut to edit/reload vimrc
 nmap <silent> <leader>ev :e $VIMRC<CR>
 nmap <silent> <leader>sv :so $VIMRC \| echo "Reloaded vimrc"<CR>
 
 " shortcut to delete a buffer without closing the split
-nnoremap <silent> <leader>d :Bdelete<CR>
+nnoremap <silent> <leader>bd :Bdelete<CR>
 
 if has('nvim')
   " Hack to get C-h working in neovim
@@ -457,6 +429,11 @@ dap.listeners.before.event_exited["dapui_config"] = function()
   dapui.close()
 end
 
+require('dap.ext.vscode').load_launchjs(nil, {
+  ['pwa-node'] = { 'typescript', 'javascript' },
+  ['node'] = { 'typescript', 'javascript' },
+})
+
 dapui.setup({
   force_buffers = true,
   icons = {
@@ -466,17 +443,6 @@ dapui.setup({
   },
   controls = {
     enabled = true,
-    icons = {
-      disconnect = 'ﭦ',
-      pause = '',
-      play = '',
-      run_last = '菱',
-      step_back = '碑',
-      step_into = '',
-      step_out = '',
-      step_over = '',
-      terminate = '',
-    },
   },
   layouts = {
     {
@@ -514,10 +480,10 @@ dapui.setup({
   },
 })
 
-vim.fn.sign_define('DapBreakpoint', { text = '', texthl = 'DapBreakpoint' })
-vim.fn.sign_define('DapBreakpointCondition', { text = 'ﳁ', texthl = 'DapBreakpoint' })
+vim.fn.sign_define('DapBreakpoint', { text = '', texthl = 'DapBreakpoint' })
+vim.fn.sign_define('DapBreakpointCondition', { text = '', texthl = 'DapBreakpoint' })
 vim.fn.sign_define('DapLogPoint', { text = '', texthl = 'DapLogPoint' })
-vim.fn.sign_define('DapStopped', { text = '', texthl = 'DapStopped', linehl = 'DapStoppedLine' })
+vim.fn.sign_define('DapStopped', { text = '', texthl = 'DapStopped', linehl = 'DapStoppedLine' })
 vim.fn.sign_define('DapBreakpointRejected', { text = '', texthl = 'DapBreakpoint' })
 
 local dap = require'dap'
@@ -728,17 +694,33 @@ nnoremap <C-t> :NvimTreeToggle<CR>
 " }}}
 
 " -----------------------------------------------------------------------------
-" Startify {{{
+" Alpha {{{
 " -----------------------------------------------------------------------------
 
-" remove header
-let g:startify_custom_header=[]
+lua << EOF
+local alpha = require('alpha')
+local dashboard = require('alpha.themes.dashboard')
 
-" remove 80 character column on startify
-augroup Startify
-  autocmd!
-  autocmd User Startified setlocal colorcolumn=0
-augroup end
+-- Set header
+dashboard.section.header.val = {
+    '                                                     ',
+    '  ███╗   ██╗███████╗ ██████╗ ██╗   ██╗██╗███╗   ███╗ ',
+    '  ████╗  ██║██╔════╝██╔═══██╗██║   ██║██║████╗ ████║ ',
+    '  ██╔██╗ ██║█████╗  ██║   ██║██║   ██║██║██╔████╔██║ ',
+    '  ██║╚██╗██║██╔══╝  ██║   ██║╚██╗ ██╔╝██║██║╚██╔╝██║ ',
+    '  ██║ ╚████║███████╗╚██████╔╝ ╚████╔╝ ██║██║ ╚═╝ ██║ ',
+    '  ╚═╝  ╚═══╝╚══════╝ ╚═════╝   ╚═══╝  ╚═╝╚═╝     ╚═╝ ',
+    '                                                     ',
+}
+
+-- Send config to alpha
+alpha.setup(dashboard.opts)
+
+-- Disable folding on alpha buffer
+vim.cmd([[
+    autocmd FileType alpha setlocal nofoldenable
+]])
+EOF
 
 " }}}
 
@@ -816,11 +798,11 @@ function! s:show_documentation()
 endfunction
 
 " symbol renaming
-nmap <leader>rn <Plug>(coc-rename)
+nmap <silent> <leader>rn <Plug>(coc-rename)
 
 " formatting selected code
-xmap <leader>= <Plug>(coc-format-selected)
-nmap <leader>= <Plug>(coc-format-selected)
+xmap <silent> <leader>= <Plug>(coc-format-selected)
+nmap <silent> <leader>= <Plug>(coc-format-selected)
 
 augroup fileTypeGroup
   autocmd!
@@ -831,10 +813,10 @@ augroup fileTypeGroup
 augroup end
 
 " remap keys for applying codeAction to the current line
-nmap <leader>ac <Plug>(coc-codeaction-cursor)
+nmap <silent> <leader>ac <Plug>(coc-codeaction-cursor)
 
 " apply AutoFix to problem on the current line
-nmap <leader>qf <Plug>(coc-fix-current)
+nmap <silent> <leader>qf <Plug>(coc-fix-current)
 
 " introduce function text object
 xmap if <Plug>(coc-funcobj-i)
@@ -862,43 +844,83 @@ augroup END
 " }}}
 
 " -----------------------------------------------------------------------------
-" FZF {{{
+" Telescope {{{
 " -----------------------------------------------------------------------------
 
-let g:fzf_command_prefix='Z'
+lua << EOF
+local telescope = require('telescope')
 
-let g:fzf_colors={
-\  'fg':      ['fg', 'Normal'],
-\  'bg':      ['bg', 'Normal'],
-\  'hl':      ['fg', 'Comment'],
-\  'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
-\  'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
-\  'hl+':     ['fg', 'Statement'],
-\  'info':    ['fg', 'Exception'],
-\  'prompt':  ['fg', 'Conditional'],
-\  'pointer': ['fg', 'Exception'],
-\  'marker':  ['fg', 'Keyword'],
-\  'spinner': ['fg', 'Label'],
-\  'header':  ['fg', 'Comment'],
-\  'gutter':  ['bg', 'Normal']
-\}
+telescope.setup({
+  defaults = {
+    vimgrep_arguments = {
+      'rg',
+      '--color=never',
+      '--no-heading',
+      '--with-filename',
+      '--line-number',
+      '--column',
+      '--smart-case',
+      '--hidden'
+    },
+    prompt_prefix = '   ',
+    selection_caret = '  ',
+    entry_prefix = '  ',
+    multi_icon = ' ',
+    initial_mode = 'insert',
+    selection_strategy = 'reset',
+    sorting_strategy = 'ascending',
+    layout_strategy = 'horizontal',
+    layout_config = {
+      horizontal = {
+        prompt_position = 'top',
+        preview_width = 0.55,
+        results_width = 0.8,
+      },
+      vertical = {
+        mirror = false,
+      },
+      width = 0.87,
+      height = 0.80,
+      preview_cutoff = 120,
+    },
+    file_sorter = require('telescope.sorters').get_fuzzy_file,
+    file_ignore_patterns = { 'node_modules' },
+    generic_sorter = require('telescope.sorters').get_generic_fuzzy_sorter,
+    path_display = { 'truncate' },
+    set_env = { ['COLORTERM'] = 'truecolor' },
+  },
+})
 
-" make ZGFilesCwd current directory aware
-command! -bang -nargs=? ZGFilesCwd
-  \ call fzf#vim#gitfiles(<q-args>, fzf#vim#with_preview(<q-args> == '?' ? { 'dir': getcwd(), 'placeholder': '' } : { 'dir': getcwd() }), <bang>0)
+telescope.load_extension('live_grep_args')
+telescope.load_extension('fzf')
+EOF
+
+call s:hl("TelescopeBorder", s:palette.bg_statusline1, s:palette.bg_statusline1)
+call s:hl("TelescopePromptBorder", s:palette.bg3, s:palette.bg3)
+
+call s:hl("TelescopePromptNormal", s:palette.fg0, s:palette.bg3)
+call s:hl("TelescopePromptPrefix", s:palette.red, s:palette.bg3)
+call s:hl("TelescopePromptCounter", s:palette.fg0, s:palette.bg3)
+
+call s:hl("TelescopeNormal", s:palette.none, s:palette.bg_statusline1)
+
+call s:hl("TelescopePreviewTitle", s:palette.bg0, s:palette.green)
+call s:hl("TelescopePromptTitle", s:palette.bg0, s:palette.red)
+call s:hl("TelescopeResultsTitle", s:palette.bg_statusline1, s:palette.bg_statusline1)
+
+call s:hl("TelescopeSelection", s:palette.fg0, s:palette.bg3)
 
 " muscle memory
-nmap <c-p> :ZGFilesCwd<CR>
+nmap <silent> <c-p> <cmd>:lua require('telescope.builtin').find_files { find_command = { 'rg', '--files', '--iglob', '!.git', '--hidden' } }<CR>
 
-" fuzzy search all files
-nmap <leader>f :ZFiles<CR>
+" search all files
+nmap <silent> <leader>ff <cmd>:lua require('telescope').extensions.live_grep_args.live_grep_args()<CR>
 
-" fuzzy search lines
-nmap <leader>l :ZBLines<CR>
-nmap <leader>L :ZLines<CR>
+" search word under cursor in all files
+nmap <silent> <leader>fc <cmd>:lua require('telescope-live-grep-args.shortcuts').grep_word_under_cursor()<CR>
 
-" fuzzy search project
-nmap <leader>/ :ZRg<Space>
+" search buffers
+nmap <silent> <leader>fb <cmd>Telescope buffers<CR>
 
 " }}}
 
@@ -911,7 +933,7 @@ let g:goyo_width=100
 let g:goyo_height='100%'
 let g:goyo_linenr=1
 
-nmap <leader>z :Goyo<CR>
+nmap <silent> <leader>z :Goyo<CR>
 
 " }}}
 
