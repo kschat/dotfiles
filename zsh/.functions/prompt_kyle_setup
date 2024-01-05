@@ -1,3 +1,5 @@
+# vi: filetype=zsh
+
 # Load dependencies.
 pmodload 'helper'
 

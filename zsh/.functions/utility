@@ -1,0 +1,16 @@
+# vi: filetype=zsh
+
+# Trace Parent generation lifted from:
+# https://www.cicoria.com/generate-opentelemetry-compliant-traceparent-tracecontext-headers-using-bash/
+function trace-parent {
+  local trace_id="$(cat /dev/urandom | tr -dc 'a-f0-9' | fold -w 32 | head -n 1)"
+  local parent_id="00$(cat /dev/urandom | tr -dc 'a-f0-9' | fold -w 14 | head -n 1)"
+  local trace_parent=$(echo -n "00-${trace_id}-${parent_id}-01")
+
+  if [[ $1 == 'copy' ]]; then
+    echo -n $trace_parent | tee >(clipboard-copy)
+  else
+    echo -n $trace_parent
+  fi
+}
+

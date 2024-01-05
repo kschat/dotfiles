@@ -1,3 +1,5 @@
+# vi: filetype=zsh
+
 #
 # Sets Prezto options.
 #
@@ -46,6 +48,9 @@ zstyle ':prezto:module:editor' key-bindings 'vi'
 
 # Ignore submodules when they are 'dirty', 'untracked', 'all', or 'none'.
 # zstyle ':prezto:module:git:status:ignore' submodules 'all'
+
+# Adds too many aliases that I just don't use. Disable them and add my own.
+zstyle ':prezto:module:git:alias' skip 'yes'
 
 #
 # History Substring Search

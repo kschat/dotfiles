@@ -1,5 +1,5 @@
 # Load other dotfiles
-for file in ~/.{aliases,exports,exports-private}; do
+for file in ~/.{aliases,exports,exports-private,functions/utility}; do
   [[ -r $file ]] && [[ -f $file ]] && source "$file"
 done
 
@@ -14,6 +14,8 @@ fi
 if [[ -s $SSH_ASKPASS ]]; then
   eval $(keychain --eval --quiet id_rsa_walmartlabs id_rsa)
 fi
+
+eval "$(fnm env --use-on-cd)"
 
 # disable XON/XOFF flow control (stops ctrl-s from disabling a tty)
 stty -ixon
