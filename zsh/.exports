@@ -164,6 +164,6 @@ export FZF_DEFAULT_OPTS=$({
     --color=bg+:$bg,bg:$bg,spinner:$cyan,hl:$cyan\
     --color=fg:$fg,header:$bg,info:$yellow,pointer:$cyan\
     --color=marker:$cyan,fg+:$fg:bold,prompt:$yellow,hl+:$cyan\
-    --color=gutter:$bg\
+    --color=gutter:$bg,border:$black\
   "
 })
