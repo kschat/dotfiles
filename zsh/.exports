@@ -132,6 +132,38 @@ fi
 # fzf
 #
 
-export FZF_DEFAULT_OPTS='--color 16'
-export FZF_DEFAULT_COMMAND='rg --files --no-ignore-vcs --hidden'
+# Who needs a config file when we have environment variables? /s
 
+export FZF_PREVIEW_COMMAND='bat --style=numbers --wrap never --color always {}'
+export FZF_DEFAULT_COMMAND='rg --files --no-ignore-vcs --hidden'
+export FZF_DEFAULT_OPTS=$({
+  local bg='#282828'
+  local fg='#d4be98'
+
+  local black='#3c3836'
+  local red='#ea6962'
+  local green='#a9b665'
+  local yellow='#d8a657'
+  local blue='#7daea3'
+  local magenta='#d3869b'
+  local cyan='#89b482'
+  local white='#d4be98'
+
+  local b_black='#3c3836'
+  local b_red='#ea6962'
+  local b_green='#a9b665'
+  local b_yellow='#d8a657'
+  local b_blue='#7daea3'
+  local b_magenta='#d3869b'
+  local b_cyan='#89b482'
+  local b_white='#d4be98'
+
+  echo "\
+    --preview '$FZF_PREVIEW_COMMAND'\
+    --prompt '  ' --pointer '' --info inline-right --header ' ' \
+    --color=bg+:$bg,bg:$bg,spinner:$cyan,hl:$cyan\
+    --color=fg:$fg,header:$bg,info:$yellow,pointer:$cyan\
+    --color=marker:$cyan,fg+:$fg:bold,prompt:$yellow,hl+:$cyan\
+    --color=gutter:$bg\
+  "
+})
