@@ -53,7 +53,7 @@ while test $# -gt 0; do
 done
 
 if is_running; then
-  prompt-dialog "VPN client already running"
+  notify-all -a 'vpn' 'VPN client already running'
   exit 1
 fi
 
@@ -71,7 +71,7 @@ pin=$(prompt-dialog 'token')
 password=$(bw get password 480c961c-d8f5-474c-ad77-aa4401890b96)
 
 echo "${state[connecting]}" > "$status_file"
-notify-all -a 'vpn' 'Connecting...'
+notify-all -a 'vpn' 'Connecting to VPN...'
 
 if [ "$tunnel" = true ]; then
   echo "$password\n$pin" | sudo openconnect \
@@ -91,7 +91,7 @@ else
 fi
 
 echo "${state[connected]}" > "$status_file"
-notify-all -a 'vpn' 'Connected'
+notify-all -a 'vpn' 'Connected to VPN'
 
 wait
 
