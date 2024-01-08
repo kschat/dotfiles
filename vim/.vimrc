@@ -62,6 +62,8 @@ Plug 'nat-418/boole.nvim'
 Plug 'sindrets/diffview.nvim'
 
 " Language
+" must be set before vim-polyglot is loaded
+let g:polyglot_disabled = ['markdown.plugin']
 Plug 'sheerun/vim-polyglot'
 
 " Misc
@@ -80,9 +82,9 @@ call plug#end()
 let g:loaded_netrw = 1
 let g:loaded_netrwPlugin = 1
 
-" change map leader from \ to , and map \ to reverse search
+" change map leader from \ to , and set local leader to \
 let mapleader=","
-noremap \ ,
+let maplocalleader = "\\"
 
 " reload files when changed outside of vim
 set autoread
@@ -161,7 +163,7 @@ let g:palette = s:palette
 
 lua << EOF
 require'nvim-treesitter.configs'.setup {
-  ensure_installed = { "lua", "vim" },
+  ensure_installed = { "lua", "vim", "markdown", "markdown_inline" },
   sync_install = false,
   auto_install = true,
   highlight = {
@@ -216,6 +218,9 @@ set sidescroll=1
 " only wrap at characters in `breakat` option
 set linebreak
 
+" indent line breaks at the same level as the previous line
+set breakindent
+
 " turn list off as it disables linebreak
 set nolist
 
@@ -227,7 +232,7 @@ endif
 set fileencoding=utf-8
 
 " string to put before wrapped screen lines
-set showbreak=↪\ \
+let &showbreak='↪ '
 
 " }}}
 
@@ -737,6 +742,7 @@ let g:coc_global_extensions=[
 \  'coc-prettier',
 \  'coc-vimlsp',
 \  'coc-rust-analyzer',
+\  '@yaegassy/coc-marksman',
 \]
 
 let g:coc_status_error_sign=' '
@@ -814,6 +820,9 @@ augroup end
 
 " remap keys for applying codeAction to the current line
 nmap <silent> <leader>ac <Plug>(coc-codeaction-cursor)
+
+" apply source code action for the current line
+nmap <silent> <leader>as <Plug>(coc-codeaction-source)
 
 " apply AutoFix to problem on the current line
 nmap <silent> <leader>qf <Plug>(coc-fix-current)
