@@ -2,16 +2,16 @@
 
 ;; headers
 ((atx_heading (atx_h1_marker) @text.title.1.marker)
- (#set! conceal "◉")
+  (#set! conceal "◉")
 )
 ((atx_heading (atx_h2_marker) @text.title.2.marker)
- (#set! conceal "○")
+  (#set! conceal "○")
 )
 ((atx_heading (atx_h3_marker) @text.title.3.marker)
- (#set! conceal "✸")
+  (#set! conceal "✸")
 )
 ((atx_heading (atx_h4_marker) @text.title.4.marker)
- (#set! conceal "✿")
+  (#set! conceal "✿")
 )
 
 ;; conceal bullet points

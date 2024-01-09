@@ -20,7 +20,7 @@ Plug 'airblade/vim-gitgutter'
 Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
 Plug 'nvim-telescope/telescope-live-grep-args.nvim'
 Plug 'nvim-telescope/telescope.nvim'
-Plug 'junegunn/goyo.vim'
+Plug 'folke/zen-mode.nvim'
 Plug 'mbbill/undotree'
 Plug 'goolord/alpha-nvim'
 Plug 'nvim-treesitter/nvim-treesitter', { 'do': ':TSUpdate' }
@@ -390,29 +390,18 @@ nnoremap <silent> <leader>dsv <cmd>lua require'dap'.step_over()<CR>
 
 nnoremap <silent> <leader>de <cmd>lua require'dapui'.eval()<CR>
 
-function! s:patch_nvim_dap_ui()
-  call Highlight('DapBreakpoint', s:palette.red)
-  call Highlight('DapLogPoint', s:palette.blue)
-  call Highlight('DapStopped', s:palette.yellow)
-  call Highlight('DapStoppedLine', s:palette.none, s:palette.bg_visual_yellow)
+call Highlight('DapBreakpoint', s:palette.red)
+call Highlight('DapLogPoint', s:palette.blue)
+call Highlight('DapStopped', s:palette.yellow)
+call Highlight('DapStoppedLine', s:palette.none, s:palette.bg_visual_yellow)
 
-  call Highlight('DapUIPlayPause', s:palette.aqua)
-  call Highlight('DapUIRestart', s:palette.green)
-  call Highlight('DapUIStop', s:palette.red)
-  call Highlight('DapUIStepOver', s:palette.aqua)
-  call Highlight('DapUIStepInto', s:palette.aqua)
-  call Highlight('DapUIStepOut', s:palette.aqua)
-  call Highlight('DapUIStepBack', s:palette.aqua)
-endfunction
-
-call s:patch_nvim_dap_ui()
-
-" patch colors when color scheme is applied so plugins like GoYo reset colors
-" correctly
-augroup PatchNvimDapUi
-  autocmd!
-  autocmd ColorScheme * call s:patch_nvim_dap_ui()
-augroup END
+call Highlight('DapUIPlayPause', s:palette.aqua)
+call Highlight('DapUIRestart', s:palette.green)
+call Highlight('DapUIStop', s:palette.red)
+call Highlight('DapUIStepOver', s:palette.aqua)
+call Highlight('DapUIStepInto', s:palette.aqua)
+call Highlight('DapUIStepOut', s:palette.aqua)
+call Highlight('DapUIStepBack', s:palette.aqua)
 
 augroup NvimDap
   autocmd!
@@ -598,8 +587,13 @@ set foldlevel=99
 set foldlevelstart=99
 set foldenable
 
+function! SetFoldColumn()
+  set fillchars=eob:\ ,fold:\ ,foldopen:,foldsep:\ ,foldclose:
+endfunction
+
 lua << EOF
-vim.o.fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]]
+
+vim.fn['SetFoldColumn']()
 
 local builtin = require('statuscol.builtin')
 
@@ -633,6 +627,18 @@ EOF
 
 " }}}
 
+" -----------------------------------------------------------------------------
+" Indent Blanklines {{{
+" -----------------------------------------------------------------------------
+
+lua << EOF
+require("ibl").setup({
+  indent = { char = '│' },
+  scope = { show_start = false, show_end = false, },
+})
+EOF
+
+" }}}
 
 " -----------------------------------------------------------------------------
 " Nvim Tree {{{
@@ -963,15 +969,25 @@ nmap <silent> <leader>fb <cmd>Telescope buffers<CR>
 " }}}
 
 " -----------------------------------------------------------------------------
-" GoYo {{{
+" Zen Mode {{{
 " -----------------------------------------------------------------------------
 
-" set default dimensions
-let g:goyo_width=100
-let g:goyo_height='100%'
-let g:goyo_linenr=1
+lua << EOF
+require('zen-mode').setup {
+  window = {
+    backdrop = 1,
+    width = 140,
+  },
 
-nmap <silent> <leader>z :Goyo<CR>
+  on_open = function(win)
+    -- Fix fold column style
+    -- https://github.com/folke/zen-mode.nvim/issues/55
+    vim.fn['SetFoldColumn']()
+  end,
+}
+EOF
+
+nmap <silent> <leader>z :ZenMode<CR>
 
 " }}}
 
@@ -1005,61 +1021,50 @@ let g:gitgutter_preview_win_floating = 1
 " enable global status line
 set laststatus=3
 
-function! s:patch_status_line_colors()
-  call Highlight('StatusNormalMode', s:palette.bg0, s:palette.aqua, 'bold')
-  call Highlight('StatusNormalModeBorderLeft', s:palette.aqua, s:palette.bg0)
-  call Highlight('StatusNormalModeBorderRight', s:palette.aqua, s:palette.fg0)
+call Highlight('StatusNormalMode', s:palette.bg0, s:palette.aqua, 'bold')
+call Highlight('StatusNormalModeBorderLeft', s:palette.aqua, s:palette.bg0)
+call Highlight('StatusNormalModeBorderRight', s:palette.aqua, s:palette.fg0)
 
-  call Highlight('StatusInsertMode', s:palette.bg0, s:palette.blue, 'bold')
-  call Highlight('StatusInsertModeBorderLeft', s:palette.blue, s:palette.bg0)
-  call Highlight('StatusInsertModeBorderRight', s:palette.blue, s:palette.fg0)
+call Highlight('StatusInsertMode', s:palette.bg0, s:palette.blue, 'bold')
+call Highlight('StatusInsertModeBorderLeft', s:palette.blue, s:palette.bg0)
+call Highlight('StatusInsertModeBorderRight', s:palette.blue, s:palette.fg0)
 
-  call Highlight('StatusVisualMode', s:palette.bg0, s:palette.yellow, 'bold')
-  call Highlight('StatusVisualModeBorderLeft', s:palette.yellow, s:palette.bg0)
-  call Highlight('StatusVisualModeBorderRight', s:palette.yellow, s:palette.fg0)
+call Highlight('StatusVisualMode', s:palette.bg0, s:palette.yellow, 'bold')
+call Highlight('StatusVisualModeBorderLeft', s:palette.yellow, s:palette.bg0)
+call Highlight('StatusVisualModeBorderRight', s:palette.yellow, s:palette.fg0)
 
-  call Highlight('StatusReplaceMode', s:palette.bg0, s:palette.red, 'bold')
-  call Highlight('StatusReplaceModeBorderLeft', s:palette.red, s:palette.bg0)
-  call Highlight('StatusReplaceModeBorderRight', s:palette.red, s:palette.fg0)
+call Highlight('StatusReplaceMode', s:palette.bg0, s:palette.red, 'bold')
+call Highlight('StatusReplaceModeBorderLeft', s:palette.red, s:palette.bg0)
+call Highlight('StatusReplaceModeBorderRight', s:palette.red, s:palette.fg0)
 
-  call Highlight('StatusTerminalMode', s:palette.bg0, s:palette.purple, 'bold')
-  call Highlight('StatusTerminalModeBorderLeft', s:palette.purple, s:palette.bg0)
-  call Highlight('StatusTerminalModeBorderRight', s:palette.purple, s:palette.fg0)
+call Highlight('StatusTerminalMode', s:palette.bg0, s:palette.purple, 'bold')
+call Highlight('StatusTerminalModeBorderLeft', s:palette.purple, s:palette.bg0)
+call Highlight('StatusTerminalModeBorderRight', s:palette.purple, s:palette.fg0)
 
-  call Highlight('StatusCommandMode', s:palette.bg0, s:palette.grey2, 'bold')
-  call Highlight('StatusCommandModeBorderLeft', s:palette.grey2, s:palette.bg0)
-  call Highlight('StatusCommandModeBorderRight', s:palette.grey2, s:palette.fg0)
+call Highlight('StatusCommandMode', s:palette.bg0, s:palette.grey2, 'bold')
+call Highlight('StatusCommandModeBorderLeft', s:palette.grey2, s:palette.bg0)
+call Highlight('StatusCommandModeBorderRight', s:palette.grey2, s:palette.fg0)
 
-  call Highlight('StatusSelectMode', s:palette.bg0, s:palette.grey2, 'bold')
-  call Highlight('StatusSelectModeBorderLeft', s:palette.grey2, s:palette.bg0)
-  call Highlight('StatusSelectModeBorderRight', s:palette.grey2, s:palette.fg0)
+call Highlight('StatusSelectMode', s:palette.bg0, s:palette.grey2, 'bold')
+call Highlight('StatusSelectModeBorderLeft', s:palette.grey2, s:palette.bg0)
+call Highlight('StatusSelectModeBorderRight', s:palette.grey2, s:palette.fg0)
 
-  call Highlight('StatusFileName', s:palette.bg0, s:palette.fg0)
-  call Highlight('StatusFileNameBorderLeft', s:palette.fg0, s:palette.bg0)
-  call Highlight('StatusFileNameBorderRight', s:palette.fg0, s:palette.bg3)
+call Highlight('StatusFileName', s:palette.bg0, s:palette.fg0)
+call Highlight('StatusFileNameBorderLeft', s:palette.fg0, s:palette.bg0)
+call Highlight('StatusFileNameBorderRight', s:palette.fg0, s:palette.bg3)
 
-  call Highlight('StatusCoc', s:palette.fg0, s:palette.bg3)
-  call Highlight('StatusCocBorder', s:palette.bg3, s:palette.none)
+call Highlight('StatusCoc', s:palette.fg0, s:palette.bg3)
+call Highlight('StatusCocBorder', s:palette.bg3, s:palette.none)
 
-  call Highlight('StatusLineBackground', s:palette.fg0, s:palette.none)
+call Highlight('StatusLineBackground', s:palette.fg0, s:palette.none)
 
-  call Highlight('StatusFileLine', s:palette.bg0, s:palette.aqua)
-  call Highlight('StatusFileLineBorderRight', s:palette.aqua, s:palette.bg0)
-  call Highlight('StatusFileLineBorderLeft', s:palette.aqua, s:palette.bg0)
+call Highlight('StatusFileLine', s:palette.bg0, s:palette.aqua)
+call Highlight('StatusFileLineBorderRight', s:palette.aqua, s:palette.bg0)
+call Highlight('StatusFileLineBorderLeft', s:palette.aqua, s:palette.bg0)
 
-  call Highlight('StatusGitBranch', s:palette.bg0, s:palette.fg0)
-  call Highlight('StatusGitBranchBorderRight', s:palette.fg0, s:palette.bg0)
-  call Highlight('StatusGitBranchBorderLeft', s:palette.fg0, s:palette.bg0)
-endfunction
-
-call s:patch_status_line_colors()
-
-" patch colors when color scheme is applied so plugins like GoYo reset colors
-" correctly
-augroup PatchStatusLine
-  autocmd!
-  autocmd ColorScheme * call s:patch_status_line_colors()
-augroup END
+call Highlight('StatusGitBranch', s:palette.bg0, s:palette.fg0)
+call Highlight('StatusGitBranchBorderRight', s:palette.fg0, s:palette.bg0)
+call Highlight('StatusGitBranchBorderLeft', s:palette.fg0, s:palette.bg0)
 
 let g:current_mode={
       \ 'n': { 'text': 'NORMAL', 'color_group': 'StatusNormalMode' },
@@ -1188,41 +1193,30 @@ set showtabline=2
 " Scope buffers to tabs
 lua require('scope').setup({})
 
-function! s:patch_tab_line_colors()
-  call Highlight('TabLineFill', s:palette.bg0, s:palette.none)
+call Highlight('TabLineFill', s:palette.bg0, s:palette.none)
 
-  call Highlight('BufferTabLineSel', s:palette.bg0, s:palette.fg0, 'bold')
-  call Highlight('BufferTabLineSelBorder', s:palette.fg0, s:palette.none)
+call Highlight('BufferTabLineSel', s:palette.bg0, s:palette.fg0, 'bold')
+call Highlight('BufferTabLineSelBorder', s:palette.fg0, s:palette.none)
 
-  call Highlight('BufferTabLine', s:palette.fg0, s:palette.bg_current_word)
-  call Highlight('BufferTabLineBorder', s:palette.bg_current_word, s:palette.none)
+call Highlight('BufferTabLine', s:palette.fg0, s:palette.bg_current_word)
+call Highlight('BufferTabLineBorder', s:palette.bg_current_word, s:palette.none)
 
-  call Highlight('BufferTabLineIcon', s:palette.bg0, s:palette.aqua, 'bold')
-  call Highlight('BufferTabLineIconBorderLeft', s:palette.aqua, s:palette.bg0)
-  call Highlight('BufferTabLineIconBorderRight', s:palette.aqua, s:palette.none)
+call Highlight('BufferTabLineIcon', s:palette.bg0, s:palette.aqua, 'bold')
+call Highlight('BufferTabLineIconBorderLeft', s:palette.aqua, s:palette.bg0)
+call Highlight('BufferTabLineIconBorderRight', s:palette.aqua, s:palette.none)
 
-  call Highlight('TabLineSel', s:palette.bg0, s:palette.fg0, 'bold')
-  call Highlight('TabLineSelBorderLeft', s:palette.fg0, s:palette.bg_current_word)
-  call Highlight('TabLineSelBorderRight', s:palette.fg0, s:palette.none)
+call Highlight('TabLineSel', s:palette.bg0, s:palette.fg0, 'bold')
+call Highlight('TabLineSelBorderLeft', s:palette.fg0, s:palette.bg_current_word)
+call Highlight('TabLineSelBorderRight', s:palette.fg0, s:palette.none)
 
-  call Highlight('TabLine', s:palette.fg0, s:palette.bg_current_word)
-  call Highlight('TabLineBorder', s:palette.bg_current_word, s:palette.bg_current_word)
+call Highlight('TabLine', s:palette.fg0, s:palette.bg_current_word)
+call Highlight('TabLineBorder', s:palette.bg_current_word, s:palette.bg_current_word)
 
-  call Highlight('TabLineIcon', s:palette.bg0, s:palette.aqua, 'bold')
-  call Highlight('TabLineIconBorderLeft', s:palette.aqua, s:palette.bg0)
-  call Highlight('TabLineIconBorderRight', s:palette.aqua, s:palette.none)
+call Highlight('TabLineIcon', s:palette.bg0, s:palette.aqua, 'bold')
+call Highlight('TabLineIconBorderLeft', s:palette.aqua, s:palette.bg0)
+call Highlight('TabLineIconBorderRight', s:palette.aqua, s:palette.none)
 
-  call Highlight('TabLineBorderLast', s:palette.bg_current_word, s:palette.none)
-endfunction
-
-call s:patch_tab_line_colors()
-
-" patch colors when color scheme is applied so plugins like GoYo reset colors
-" correctly
-augroup PatchTabLine
-  autocmd!
-  autocmd ColorScheme * call s:patch_tab_line_colors()
-augroup END
+call Highlight('TabLineBorderLast', s:palette.bg_current_word, s:palette.none)
 
 function! TabLine()
   return Buffers() .. '%=' .. Tabs()
