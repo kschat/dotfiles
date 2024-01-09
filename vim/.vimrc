@@ -1,6 +1,3 @@
-" use vim settings instead of vi (must be first)
-set nocompatible
-
 " -----------------------------------------------------------------------------
 " Vim-plug Configuration {{{
 " -----------------------------------------------------------------------------
@@ -30,6 +27,7 @@ Plug 'nvim-treesitter/nvim-treesitter', { 'do': ':TSUpdate' }
 Plug 'lukas-reineke/indent-blankline.nvim'
 Plug 'moll/vim-bbye'
 Plug 'tiagovla/scope.nvim'
+Plug 'lukas-reineke/headlines.nvim', { 'for': 'markdown' }
 
 " Folding
 Plug 'kevinhwang91/promise-async'
@@ -84,7 +82,7 @@ let g:loaded_netrwPlugin = 1
 
 " change map leader from \ to , and set local leader to \
 let mapleader=","
-let maplocalleader = "\\"
+let maplocalleader = " "
 
 " reload files when changed outside of vim
 set autoread
@@ -158,8 +156,8 @@ set background=dark
 colorscheme gruvbox-material
 
 let s:gruvbox_config = gruvbox_material#get_configuration()
-let s:palette = gruvbox_material#get_palette(s:gruvbox_config.background, s:gruvbox_config.foreground, s:gruvbox_config.colors_override)
-let g:palette = s:palette
+let g:palette = gruvbox_material#get_palette(s:gruvbox_config.background, s:gruvbox_config.foreground, s:gruvbox_config.colors_override)
+let s:palette = g:palette
 
 lua << EOF
 require'nvim-treesitter.configs'.setup {
@@ -267,8 +265,8 @@ set ttyfast
 " don't highlight matching [{()}]
 set noshowmatch
 
-" adds 120 character vertical line
-set colorcolumn=120
+" remove color column
+set colorcolumn=
 
 " decrease timeout to update mode UI
 set timeoutlen=1000
@@ -332,7 +330,7 @@ nnoremap <silent> <leader><Tab> :bnext<CR>
 nnoremap <silent> <leader><S-Tab> :bprevious<CR>
 
 " shortcut to edit/reload vimrc
-nmap <silent> <leader>ev :e $VIMRC<CR>
+nmap <silent> <leader>ev :vsplit $VIMRC<CR>
 nmap <silent> <leader>sv :so $VIMRC \| echo "Reloaded vimrc"<CR>
 
 " shortcut to delete a buffer without closing the split
@@ -361,7 +359,7 @@ vnoremap <silent> [e :<C-U>exec "'<,'>move '<-" . (1+v:count1)<CR>gv
 " Utilities {{{
 " -----------------------------------------------------------------------------
 
-function! s:hl(group, ...)
+function! Highlight(group, ...)
   execute 'highlight' a:group
         \ 'guifg=' . (a:0 >= 1 ? a:1[0] : 'NONE')
         \ 'guibg=' . (a:0 >= 2 ? a:2[0] : 'NONE')
@@ -393,18 +391,18 @@ nnoremap <silent> <leader>dsv <cmd>lua require'dap'.step_over()<CR>
 nnoremap <silent> <leader>de <cmd>lua require'dapui'.eval()<CR>
 
 function! s:patch_nvim_dap_ui()
-  call s:hl('DapBreakpoint', s:palette.red)
-  call s:hl('DapLogPoint', s:palette.blue)
-  call s:hl('DapStopped', s:palette.yellow)
-  call s:hl('DapStoppedLine', s:palette.none, s:palette.bg_visual_yellow)
+  call Highlight('DapBreakpoint', s:palette.red)
+  call Highlight('DapLogPoint', s:palette.blue)
+  call Highlight('DapStopped', s:palette.yellow)
+  call Highlight('DapStoppedLine', s:palette.none, s:palette.bg_visual_yellow)
 
-  call s:hl('DapUIPlayPause', s:palette.aqua)
-  call s:hl('DapUIRestart', s:palette.green)
-  call s:hl('DapUIStop', s:palette.red)
-  call s:hl('DapUIStepOver', s:palette.aqua)
-  call s:hl('DapUIStepInto', s:palette.aqua)
-  call s:hl('DapUIStepOut', s:palette.aqua)
-  call s:hl('DapUIStepBack', s:palette.aqua)
+  call Highlight('DapUIPlayPause', s:palette.aqua)
+  call Highlight('DapUIRestart', s:palette.green)
+  call Highlight('DapUIStop', s:palette.red)
+  call Highlight('DapUIStepOver', s:palette.aqua)
+  call Highlight('DapUIStepInto', s:palette.aqua)
+  call Highlight('DapUIStepOut', s:palette.aqua)
+  call Highlight('DapUIStepBack', s:palette.aqua)
 endfunction
 
 call s:patch_nvim_dap_ui()
@@ -479,7 +477,7 @@ dapui.setup({
         {
           id = 'repl',
           size = 1,
-        }
+        },
       },
     },
   },
@@ -522,6 +520,7 @@ dap.configurations.rust = {
 
 require("dap-vscode-js").setup({
   debugger_path = vim.env.HOME .. "/.vim/plugged/vscode-js-debug",
+  -- debugger_cmd = { "js-debug-adapter" },
   adapters = { 'pwa-node', 'pwa-chrome', 'pwa-msedge', 'node-terminal', 'pwa-extensionHost' },
 })
 
@@ -538,6 +537,19 @@ for _, language in ipairs({ 'typescript', 'javascript' }) do
       skipFiles = { '<node_internals>/**' },
       resolveSourceMapLocations = { "${workspaceFolder}/dist/**/*.js", "${workspaceFolder}/**", "!**/node_modules/**" }
     },
+    {
+      type = 'pwa-node',
+      request = 'attach',
+      name = 'Attach',
+      processId = require'dap.utils'.pick_process,
+      cwd = '${workspaceFolder}',
+      sourceMaps = true,
+      trace = true,
+      -- outFiles = { '${workspaceFolder}/dist/**/*.js' },
+      skipFiles = { '<node_internals>/**' },
+      -- resolveSourceMapLocations = { "${workspaceFolder}/dist/**/*.js", "${workspaceFolder}/**" },
+      -- localRoot = vim.fn.getcwd(),
+    }
   }
 end
 EOF
@@ -606,6 +618,22 @@ EOF
 
 " }}}
 
+
+" -----------------------------------------------------------------------------
+" Headlines {{{
+" -----------------------------------------------------------------------------
+
+lua << EOF
+require'headlines'.setup {
+  markdown = {
+    dash_string = '▂',
+  },
+}
+EOF
+
+" }}}
+
+
 " -----------------------------------------------------------------------------
 " Nvim Tree {{{
 " -----------------------------------------------------------------------------
@@ -650,6 +678,7 @@ require'nvim-tree'.setup {
     },
   },
   filters = {
+    git_ignored = false,
     custom = {
       '^.git$',
     },
@@ -684,14 +713,14 @@ augroup NvimTreeLeave
   autocmd WinClosed,BufLeave NvimTree_* call s:nvim_tree_leave()
 augroup END
 
-call s:hl('NvimTreeNormal', s:palette.fg0, s:palette.bg0)
-call s:hl('NvimTreeEndOfBuffer', s:palette.bg0, s:palette.bg0)
-call s:hl('NvimTreeCursorLine', ['NONE', 'NONE'], s:palette.bg1)
-call s:hl('NvimTreeFolderName', s:palette.fg0)
-call s:hl('NvimTreeEmptyFolderName', s:palette.fg0)
-call s:hl('NvimTreeOpenedFolderName', s:palette.fg0)
-call s:hl('NvimTreeFolderIcon', s:palette.yellow)
-call s:hl('NvimTreeWinSeparator', s:palette.bg0)
+call Highlight('NvimTreeNormal', s:palette.fg0, s:palette.bg0)
+call Highlight('NvimTreeEndOfBuffer', s:palette.bg0, s:palette.bg0)
+call Highlight('NvimTreeCursorLine', ['NONE', 'NONE'], s:palette.bg1)
+call Highlight('NvimTreeFolderName', s:palette.fg0)
+call Highlight('NvimTreeEmptyFolderName', s:palette.fg0)
+call Highlight('NvimTreeOpenedFolderName', s:palette.fg0)
+call Highlight('NvimTreeFolderIcon', s:palette.yellow)
+call Highlight('NvimTreeWinSeparator', s:palette.bg0)
 
 " toggle Nvim Tree
 nnoremap <C-t> :NvimTreeToggle<CR>
@@ -904,20 +933,20 @@ telescope.load_extension('live_grep_args')
 telescope.load_extension('fzf')
 EOF
 
-call s:hl("TelescopeBorder", s:palette.bg_statusline1, s:palette.bg_statusline1)
-call s:hl("TelescopePromptBorder", s:palette.bg3, s:palette.bg3)
+call Highlight("TelescopeBorder", s:palette.bg_statusline1, s:palette.bg_statusline1)
+call Highlight("TelescopePromptBorder", s:palette.bg3, s:palette.bg3)
 
-call s:hl("TelescopePromptNormal", s:palette.fg0, s:palette.bg3)
-call s:hl("TelescopePromptPrefix", s:palette.red, s:palette.bg3)
-call s:hl("TelescopePromptCounter", s:palette.fg0, s:palette.bg3)
+call Highlight("TelescopePromptNormal", s:palette.fg0, s:palette.bg3)
+call Highlight("TelescopePromptPrefix", s:palette.red, s:palette.bg3)
+call Highlight("TelescopePromptCounter", s:palette.fg0, s:palette.bg3)
 
-call s:hl("TelescopeNormal", s:palette.none, s:palette.bg_statusline1)
+call Highlight("TelescopeNormal", s:palette.none, s:palette.bg_statusline1)
 
-call s:hl("TelescopePreviewTitle", s:palette.bg0, s:palette.green)
-call s:hl("TelescopePromptTitle", s:palette.bg0, s:palette.red)
-call s:hl("TelescopeResultsTitle", s:palette.bg_statusline1, s:palette.bg_statusline1)
+call Highlight("TelescopePreviewTitle", s:palette.bg0, s:palette.green)
+call Highlight("TelescopePromptTitle", s:palette.bg0, s:palette.red)
+call Highlight("TelescopeResultsTitle", s:palette.bg_statusline1, s:palette.bg_statusline1)
 
-call s:hl("TelescopeSelection", s:palette.fg0, s:palette.bg3)
+call Highlight("TelescopeSelection", s:palette.fg0, s:palette.bg3)
 
 " muscle memory
 nmap <silent> <c-p> <cmd>:lua require('telescope.builtin').find_files { find_command = { 'rg', '--files', '--iglob', '!.git', '--hidden' } }<CR>
@@ -950,12 +979,6 @@ nmap <silent> <leader>z :Goyo<CR>
 " GitGutter {{{
 " -----------------------------------------------------------------------------
 
-" let g:gitgutter_sign_added = '│'
-" let g:gitgutter_sign_modified = '│'
-" let g:gitgutter_sign_removed = '│'
-" let g:gitgutter_sign_modified_removed = '│'
-" let g:gitgutter_sign_removed_above_and_below = '│'
-
 let g:gitgutter_sign_added = '┃'
 let g:gitgutter_sign_modified = '┃'
 let g:gitgutter_sign_removed = '┃'
@@ -983,50 +1006,50 @@ let g:gitgutter_preview_win_floating = 1
 set laststatus=3
 
 function! s:patch_status_line_colors()
-  call s:hl('StatusNormalMode', s:palette.bg0, s:palette.aqua, 'bold')
-  call s:hl('StatusNormalModeBorderLeft', s:palette.aqua, s:palette.bg0)
-  call s:hl('StatusNormalModeBorderRight', s:palette.aqua, s:palette.fg0)
+  call Highlight('StatusNormalMode', s:palette.bg0, s:palette.aqua, 'bold')
+  call Highlight('StatusNormalModeBorderLeft', s:palette.aqua, s:palette.bg0)
+  call Highlight('StatusNormalModeBorderRight', s:palette.aqua, s:palette.fg0)
 
-  call s:hl('StatusInsertMode', s:palette.bg0, s:palette.blue, 'bold')
-  call s:hl('StatusInsertModeBorderLeft', s:palette.blue, s:palette.bg0)
-  call s:hl('StatusInsertModeBorderRight', s:palette.blue, s:palette.fg0)
+  call Highlight('StatusInsertMode', s:palette.bg0, s:palette.blue, 'bold')
+  call Highlight('StatusInsertModeBorderLeft', s:palette.blue, s:palette.bg0)
+  call Highlight('StatusInsertModeBorderRight', s:palette.blue, s:palette.fg0)
 
-  call s:hl('StatusVisualMode', s:palette.bg0, s:palette.yellow, 'bold')
-  call s:hl('StatusVisualModeBorderLeft', s:palette.yellow, s:palette.bg0)
-  call s:hl('StatusVisualModeBorderRight', s:palette.yellow, s:palette.fg0)
+  call Highlight('StatusVisualMode', s:palette.bg0, s:palette.yellow, 'bold')
+  call Highlight('StatusVisualModeBorderLeft', s:palette.yellow, s:palette.bg0)
+  call Highlight('StatusVisualModeBorderRight', s:palette.yellow, s:palette.fg0)
 
-  call s:hl('StatusReplaceMode', s:palette.bg0, s:palette.red, 'bold')
-  call s:hl('StatusReplaceModeBorderLeft', s:palette.red, s:palette.bg0)
-  call s:hl('StatusReplaceModeBorderRight', s:palette.red, s:palette.fg0)
+  call Highlight('StatusReplaceMode', s:palette.bg0, s:palette.red, 'bold')
+  call Highlight('StatusReplaceModeBorderLeft', s:palette.red, s:palette.bg0)
+  call Highlight('StatusReplaceModeBorderRight', s:palette.red, s:palette.fg0)
 
-  call s:hl('StatusTerminalMode', s:palette.bg0, s:palette.purple, 'bold')
-  call s:hl('StatusTerminalModeBorderLeft', s:palette.purple, s:palette.bg0)
-  call s:hl('StatusTerminalModeBorderRight', s:palette.purple, s:palette.fg0)
+  call Highlight('StatusTerminalMode', s:palette.bg0, s:palette.purple, 'bold')
+  call Highlight('StatusTerminalModeBorderLeft', s:palette.purple, s:palette.bg0)
+  call Highlight('StatusTerminalModeBorderRight', s:palette.purple, s:palette.fg0)
 
-  call s:hl('StatusCommandMode', s:palette.bg0, s:palette.grey2, 'bold')
-  call s:hl('StatusCommandModeBorderLeft', s:palette.grey2, s:palette.bg0)
-  call s:hl('StatusCommandModeBorderRight', s:palette.grey2, s:palette.fg0)
+  call Highlight('StatusCommandMode', s:palette.bg0, s:palette.grey2, 'bold')
+  call Highlight('StatusCommandModeBorderLeft', s:palette.grey2, s:palette.bg0)
+  call Highlight('StatusCommandModeBorderRight', s:palette.grey2, s:palette.fg0)
 
-  call s:hl('StatusSelectMode', s:palette.bg0, s:palette.grey2, 'bold')
-  call s:hl('StatusSelectModeBorderLeft', s:palette.grey2, s:palette.bg0)
-  call s:hl('StatusSelectModeBorderRight', s:palette.grey2, s:palette.fg0)
+  call Highlight('StatusSelectMode', s:palette.bg0, s:palette.grey2, 'bold')
+  call Highlight('StatusSelectModeBorderLeft', s:palette.grey2, s:palette.bg0)
+  call Highlight('StatusSelectModeBorderRight', s:palette.grey2, s:palette.fg0)
 
-  call s:hl('StatusFileName', s:palette.bg0, s:palette.fg0)
-  call s:hl('StatusFileNameBorderLeft', s:palette.fg0, s:palette.bg0)
-  call s:hl('StatusFileNameBorderRight', s:palette.fg0, s:palette.bg3)
+  call Highlight('StatusFileName', s:palette.bg0, s:palette.fg0)
+  call Highlight('StatusFileNameBorderLeft', s:palette.fg0, s:palette.bg0)
+  call Highlight('StatusFileNameBorderRight', s:palette.fg0, s:palette.bg3)
 
-  call s:hl('StatusCoc', s:palette.fg0, s:palette.bg3)
-  call s:hl('StatusCocBorder', s:palette.bg3, s:palette.none)
+  call Highlight('StatusCoc', s:palette.fg0, s:palette.bg3)
+  call Highlight('StatusCocBorder', s:palette.bg3, s:palette.none)
 
-  call s:hl('StatusLineBackground', s:palette.fg0, s:palette.none)
+  call Highlight('StatusLineBackground', s:palette.fg0, s:palette.none)
 
-  call s:hl('StatusFileLine', s:palette.bg0, s:palette.aqua)
-  call s:hl('StatusFileLineBorderRight', s:palette.aqua, s:palette.bg0)
-  call s:hl('StatusFileLineBorderLeft', s:palette.aqua, s:palette.bg0)
+  call Highlight('StatusFileLine', s:palette.bg0, s:palette.aqua)
+  call Highlight('StatusFileLineBorderRight', s:palette.aqua, s:palette.bg0)
+  call Highlight('StatusFileLineBorderLeft', s:palette.aqua, s:palette.bg0)
 
-  call s:hl('StatusGitBranch', s:palette.bg0, s:palette.fg0)
-  call s:hl('StatusGitBranchBorderRight', s:palette.fg0, s:palette.bg0)
-  call s:hl('StatusGitBranchBorderLeft', s:palette.fg0, s:palette.bg0)
+  call Highlight('StatusGitBranch', s:palette.bg0, s:palette.fg0)
+  call Highlight('StatusGitBranchBorderRight', s:palette.fg0, s:palette.bg0)
+  call Highlight('StatusGitBranchBorderLeft', s:palette.fg0, s:palette.bg0)
 endfunction
 
 call s:patch_status_line_colors()
@@ -1080,7 +1103,7 @@ function! CocStatus() abort
   if l:status == ''
     if b:coc_status_on || b:coc_status_on == -1
       let b:coc_status_on = 0
-      call s:hl('StatusFileNameBorderRight', s:palette.fg0, s:palette.none)
+      call Highlight('StatusFileNameBorderRight', s:palette.fg0, s:palette.none)
     endif
 
     return ''
@@ -1088,7 +1111,7 @@ function! CocStatus() abort
 
   if !b:coc_status_on || b:coc_status_on == -1
     let b:coc_status_on = 1
-    call s:hl('StatusFileNameBorderRight', s:palette.fg0, s:palette.bg3)
+    call Highlight('StatusFileNameBorderRight', s:palette.fg0, s:palette.bg3)
   endif
 
   return '%#StatusCoc# ' . l:status . ' %#StatusCocBorder#'
@@ -1105,12 +1128,12 @@ endfunction
 function! GitBranch() abort
   let l:current_branch = trim(system('git rev-parse --abbrev-ref HEAD 2>/dev/null'))
   if l:current_branch == ''
-    call s:hl('StatusFileLineBorderLeft', s:palette.aqua, s:palette.bg0)
+    call Highlight('StatusFileLineBorderLeft', s:palette.aqua, s:palette.bg0)
     return ''
   endif
 
   " set background of previous node to white
-  call s:hl('StatusFileLineBorderLeft', s:palette.aqua, s:palette.fg0)
+  call Highlight('StatusFileLineBorderLeft', s:palette.aqua, s:palette.fg0)
 
   let l:border_group = '%#StatusGitBranchBorder'
   let l:left_border = l:border_group . 'Left#'
@@ -1166,30 +1189,30 @@ set showtabline=2
 lua require('scope').setup({})
 
 function! s:patch_tab_line_colors()
-  call s:hl('TabLineFill', s:palette.bg0, s:palette.none)
+  call Highlight('TabLineFill', s:palette.bg0, s:palette.none)
 
-  call s:hl('BufferTabLineSel', s:palette.bg0, s:palette.fg0, 'bold')
-  call s:hl('BufferTabLineSelBorder', s:palette.fg0, s:palette.none)
+  call Highlight('BufferTabLineSel', s:palette.bg0, s:palette.fg0, 'bold')
+  call Highlight('BufferTabLineSelBorder', s:palette.fg0, s:palette.none)
 
-  call s:hl('BufferTabLine', s:palette.fg0, s:palette.bg_current_word)
-  call s:hl('BufferTabLineBorder', s:palette.bg_current_word, s:palette.none)
+  call Highlight('BufferTabLine', s:palette.fg0, s:palette.bg_current_word)
+  call Highlight('BufferTabLineBorder', s:palette.bg_current_word, s:palette.none)
 
-  call s:hl('BufferTabLineIcon', s:palette.bg0, s:palette.aqua, 'bold')
-  call s:hl('BufferTabLineIconBorderLeft', s:palette.aqua, s:palette.bg0)
-  call s:hl('BufferTabLineIconBorderRight', s:palette.aqua, s:palette.none)
+  call Highlight('BufferTabLineIcon', s:palette.bg0, s:palette.aqua, 'bold')
+  call Highlight('BufferTabLineIconBorderLeft', s:palette.aqua, s:palette.bg0)
+  call Highlight('BufferTabLineIconBorderRight', s:palette.aqua, s:palette.none)
 
-  call s:hl('TabLineSel', s:palette.bg0, s:palette.fg0, 'bold')
-  call s:hl('TabLineSelBorderLeft', s:palette.fg0, s:palette.bg_current_word)
-  call s:hl('TabLineSelBorderRight', s:palette.fg0, s:palette.none)
+  call Highlight('TabLineSel', s:palette.bg0, s:palette.fg0, 'bold')
+  call Highlight('TabLineSelBorderLeft', s:palette.fg0, s:palette.bg_current_word)
+  call Highlight('TabLineSelBorderRight', s:palette.fg0, s:palette.none)
 
-  call s:hl('TabLine', s:palette.fg0, s:palette.bg_current_word)
-  call s:hl('TabLineBorder', s:palette.bg_current_word, s:palette.bg_current_word)
+  call Highlight('TabLine', s:palette.fg0, s:palette.bg_current_word)
+  call Highlight('TabLineBorder', s:palette.bg_current_word, s:palette.bg_current_word)
 
-  call s:hl('TabLineIcon', s:palette.bg0, s:palette.aqua, 'bold')
-  call s:hl('TabLineIconBorderLeft', s:palette.aqua, s:palette.bg0)
-  call s:hl('TabLineIconBorderRight', s:palette.aqua, s:palette.none)
+  call Highlight('TabLineIcon', s:palette.bg0, s:palette.aqua, 'bold')
+  call Highlight('TabLineIconBorderLeft', s:palette.aqua, s:palette.bg0)
+  call Highlight('TabLineIconBorderRight', s:palette.aqua, s:palette.none)
 
-  call s:hl('TabLineBorderLast', s:palette.bg_current_word, s:palette.none)
+  call Highlight('TabLineBorderLast', s:palette.bg_current_word, s:palette.none)
 endfunction
 
 call s:patch_tab_line_colors()
@@ -1255,13 +1278,13 @@ function! Tabs()
   endfor
 
   if l:selected_index == l:total_tabs
-    call s:hl('TabLineIconBorderLeft', s:palette.aqua, s:palette.fg0)
+    call Highlight('TabLineIconBorderLeft', s:palette.aqua, s:palette.fg0)
 
-    call s:hl('TabLineSelBorderRight', s:palette.fg0, s:palette.fg0)
-    call s:hl('TabLineSelBorderLeft', s:palette.fg0, s:palette.bg_current_word)
+    call Highlight('TabLineSelBorderRight', s:palette.fg0, s:palette.fg0)
+    call Highlight('TabLineSelBorderLeft', s:palette.fg0, s:palette.bg_current_word)
   else
-    call s:hl('TabLineIconBorderLeft', s:palette.aqua, s:palette.bg_current_word)
-    call s:hl('TabLineSelBorderRight', s:palette.fg0, s:palette.bg_current_word)
+    call Highlight('TabLineIconBorderLeft', s:palette.aqua, s:palette.bg_current_word)
+    call Highlight('TabLineSelBorderRight', s:palette.fg0, s:palette.bg_current_word)
   endif
 
   let l:s ..= '%999X%#TabLineIconBorderLeft#% %#TabLineIcon#   %#TabLineIconBorderRight#%X'
@@ -1301,4 +1324,4 @@ set tabline=%!TabLine()
 
 " }}}
 
-" vim:foldmethod=marker:foldlevel=0
+" vim:foldmethod=marker:foldlevel=1
