@@ -663,9 +663,10 @@ EOF
 " -----------------------------------------------------------------------------
 
 lua << EOF
-local function nvim_tree_on_attach(bufnr)
-  local api = require('nvim-tree.api')
+local api = require('nvim-tree.api')
+local Event = api.events.Event
 
+local function nvim_tree_on_attach(bufnr)
   local function opts(desc)
     return { desc = 'nvim-tree: ' .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
   end
@@ -708,6 +709,18 @@ require'nvim-tree'.setup {
     },
   },
 }
+
+api.events.subscribe(Event.TreeOpen, function()
+  vim.g.tab_line_offset = vim.api.nvim_win_get_width(api.tree.winid())
+end)
+
+api.events.subscribe(Event.TreeClose, function()
+  vim.g.tab_line_offset = 0
+end)
+
+api.events.subscribe(Event.Resize, function(width)
+  vim.g.tab_line_offset = width
+end)
 EOF
 
 " hide cursor in Nvim Tree
@@ -737,9 +750,9 @@ augroup NvimTreeLeave
   autocmd WinClosed,BufLeave NvimTree_* call s:nvim_tree_leave()
 augroup END
 
-call Highlight('NvimTreeNormal', s:palette.fg0, s:palette.bg0)
-call Highlight('NvimTreeEndOfBuffer', s:palette.bg0, s:palette.bg0)
-call Highlight('NvimTreeCursorLine', ['NONE', 'NONE'], s:palette.bg1)
+call Highlight('NvimTreeNormal', s:palette.fg0, s:palette.bg1)
+call Highlight('NvimTreeEndOfBuffer', s:palette.bg0, s:palette.bg1)
+call Highlight('NvimTreeCursorLine', ['NONE', 'NONE'], s:palette.bg3)
 call Highlight('NvimTreeFolderName', s:palette.fg0)
 call Highlight('NvimTreeEmptyFolderName', s:palette.fg0)
 call Highlight('NvimTreeOpenedFolderName', s:palette.fg0)
@@ -1208,10 +1221,17 @@ augroup end
 " always show tabline
 set showtabline=2
 
+" offset used for when the file explorer is open
+let g:tab_line_offset = 0
+
+" padding applied between the tab bar and file explorer (when it's open)
+let g:tab_line_offset_padding = 1
+
 " Scope buffers to tabs
 lua require('scope').setup({})
 
 call Highlight('TabLineFill', s:palette.bg0, s:palette.none)
+call Highlight('TabLinePadding', s:palette.bg0, s:palette.bg1)
 
 call Highlight('BufferTabLineSel', s:palette.bg0, s:palette.fg0, 'bold')
 call Highlight('BufferTabLineSelBorder', s:palette.fg0, s:palette.none)
@@ -1237,11 +1257,19 @@ call Highlight('TabLineIconBorderRight', s:palette.aqua, s:palette.none)
 call Highlight('TabLineBorderLast', s:palette.bg_current_word, s:palette.none)
 
 function! TabLine()
-  return Buffers() .. '%=' .. Tabs()
+  return TabLinePadding() .. Buffers() .. '%=' .. Tabs()
+endfunction
+
+function! TabLinePadding()
+  if g:tab_line_offset == 0
+    return ''
+  endif
+
+  return '%#TabLinePadding#' .. repeat(' ', g:tab_line_offset) .. '%#TabLineFill#' .. repeat(' ', g:tab_line_offset_padding)
 endfunction
 
 function! Buffers()
-  let l:s = ''
+  let l:s = '%#TabLineIconBorderLeft#%#TabLineIcon#   %#TabLineIconBorderRight# '
   for i in filter(range(1, bufnr('$')), 'buflisted(v:val)')
     let l:selected = i == bufnr()
     if l:selected
@@ -1299,7 +1327,7 @@ function! Tabs()
     call Highlight('TabLineSelBorderRight', s:palette.fg0, s:palette.bg_current_word)
   endif
 
-  let l:s ..= '%999X%#TabLineIconBorderLeft#% %#TabLineIcon#   %#TabLineIconBorderRight#%X'
+  let l:s ..= '%999X%#TabLineIconBorderLeft#% %#TabLineIcon#  %#TabLineIconBorderRight#%X'
   let l:s ..= '%#TabLineFill#%T'
 
   return l:s
