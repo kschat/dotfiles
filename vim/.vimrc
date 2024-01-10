@@ -128,7 +128,7 @@ set mouse=nvi
 " reduce the time vim waits to trigger plugins
 set updatetime=250
 
-set spell spelllang=en_us
+set nospell
 set spellsuggest=best,5
 
 " }}}
@@ -161,7 +161,7 @@ let s:palette = g:palette
 
 lua << EOF
 require'nvim-treesitter.configs'.setup {
-  ensure_installed = { "lua", "vim", "markdown", "markdown_inline" },
+  ensure_installed = { "rust", "lua", "vim", "vimdoc", "markdown", "markdown_inline" },
   sync_install = false,
   auto_install = true,
   highlight = {
@@ -322,8 +322,11 @@ set inccommand=nosplit
 " Key mappings {{{
 " -----------------------------------------------------------------------------
 
-" set C-l to clear out search highlighting
-nnoremap <nowait> / :let @/=""<CR>/
+" '/<esc>' to clear search highlighting, '/' for new search
+nnoremap <nowait> / :noh<CR>/
+
+" '<leader>/<esc>' to clear search term, '<leader>/' for new search
+nnoremap <nowait> <leader>/ :let @/=""<CR>/
 
 " shortcuts to cycle through buffers
 nnoremap <silent> <leader><Tab> :bnext<CR>
@@ -352,6 +355,20 @@ nnoremap <silent> [e :<C-U>exec "exec 'norm m`' \| move -" . (1+v:count1)<CR>``
 " move the current selection up/down N lines
 vnoremap <silent> ]e :<C-U>exec "'<,'>move '>+" . (0+v:count1)<CR>gv
 vnoremap <silent> [e :<C-U>exec "'<,'>move '<-" . (1+v:count1)<CR>gv
+
+" delete without yanking
+nnoremap <leader>d "_d
+vnoremap <leader>d "_d
+
+" replace currently selected text with default register
+" without yanking it
+vnoremap <leader>p "_dP
+
+" no more ex-mode
+nnoremap <silent> Q <nop>
+
+" make script executable
+nnoremap <leader>x <cmd>silent !chmod +x %<CR>
 
 " }}}
 
@@ -621,6 +638,7 @@ lua << EOF
 require'headlines'.setup {
   markdown = {
     dash_string = '▂',
+    fat_headline_lower_string = "▀",
   },
 }
 EOF
