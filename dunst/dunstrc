@@ -1,56 +1,73 @@
 [global]
-font = Droid Sans, Font Awesome
-format = "<b>%a</b> %s %b"
+enable_posix_regex = true
 
-geometry = "900x5-45+95"
-line_height = 15
-separator_height = 2
-padding = 20
-horizontal_padding = 20
+font = Roboto Regular, Font Awesome 11
+format = "<b>%a\n%s</b>\n%b"
+corner_radius = 8
 
-frame_width = 0
-frame_color = "#272C30"
+width = 350
+height = 125
+offset = 14x-57
+origin = top-center
+
+line_height = 0
+gap_size = 8
+padding = 10
+horizontal_padding = 16
 
 idle_threshold = 120
 show_age_threshold = 60
 
-ignore_newline = yes
-shrink = yes
-show_indicators = no
-icon_position = off
+frame_width = 0
+ignore_newline = false
+show_indicators = false
+icon_position = left
+vertical_alignment = center
+ellipsize = end
 
-dmenu = /usr/bin/dmenu -p dunst:
+progress_bar = true
+progress_bar_frame_width = 0
+progress_bar_min_width = 300
+progress_bar_max_width = 400
+
+dmenu = /usr/bin/rofi -dmenu
 browser = /usr/bin/google-chrome-stable
 
 [urgency_low]
-foreground = "#272C30"
-background = "#E6E6ED"
+background = "#f9f5d7"
+foreground = "#654735"
+highlight = "#4c7a5d"
 timeout = 10
 
 [urgency_normal]
-foreground = "#272C30"
-background = "#E6E6ED"
+background = "#f9f5d7"
+foreground = "#654735"
+highlight = "#4c7a5d"
 timeout = 10
 
 [urgency_critical]
-foreground = "#272C30"
-background = "#E6E6ED"
+background = "#f9f5d7"
+foreground = "#654735"
+highlight = "#4c7a5d"
 timeout = 0
 
 [screenshot]
 appname = "screenshot"
-format = "  │  %s"
+format = "<b>  │</b>  %s"
+set_stack_tag = "screenshot"
 
 [reload]
 appname = "reload"
-format = "  │  %s"
-
-[slack]
-appname = "Electron"
-format = "  │  %s   %b"
+format = "<b>  │</b>  %s"
 
 [backup]
 appname = "backup"
-format = "  │  %s"
+format = "<b>  │</b>  %s"
+set_stack_tag = "backup"
+
+[vpn]
+appname = "vpn"
+format = "  │  %s"
+set_stack_tag = "vpn"
 
 # vim:filetype=cfg
