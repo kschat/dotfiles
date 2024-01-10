@@ -4,7 +4,7 @@ After=display-manager.service
 
 [Service]
 Type=simple
-ExecStart=/home/kyle/.bin/on-screenshare.sh
+ExecStart=/home/kyle/.bin/on-screenshare
 
 [Install]
 WantedBy=default.target
