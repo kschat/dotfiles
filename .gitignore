@@ -13,3 +13,5 @@ vim/.vim/plugged/
 vim/.vim/session/
 vim/.vim/swap/
 vim/.vim/.netrwhist
+
+systemd/user/*.target.wants/
