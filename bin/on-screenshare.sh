@@ -1,0 +1,30 @@
+#!/usr/bin/env zsh
+
+set -e
+
+run_on_nvim() {
+  local command=$1
+
+  for server_name in /run/user/$(id -u kyle)/nvim.*; do
+    nvr --servername "$server_name" --nostart --remote-send "$command"
+  done
+}
+
+is_screen_cast_event() {
+  local event=$1
+  local member=$2
+
+  echo "$1" | rg "org.gnome.Mutter.ScreenCast.Session\s*${member}$" > /dev/null 2>&1
+}
+
+dbus-monitor --profile 'interface=org.gnome.Mutter.ScreenCast.Session' | while read -r line; do
+  if is_screen_cast_event "$line" Start; then
+    run_on_nvim ':silent set norelativenumber<CR>'
+    alacritty msg config --window-id -1 'font.size=14'
+  fi
+
+  if is_screen_cast_event "$line" Closed; then
+    run_on_nvim ':silent set relativenumber<CR>'
+    alacritty msg config --window-id -1 --reset
+  fi
+done

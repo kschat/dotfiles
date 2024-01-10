@@ -1,0 +1,10 @@
+[Unit]
+Description=Screenshare Hook
+After=display-manager.service
+
+[Service]
+Type=simple
+ExecStart=/home/kyle/.bin/on-screenshare.sh
+
+[Install]
+WantedBy=default.target
