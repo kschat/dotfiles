@@ -412,7 +412,7 @@ nnoremap <silent> <leader>nwT :NotesWork todo<CR>
 
 nnoremap <silent> <leader>npt :NotesPersonal today<CR>
 nnoremap <silent> <leader>npy :NotesPersonal yesterday<CR>
-nnoremap <silent> <leader>npT :NotesWork todo<CR>
+nnoremap <silent> <leader>npT :NotesPersonal todo<CR>
 
 " }}}
 
