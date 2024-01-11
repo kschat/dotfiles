@@ -43,6 +43,7 @@ typeset -gU fpath path
 
 export XDG_CONFIG_HOME="$HOME"/.config
 export WORKSPACE="$HOME"/Workspace
+export NOTES="$HOME/Workspace/notes"
 export NVM_DIR="$HOME"/.nvm
 export DOTFILES="$WORKSPACE/dotfiles"
 export VIMRC="$DOTFILES/vim/.vimrc"
@@ -149,7 +150,7 @@ export FZF_DEFAULT_OPTS=$({
   local cyan='#89b482'
   local white='#d4be98'
 
-  local b_black='#3c3836'
+  local b_black='#928374'
   local b_red='#ea6962'
   local b_green='#a9b665'
   local b_yellow='#d8a657'
@@ -164,6 +165,6 @@ export FZF_DEFAULT_OPTS=$({
     --color=bg+:$bg,bg:$bg,spinner:$cyan,hl:$cyan\
     --color=fg:$fg,header:$bg,info:$yellow,pointer:$cyan\
     --color=marker:$cyan,fg+:$fg:bold,prompt:$yellow,hl+:$cyan\
-    --color=gutter:$bg,border:$black\
+    --color=gutter:$bg,border:$b_black\
   "
 })

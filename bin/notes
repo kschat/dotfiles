@@ -1,0 +1,35 @@
+#!/usr/bin/env zsh
+
+set -e
+
+note_scope=$1
+if [[ -z $note_scope ]]; then
+  echo 'Note scope (personal, work, etc.) is required' 1>&2
+  exit 1
+fi
+
+base_directory=$NOTES/$note_scope
+if [[ ! -d $base_directory ]]; then
+  echo "'$note_scope' not a valid note type (personal, work, etc.)" 1>&2
+  exit 2
+fi
+
+note_type=${2:-today}
+note_title=$note_type
+
+if [[ $note_type == 'today' ]]; then
+  note_title=$(date +'%Y-%m-%d')
+  note_path=$base_directory/journal/$note_title.md
+elif [[ $note_type == 'yesterday' ]]; then
+  note_title=$(date -d '-1 day' +'%Y-%m-%d')
+  note_path=$base_directory/journal/$note_title.md
+else
+  note_path=$base_directory/$note_type.md
+fi
+
+if [[ ! -f $note_path ]]; then
+  # title case
+  echo "# ${(C)note_title}\n\n" > $note_path
+fi
+
+echo "$note_path"

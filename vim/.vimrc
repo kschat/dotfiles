@@ -390,6 +390,33 @@ endfunction
 " }}}
 
 " -----------------------------------------------------------------------------
+" Notes {{{
+" -----------------------------------------------------------------------------
+
+function! Notes(note_scope, ...)
+  let l:note_type = a:0 >= 1 ? ' ' .. a:1 : ''
+  let l:result = trim(system('notes ' .. a:note_scope .. l:note_type))
+  if v:shell_error
+    throw 'Failed to get note path: ' . l:result
+  endif
+
+  execute 'e ' l:result
+endfunction
+
+command! -nargs=1 NotesWork call Notes('work', <f-args>)
+command! -nargs=1 NotesPersonal call Notes('personal', <f-args>)
+
+nnoremap <silent> <leader>nwt :NotesWork today<CR>
+nnoremap <silent> <leader>nwy :NotesWork yesterday<CR>
+nnoremap <silent> <leader>nwT :NotesWork todo<CR>
+
+nnoremap <silent> <leader>npt :NotesPersonal today<CR>
+nnoremap <silent> <leader>npy :NotesPersonal yesterday<CR>
+nnoremap <silent> <leader>npT :NotesWork todo<CR>
+
+" }}}
+
+" -----------------------------------------------------------------------------
 " Debugger {{{
 " -----------------------------------------------------------------------------
 
@@ -628,7 +655,6 @@ require('ufo').setup()
 EOF
 
 " }}}
-
 
 " -----------------------------------------------------------------------------
 " Headlines {{{
@@ -1254,6 +1280,10 @@ call Highlight('TabLineIcon', s:palette.bg0, s:palette.aqua, 'bold')
 call Highlight('TabLineIconBorderLeft', s:palette.aqua, s:palette.bg0)
 call Highlight('TabLineIconBorderRight', s:palette.aqua, s:palette.none)
 
+call Highlight('BufferTabLineIcon', s:palette.bg0, s:palette.aqua, 'bold')
+call Highlight('BufferTabLineIconBorderLeft', s:palette.aqua, s:palette.bg0)
+call Highlight('BufferTabLineIconBorderRight', s:palette.aqua, s:palette.none)
+
 call Highlight('TabLineBorderLast', s:palette.bg_current_word, s:palette.none)
 
 function! TabLine()
@@ -1269,7 +1299,7 @@ function! TabLinePadding()
 endfunction
 
 function! Buffers()
-  let l:s = '%#TabLineIconBorderLeft#%#TabLineIcon#   %#TabLineIconBorderRight# '
+  let l:s = '%#BufferTabLineIconBorderLeft#%#BufferTabLineIcon#   %#BufferTabLineIconBorderRight# '
   for i in filter(range(1, bufnr('$')), 'buflisted(v:val)')
     let l:selected = i == bufnr()
     if l:selected
