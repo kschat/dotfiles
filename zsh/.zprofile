@@ -19,3 +19,7 @@ fi
 
 TMPPREFIX="${TMPDIR%/}/zsh"
 
+# Only run on Apple Silicon
+if [[ $OSTYPE == darwin* && $(sysctl -n machdep.cpu.brand_string) =~ 'Apple' ]]; then
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+fi
