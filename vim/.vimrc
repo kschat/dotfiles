@@ -597,16 +597,8 @@ lua << EOF
 require('neotest').setup({
   adapters = {
     require('neotest-jest')({
-      jestCommand = 'pnpm test -- ',
+      jestCommand = 'npm test -- ',
     }),
-  },
-  icons = {
-    failed = '',
-    passed = '',
-    running = '',
-    skipped = '',
-    unknown = '',
-    watching = ''
   },
   status = {
     signs = false,
@@ -615,10 +607,11 @@ require('neotest').setup({
 })
 EOF
 
-" TODO
-" nnoremap <leader>tE :JestCurrent<CR>
+" run tests for current file
+nnoremap <silent> <leader>tE <cmd>lua require('neotest').run.run({ vim.fn.expand('%'), strategy = 'dap' })<CR>
 
-" nnoremap <leader>te :call CocAction('runCommand', 'jest.singleTest')<CR>
+" run current test
+nnoremap <silent> <leader>te <cmd>lua require('neotest').run.run({ strategy = 'dap' })<CR>
 
 " }}}
 
