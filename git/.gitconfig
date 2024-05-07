@@ -41,3 +41,6 @@
 	minus-style = syntax "#4c3432"
 [init]
 	defaultBranch = main
+
+[includeIf "gitdir:~/Workspace/walmartlabs/"]
+	path = .gitconfig-work
