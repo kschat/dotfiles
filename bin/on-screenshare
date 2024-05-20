@@ -19,12 +19,12 @@ is_screen_cast_event() {
 
 dbus-monitor --profile 'interface=org.gnome.Mutter.ScreenCast.Session' | while read -r line; do
   if is_screen_cast_event "$line" Start; then
-    run_on_nvim ':silent set norelativenumber<CR>'
     alacritty msg config --window-id -1 'font.size=14.5'
+    run_on_nvim ':silent set norelativenumber<CR>'
   fi
 
   if is_screen_cast_event "$line" Closed; then
-    run_on_nvim ':silent set relativenumber<CR>'
     alacritty msg config --window-id -1 --reset
+    run_on_nvim ':silent set relativenumber<CR>'
   fi
 done
