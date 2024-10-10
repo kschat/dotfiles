@@ -12,6 +12,7 @@ call plug#begin('~/.vim/plugged')
 
 " Libraries
 Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-neotest/nvim-nio'
 
 " UI
 Plug 'nvim-tree/nvim-web-devicons'
