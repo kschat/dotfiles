@@ -4728,13 +4728,13 @@
 			<key>Name</key>
 			<string>Gruvbox Material</string>
 			<key>Non Ascii Font</key>
-			<string>SauceCodeProNerdFontComplete-Semibold 14</string>
+			<string>Menlo-Regular 11</string>
 			<key>Non-ASCII Anti Aliased</key>
 			<true/>
 			<key>Normal Font</key>
-			<string>SauceCodeProNerdFontComplete-Semibold 14</string>
+			<string>SauceCodeProNF-SemiBold 14</string>
 			<key>Option Key Sends</key>
-			<integer>0</integer>
+			<integer>2</integer>
 			<key>Prompt Before Closing 2</key>
 			<integer>0</integer>
 			<key>Right Option Key Sends</key>
