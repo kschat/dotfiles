@@ -1,4 +1,11 @@
 {
+  "semanticTokens.enable": true,
+  "semanticTokens.incrementTypes": [
+    "variable",
+    "string",
+    "parameter"
+  ],
+  "coc.preferences.enableGFMBreaksInMarkdownDocument": false,
   "http.proxy": "off",
   "coc.preferences.watchmanPath": "DOES_NOT_EXIST__SETTING_TO_DISABLE",
   "suggest.timeout": 5000,
@@ -14,18 +21,21 @@
   "diagnostic.infoSign": "",
   "diagnostic.hintSign": "",
   "eslint.run": "onSave",
-  "jest.terminalPosition": "right",
-  "jest.forceExit": true,
-  "jest.customFlags": ["--coverage=false"],
   "prettier.requireConfig": true,
-  "typescript.format.enabled": false,
-  "javascript.format.enabled": false,
-  "coc.preferences.formatOnSaveFiletypes": [
-    "javascript",
-    "javascriptreact",
-    "typescript",
-    "typescriptreact",
-    "rust"
-  ],
-  "rust-analyzer.checkOnSave.command": "clippy"
+  "typescript.format.enable": false,
+  "javascript.format.enable": false,
+  "coc.preferences.formatOnSave": true,
+  "dialog.maxWidth": 101,
+  "rust-analyzer.semanticHighlighting.doc.comment.inject.enable": true,
+  "rust-analyzer.check.command": "clippy",
+  "rust-analyzer.inlayHints.parameterHints.enable": false,
+  "rust-analyzer.inlayHints.chainingHints.enable": false,
+  "rust-analyzer.inlayHints.closingBraceHints.enable": false,
+  "rust-analyzer.inlayHints.closureReturnTypeHints.enable": "never",
+  "rust-analyzer.inlayHints.discriminantHints.enable": "never",
+  "rust-analyzer.inlayHints.expressionAdjustmentHints.enable": "never",
+  "rust-analyzer.inlayHints.lifetimeElisionHints.enable": "never",
+  "rust-analyzer.inlayHints.reborrowHints.enable": "never",
+  "rust-analyzer.inlayHints.typeHints.enable": false,
+  "rust-analyzer.cargo.features": "all"
 }
