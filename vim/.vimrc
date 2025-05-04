@@ -28,7 +28,6 @@ Plug 'nvim-treesitter/nvim-treesitter', { 'do': ':TSUpdate' }
 Plug 'lukas-reineke/indent-blankline.nvim'
 Plug 'moll/vim-bbye'
 Plug 'tiagovla/scope.nvim'
-Plug 'lukas-reineke/headlines.nvim', { 'for': 'markdown' }
 
 " Folding
 Plug 'kevinhwang91/promise-async'
@@ -69,9 +68,77 @@ Plug 'sheerun/vim-polyglot'
 Plug 'neoclide/coc.nvim', { 'branch': 'release' }
 Plug 'sainnhe/gruvbox-material'
 
+Plug 'OXY2DEV/markview.nvim'
+
 call plug#end()
 
 " }}}
+
+hi! InverseGroup gui=reverse cterm=reverse
+
+lua << EOF
+local presets = require('markview.presets');
+
+require'markview'.setup({
+  checkboxes = presets.checkboxes.nerd,
+  markdown = {
+    horizontal_rules = presets.horizontal_rules.thick,
+    headings = presets.headings.marker,
+    headings = {
+      enable = true,
+      shift_width = 0,
+      textoff = 7,
+
+      heading_1 = {
+        style = 'icon',
+        sign = '',
+        sign_hl = 'MarkviewHeading1Sign',
+
+        icon = '█ ',
+        icon_hl = 'MarkviewHeading1Sign',
+        hl = 'MarkviewHeading1',
+      },
+      heading_2 = {
+        style = 'icon',
+        sign = '',
+        sign_hl = 'MarkviewHeading2Sign',
+
+        icon = '█ ',
+        icon_hl = 'MarkviewHeading2Sign',
+        hl = 'MarkviewHeading2',
+      },
+      heading_3 = {
+        style = 'icon',
+
+        icon = '█ ',
+        icon_hl = 'MarkviewHeading3Sign',
+        hl = 'MarkviewHeading3',
+      },
+      heading_4 = {
+        style = 'icon',
+
+        icon = '█ ',
+        icon_hl = 'MarkviewHeading4Sign',
+        hl = 'MarkviewHeading4',
+      },
+      heading_5 = {
+        style = 'icon',
+
+        icon = '█ ',
+        icon_hl = 'MarkviewHeading5Sign',
+        hl = 'MarkviewHeading5',
+      },
+      heading_6 = {
+        style = 'icon',
+
+        icon = '█ ',
+        icon_hl = 'MarkviewHeading5Sign',
+        hl = 'MarkviewHeading6',
+      }
+    },
+  },
+});
+EOF
 
 " -----------------------------------------------------------------------------
 " General {{{
@@ -162,7 +229,17 @@ let s:palette = g:palette
 
 lua << EOF
 require'nvim-treesitter.configs'.setup {
-  ensure_installed = { "rust", "lua", "vim", "vimdoc", "markdown", "markdown_inline" },
+  ensure_installed = {
+    "rust",
+    "lua",
+    "vim",
+    "vimdoc",
+    "markdown",
+    "markdown_inline",
+    "json",
+    "jsonc",
+    "toml"
+  },
   sync_install = false,
   auto_install = true,
   highlight = {
@@ -646,21 +723,6 @@ require('statuscol').setup({
 })
 
 require('ufo').setup()
-EOF
-
-" }}}
-
-" -----------------------------------------------------------------------------
-" Headlines {{{
-" -----------------------------------------------------------------------------
-
-lua << EOF
-require'headlines'.setup {
-  markdown = {
-    dash_string = '▂',
-    fat_headline_lower_string = "▀",
-  },
-}
 EOF
 
 " }}}
@@ -1293,7 +1355,7 @@ function! TabLinePadding()
 endfunction
 
 function! Buffers()
-  let l:s = '%#BufferTabLineIconBorderLeft#%#BufferTabLineIcon#   %#BufferTabLineIconBorderRight# '
+  let l:s = '%#BufferTabLineIconBorderLeft#%#BufferTabLineIcon#   %#BufferTabLineIconBorderRight# '
   for i in filter(range(1, bufnr('$')), 'buflisted(v:val)')
     let l:selected = i == bufnr()
     if l:selected
@@ -1351,7 +1413,7 @@ function! Tabs()
     call Highlight('TabLineSelBorderRight', s:palette.fg0, s:palette.bg_current_word)
   endif
 
-  let l:s ..= '%999X%#TabLineIconBorderLeft#% %#TabLineIcon#  %#TabLineIconBorderRight#%X'
+  let l:s ..= '%999X%#TabLineIconBorderLeft#% %#TabLineIcon#  %#TabLineIconBorderRight#%X'
   let l:s ..= '%#TabLineFill#%T'
 
   return l:s
