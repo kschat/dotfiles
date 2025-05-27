@@ -69,14 +69,13 @@ dependencies=(
 
 arch_dependencies=(
   neovim
-  sublime-text-dev
-  archey-git
-  rxvt-unicode
   adobe-source-code-pro-fonts
-  nerd-fonts-source-code-pro
+  ttf-sourcecodepro-nerd
   ttf-font-awesome-4
+  ttf-roboto
   acpi
   alsa-utils
+  xorg-server
   xorg-xinit
   xorg-xrandr
   xtitle
@@ -101,11 +100,33 @@ arch_dependencies=(
   mpc
   inotify-tools
   pacman-contrib
-  pulseaudio
-  lpass
+  pipewire
+  wireplumber
+  pipewire-pulse
+  pipewire-alsa
+  bitwarden-cli
   xsel
   watchman # for coc.nvim rename symbol across file
   alacritty
+  bat
+  delta
+  ripgrep
+  redshift
+  openconnect
+  neovim-remote
+
+  hyprland-bin
+  eww-wayland
+  xorg-xwayland
+  qt5-wayland
+  swaybg
+  xdg-desktop-portal-hyprland-git
+  rofi-lbonn-wayland-git
+  wl-clipboard
+  easyeffects
+  grimshot
+  mangohud
+  wezterm
 )
 
 osx_dependencies=(
@@ -121,9 +142,7 @@ debian_dependencies=()
 
 git_dependencies=(
   "--recursive https://github.com/sorin-ionescu/prezto.git $default_directory/.zprezto"
-  "https://github.com/n0kk/ahud.git '$tf2_directory/tf/custom/ahud-master'"
   "https://github.com/tmux-plugins/tpm.git $default_directory/.tmux/plugins/tpm"
-  "https://github.com/chriskempson/base16-shell.git $default_directory/.config/base16-shell"
 )
 
 # dotfiles to symlink
@@ -153,6 +172,10 @@ typeset -A packages; packages=(
   alacritty "$default_directory/.config/alacritty"
   bat "$default_directory/.config/bat"
   rofi "$default_directory/.config/rofi"
+  hypr "$default_directory/.config/hypr"
+  eww "$default_directory/.config/eww"
+  mangohud "$default_directory/.config/MangoHud"
+  wezterm "$default_directory/.config/wezterm"
 )
 
 exit_codes=(
