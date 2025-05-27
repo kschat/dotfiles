@@ -12,6 +12,7 @@ call plug#begin('~/.vim/plugged')
 
 " Libraries
 Plug 'nvim-lua/plenary.nvim'
+Plug 'kevinhwang91/promise-async'
 Plug 'nvim-neotest/nvim-nio'
 
 " UI
@@ -24,17 +25,17 @@ Plug 'nvim-telescope/telescope.nvim'
 Plug 'folke/zen-mode.nvim'
 Plug 'mbbill/undotree'
 Plug 'goolord/alpha-nvim'
-Plug 'nvim-treesitter/nvim-treesitter', { 'do': ':TSUpdate' }
+Plug 'nvim-treesitter/nvim-treesitter'
 Plug 'lukas-reineke/indent-blankline.nvim'
 Plug 'moll/vim-bbye'
 Plug 'tiagovla/scope.nvim'
 
 " Folding
-Plug 'kevinhwang91/promise-async'
 Plug 'luukvbaal/statuscol.nvim'
 Plug 'kevinhwang91/nvim-ufo'
 
 " Debugging
+Plug 'nvim-neotest/nvim-nio'
 Plug 'mfussenegger/nvim-dap'
 Plug 'rcarriga/nvim-dap-ui'
 Plug 'theHamsta/nvim-dap-virtual-text'
@@ -60,9 +61,7 @@ Plug 'nat-418/boole.nvim'
 Plug 'sindrets/diffview.nvim'
 
 " Language
-" must be set before vim-polyglot is loaded
-let g:polyglot_disabled = ['markdown.plugin']
-Plug 'sheerun/vim-polyglot'
+Plug 'OXY2DEV/markview.nvim'
 
 " Misc
 Plug 'neoclide/coc.nvim', { 'branch': 'release' }
@@ -150,7 +149,7 @@ let g:loaded_netrwPlugin = 1
 
 " change map leader from \ to , and set local leader to \
 let mapleader=","
-let maplocalleader = " "
+let maplocalleader="\\"
 
 " reload files when changed outside of vim
 set autoread
@@ -238,7 +237,9 @@ require'nvim-treesitter.configs'.setup {
     "markdown_inline",
     "json",
     "jsonc",
-    "toml"
+    "toml",
+    "dockerfile",
+    "bash"
   },
   sync_install = false,
   auto_install = true,
@@ -587,7 +588,11 @@ dapui.setup({
       elements = {
         {
           id = 'repl',
-          size = 1,
+          size = 0.5,
+        },
+        {
+          id = 'console',
+          size = 0.5,
         },
       },
     },
@@ -603,26 +608,25 @@ vim.fn.sign_define('DapBreakpointRejected', { text = '', texthl = 'DapBreakpo
 local dap = require'dap'
 
 dap.adapters.lldb = {
-	type = 'executable',
-	command = '/usr/local/opt/llvm/bin/lldb-vscode',
-	name = 'lldb',
+  type = 'executable',
+  command = '/usr/bin/lldb-vscode',
+  name = 'lldb',
 }
 
 local lldb = {
-	name = 'Launch lldb',
-	type = 'lldb',
-	request = 'launch',
-	program = function()
-		return vim.fn.input(
-			'Path to executable: ',
-			vim.fn.getcwd() .. '/',
-			'file'
-		)
-	end,
-	cwd = '${workspaceFolder}',
-	stopOnEntry = false,
-	args = {},
-	runInTerminal = false,
+  name = 'Launch lldb',
+  type = 'lldb',
+  request = 'launch',
+  program = function()
+    return vim.fn.input(
+      'Path to executable: ',
+      vim.fn.getcwd() .. '/',
+      'file'
+    )
+  end,
+  cwd = '${workspaceFolder}',
+  stopOnEntry = false,
+  showDisassembly = 'never',
 }
 
 dap.configurations.rust = {
@@ -891,6 +895,7 @@ let g:coc_global_extensions=[
 \  'coc-vimlsp',
 \  'coc-rust-analyzer',
 \  '@yaegassy/coc-marksman',
+\  'coc-biome',
 \]
 
 let g:coc_status_error_sign=' '

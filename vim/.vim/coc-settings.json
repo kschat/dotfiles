@@ -25,9 +25,13 @@
   "typescript.format.enable": false,
   "javascript.format.enable": false,
   "coc.preferences.formatOnSave": true,
+  "[rust][javascript][javascriptreact][typescript][typescriptreact]": {
+    "coc.preferences.formatOnSave": true
+  },
   "dialog.maxWidth": 101,
   "rust-analyzer.semanticHighlighting.doc.comment.inject.enable": true,
   "rust-analyzer.check.command": "clippy",
+  "inlayHint.display": false,
   "rust-analyzer.inlayHints.parameterHints.enable": false,
   "rust-analyzer.inlayHints.chainingHints.enable": false,
   "rust-analyzer.inlayHints.closingBraceHints.enable": false,
