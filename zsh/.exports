@@ -47,6 +47,7 @@ export NOTES="$HOME/Workspace/notes"
 export NVM_DIR="$HOME"/.nvm
 export DOTFILES="$WORKSPACE/dotfiles"
 export VIMRC="$DOTFILES/vim/.vimrc"
+export PNPM_HOME="/home/kyle/.local/share/pnpm"
 
 export SLEDGE_BIN="$HOME"/.sledge/bin
 
@@ -65,8 +66,8 @@ path=(
   $HOME/.rvm/bin
   $WORKSPACE/scripts
   $WORKSPACE/scripts/tmux-scripts
-  $HOME/Library/Haskell/bin
   $HOME/.cargo/bin
+  $PNPM_HOME
   $SLEDGE_BIN
   $path
 )
@@ -116,6 +117,7 @@ if [[ $OSTYPE == linux* ]]; then
   export _JAVA_AWT_WM_NONREPARENTING=1
 
   export MOZ_ENABLE_WAYLAND=1
+  export RUSTUP_USE_CURL=1
 fi
 
 if [[ $OSTYPE == darwin* ]]; then
