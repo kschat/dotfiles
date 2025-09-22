@@ -6,6 +6,7 @@ mopidy/credentials.conf
 .DS_Store
 Session.vim
 zsh/.exports-private
+zwift/auth
 
 vim/.vim/autoload/
 vim/.vim/backup/

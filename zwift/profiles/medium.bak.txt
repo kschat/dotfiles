@@ -1,0 +1,9 @@
+   res 1280x720(0x)
+   sres 1024x1024
+   set gSSAO=0
+   set gFXAA=1
+   set gSunRays=0
+   set gHeadlight=0
+   set gFoliagePercent=0.5
+   set gSimpleReflections=1
+   set gLODBias=1

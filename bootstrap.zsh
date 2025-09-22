@@ -176,6 +176,7 @@ typeset -A packages; packages=(
   eww "$default_directory/.config/eww"
   mangohud "$default_directory/.config/MangoHud"
   wezterm "$default_directory/.config/wezterm"
+  zwift "$default_directory/.config/zwift"
 )
 
 exit_codes=(
