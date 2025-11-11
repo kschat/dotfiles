@@ -1,5 +1,6 @@
 # vi: filetype=bash
 
+TZ=America/New_York
 ZWIFT_LOG_DIR=$HOME/.config/zwift/logs
 NETWORKING=host
 CONTAINER_TOOL=docker
