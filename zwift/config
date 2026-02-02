@@ -1,9 +1,8 @@
 # vi: filetype=bash
 
-TZ=America/New_York
 ZWIFT_LOG_DIR=$HOME/.config/zwift/logs
 NETWORKING=host
 CONTAINER_TOOL=docker
-CONTAINER_EXTRA_ARGS=--env-file=$HOME/.config/zwift/auth
+CONTAINER_EXTRA_ARGS="--env-file=$HOME/.config/zwift/auth --env=TZ=America/New_York"
 ZWIFT_OVERRIDE_GRAPHICS=1
 ZWIFT_OVERRIDE_RESOLUTION=3840x2160
